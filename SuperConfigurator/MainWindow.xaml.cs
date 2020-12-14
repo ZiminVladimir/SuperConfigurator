@@ -25,5 +25,24 @@ namespace SuperConfigurator
         {
             InitializeComponent();
         }
+
+        private void BaseUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            //System.Windows.Forms.Application.EnableVisualStyles();
+            //System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+            //System.Windows.Forms.Application.Run(new Form1());
+            Form1 form = new Form1();
+            Visibility = Visibility.Hidden;
+            form.ShowDialog();
+            Visibility = Visibility.Visible;
+        }
+
+        private void BuildPC_Click(object sender, RoutedEventArgs e)
+        {
+            Configurator conf = new Configurator();
+            Visibility = Visibility.Hidden;
+            conf.ShowDialog();
+            Visibility = Visibility.Visible;
+        }
     }
 }
