@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SuperParser
 {
-    class E_CatalogSettings
+    class E_CatalogSettings : IParserSettings
     {
         public E_CatalogSettings(int start, int end)
         {
