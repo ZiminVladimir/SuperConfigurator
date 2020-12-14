@@ -22,7 +22,7 @@ namespace SuperParser
             "https://www.e-katalog.ru/list/61/",
             "https://www.e-katalog.ru/list/193/",
             "https://www.e-katalog.ru/list/351/" };
-        FreelansimParser FP = new FreelansimParser();
+        E_CatalogParser FP = new E_CatalogParser();
         List<string> Prices = new List<string>();
         IParser parser;
         IParserSettings parserSettings; //настройки для загрузчика кода страниц
