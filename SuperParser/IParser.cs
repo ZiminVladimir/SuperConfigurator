@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 namespace SuperParser
 {
-    interface IParser
+    public interface IParser
     {
         List<string> Parse(IHtmlDocument document);
         List<string> Parse1(IHtmlDocument document);

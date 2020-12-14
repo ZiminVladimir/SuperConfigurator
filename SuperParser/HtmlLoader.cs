@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
-using SuperParser.Core.Freelansim;
-using SuperParser.Core;
+using SuperParser;
 using System.Collections.Generic;
 
 namespace SuperParser

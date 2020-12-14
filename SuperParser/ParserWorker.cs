@@ -1,6 +1,6 @@
 ﻿using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
-using SuperParser.Core.Freelansim;
+using SuperParser;
 using System;
 using System.Collections.Generic;
 using System.Net;

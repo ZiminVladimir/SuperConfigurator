@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace SuperParser
 {
-    class E_CatalogSettings : IParserSettings
+    public class E_CatalogSettings : IParserSettings
     {
-        public E_CatalogSettings(int start, int end)
+        public E_CatalogSettings()
         {
-            StartPoint = start;
-            EndPoint = end;
         }
 
         public string BaseUrl { get; set; } = "https://www.e-katalog.ru/list/189/";

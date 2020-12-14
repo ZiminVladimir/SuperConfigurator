@@ -36,9 +36,8 @@ namespace SuperConfigurator
             //System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             //System.Windows.Forms.Application.Run(new Form1());
             //Form1 form = new Form1();
-            Visibility = Visibility.Hidden;
-            //form.ShowDialog();
-            Visibility = Visibility.Visible;
+            parser_E_Catalog.Settings = new E_CatalogSettings();
+            parser_E_Catalog.Start();
         }
 
         private void BuildPC_Click(object sender, RoutedEventArgs e)

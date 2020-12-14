@@ -1,6 +1,6 @@
 ﻿namespace SuperParser
 {
-    interface IParserSettings
+    public interface IParserSettings
     {
         string BaseUrl { get; set; } //url сайта
         string Postfix { get; set; } //в постфикс будет передаваться id страницы
