@@ -14,7 +14,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
 using SuperParser;
-using SuperParser.Core.Freelansim;
 
 namespace SuperConfigurator
 {
