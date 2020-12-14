@@ -22,6 +22,15 @@ namespace SuperConfigurator
     /// </summary>
     public partial class Configurator : Window
     {
+        int budget = -1;
+        List<CPU> cpus;
+        List<GPU> gpus;
+        List<HDD> hdds;
+        List<MotherBoard> mbs;
+        List<PowerSupply> pss;
+        List<RAM> rams;
+        List<SSD> ssds;
+        List<Case> cs;
         public Configurator()
         {
             cpus = new List<CPU>()
