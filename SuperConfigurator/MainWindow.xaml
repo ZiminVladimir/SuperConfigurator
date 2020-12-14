@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Button x:Name="BaseUpdate" Content="Обновить базу" HorizontalAlignment="Left" Height="49" Margin="212,195,0,0" VerticalAlignment="Top" Width="121" Click="BaseUpdate_Click"/>
+        <Button Content="Собрать ПК" HorizontalAlignment="Left" Height="73" Margin="450,171,0,0" VerticalAlignment="Top" Width="133" Click="BuildPC_Click"/>
     </Grid>
 </Window>
