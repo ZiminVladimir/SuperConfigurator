@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperConfigurator", "SuperC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PC_Components", "PC_Components\PC_Components.csproj", "{EA035FC6-22F6-4022-8136-2CEBB69A6309}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperParser", "SuperParser\SuperParser.csproj", "{4E671625-426B-4E67-B809-4351FF4B97BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{EA035FC6-22F6-4022-8136-2CEBB69A6309}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA035FC6-22F6-4022-8136-2CEBB69A6309}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA035FC6-22F6-4022-8136-2CEBB69A6309}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E671625-426B-4E67-B809-4351FF4B97BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E671625-426B-4E67-B809-4351FF4B97BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E671625-426B-4E67-B809-4351FF4B97BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E671625-426B-4E67-B809-4351FF4B97BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
