@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SuperParser
 {
-    class ParserWorker
+    public class ParserWorker
     {
         public bool flag;
         readonly HttpClient client = new HttpClient();

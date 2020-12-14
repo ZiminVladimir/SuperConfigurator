@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
+using SuperParser;
+using SuperParser.Core.Freelansim;
 
 namespace SuperConfigurator
 {
@@ -21,19 +23,22 @@ namespace SuperConfigurator
     /// </summary>
     public partial class MainWindow : Window
     {
+        ParserWorker parser_E_Catalog;
         public MainWindow()
         {
+            parser_E_Catalog = new ParserWorker(new E_CatalogParser());
+            parser_E_Catalog.OnComplited += Parser_OnComplited;
             InitializeComponent();
         }
-
+        public void Parser_OnComplited(object o) { MessageBox.Show("Работа завершена!"); }
         private void BaseUpdate_Click(object sender, RoutedEventArgs e)
         {
             //System.Windows.Forms.Application.EnableVisualStyles();
             //System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             //System.Windows.Forms.Application.Run(new Form1());
-            Form1 form = new Form1();
+            //Form1 form = new Form1();
             Visibility = Visibility.Hidden;
-            form.ShowDialog();
+            //form.ShowDialog();
             Visibility = Visibility.Visible;
         }
 
