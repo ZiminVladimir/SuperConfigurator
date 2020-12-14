@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 
-namespace SuperParser.Core.Freelansim
+namespace SuperParser
 {
     public class E_CatalogParser : IParser
     {
