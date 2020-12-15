@@ -24,6 +24,8 @@ namespace SuperParser
             "https://www.e-katalog.ru/list/351/" };
         E_CatalogParser FP = new E_CatalogParser();
         List<string> Prices = new List<string>();
+        public int count = 0;
+        List<string> Names = new List<string>();
         IParser parser;
         IParserSettings parserSettings; //настройки для загрузчика кода страниц
         HtmlLoader loader; //загрузчик кода страницы
@@ -35,6 +37,7 @@ namespace SuperParser
         ContainerCase CCase = new ContainerCase();
         ContainerHDD CHDD = new ContainerHDD();
         ContainerSSD CSSD = new ContainerSSD();
+        ContainerRAM CRAM = new ContainerRAM();
         public ParserWorker() { }
         public IParser Parser
         {
@@ -84,22 +87,23 @@ namespace SuperParser
         public async void Worker()
         {
             //ssilki[0] = "https://www.e-katalog.ru/MSI-GEFORCE-RTX-3070-SUPRIM-X-8G.htm";
-            //foreach (string j in ssilki)
-            //{
+            //for(int j =1;j<ssilki.Count;j++)
+           // { 
             List<string> list = new List<string>();
             List<string> result = new List<string>();
-            string j = "https://www.e-katalog.ru/list/189/";
+            //string j = "https://www.e-katalog.ru/list/188/";
             for (int i = parserSettings.StartPoint; i <= parserSettings.EndPoint; i++)
             {
                 //if (IsActive)
                 {
-                    string source = await loader.GetSourceByPage(i, j); //Получаем код страницы
+                    string source = await loader.GetSourceByPage(i, ssilki[6]); //Получаем код страницы
                                                                         //Здесь магия AngleShap, подробнее об интерфейсе IHtmlDocument и классе HtmlParser, 
                                                                         //можно прочитать на GitHub, это интересное чтиво с примерами.
                     HtmlParser domParser = new HtmlParser();
                     IHtmlDocument document = await domParser.ParseDocumentAsync(source);
                     result = parser.Parse(document);
                     Prices = parser.ParsePrice(document);
+                    Names = parser.ParseName(document);
                     //OnNewData?.Invoke(this, result);
                 }
             }
@@ -108,7 +112,8 @@ namespace SuperParser
             isActive = false;
             flag = true;
             list.AddRange(result.ToArray());
-            Worker1(list);
+            Worker1(list,6);
+            count++;
             //}
             OnComplited?.Invoke(this);
         }
@@ -125,10 +130,24 @@ namespace SuperParser
             }
             return source;
         }
-        public async void Worker1(List<string> list)
+        public async Task<string> GetSourceByPageMB(int i, List<string> list,List<string>href) // id - это id страницы
+        {
+            string mainurl = href[0];
+            //string currentUrl1 = mainurl + list[i];//Подменяем {CurrentId} на номер страницы
+            HttpResponseMessage responce = await client.GetAsync(mainurl); //Получаем ответ с сайта.
+            string source = default;
+            //if (responce != null && responce.StatusCode == HttpStatusCode.OK)
+            {
+                source = await responce.Content.ReadAsStringAsync(); //Помещаем код страницы в переменную.
+            }
+            return source;
+        }
+        public async void Worker1(List<string> list,int j)
         {
             List<List<string>> res = new List<List<string>>();
             List<string> result1 = new List<string>();
+            List<string> categoties = new List<string>();
+            List<string> hrefs = new List<string>();
             //ContainerGPU CGPU = new ContainerGPU();
             {
                 for (int i = 0; i < list.Count; i++)
@@ -136,8 +155,50 @@ namespace SuperParser
                     string source = await GetSourceByPage1(i, list);
                     HtmlParser domParser = new HtmlParser();
                     IHtmlDocument document = await domParser.ParseDocumentAsync(source);
-                    result1 = parser.Parse1(document);
-                    GPU_Add(result1, i);
+                    if(j==0)
+                    {
+                        result1 = parser.Parse1(document);
+                        GPU_Add(result1, i);
+                    }
+                    else if (j == 1)
+                    {
+                        hrefs = parser.ParseMB(document);
+                        string source1 = await GetSourceByPageMB(i, list,hrefs);
+                        HtmlParser domParser1 = new HtmlParser();
+                        IHtmlDocument document1 = await domParser1.ParseDocumentAsync(source1);
+                        result1 = parser.Parse1(document1);
+                        MotherBoard_Add(result1, i);
+                    }
+                    else if (j == 2)
+                    {
+                        result1 = parser.Parse1(document);
+                        CPU_Add(result1, i);
+                    }
+                    else if (j == 3)
+                    {
+                        result1 = parser.ParseRAM(document);
+                        RAM_Add(result1, i);
+                    }
+                    else if (j == 4)
+                    {
+                        result1 = parser.ParseRAM(document);
+                        SSD_Add(result1, i);
+                    }
+                    else if (j == 5)
+                    {
+                        hrefs = parser.ParseMB(document);
+                        string source1 = await GetSourceByPageMB(i, list, hrefs);
+                        HtmlParser domParser1 = new HtmlParser();
+                        IHtmlDocument document1 = await domParser1.ParseDocumentAsync(source1);
+                        result1 = parser.Parse1(document1);
+                        Case_Add(result1, i);
+                    }
+                    else if (j == 6)
+                    {
+                        result1 = parser.Parse1(document);
+                        categoties = parser.ParseCategories(document);
+                        PowerSupply_Add(result1, i,categoties);
+                    }
                 }
 
                 //OnComplited?.Invoke(this);
@@ -148,7 +209,7 @@ namespace SuperParser
         public void RAM_Add(List<string> list, int j)
         {
             int price;
-            string Name = "";
+            string Name = Names[j];
             string Type = "";
             string Frequency = "";
             string Volume = "";
@@ -171,13 +232,23 @@ namespace SuperParser
                 {
                     Volume = i;
                 }
-                
+                else if(i.Contains("DIMM"))
+                {
+                    FormFactor = i;
+                }
+                else if(i.Contains("шт"))
+                {
+                    Number = i;
+                }
+
             }
+            RAM ram = new RAM(price, Name, Type, Frequency, Volume, FormFactor, Number);
+            CRAM.Add(ram);
         }
-        public void PowerSupply_Add(List<string> list, int j)
+        public void PowerSupply_Add(List<string> list, int j, List<string>categories)
         {
             int price;
-            string name = "";
+            string name = Names[j];
             string power = list[0];
             string GPUPins = "";
             string MBPins = "";
@@ -193,6 +264,14 @@ namespace SuperParser
                     CPUPins = i[2].ToString();
                 }
             }
+            for(int i=0;i<categories.Count;i++)
+            {
+                if (categories[i].Contains("PCI-E"))
+                {
+                    var a = categories[i].Split();
+                    GPUPins = a[1];
+                }
+            }
             PowerSupply ps = new PowerSupply(price, name, power, GPUPins, MBPins, CPUPins);
             CPS.Add(ps);
         }
@@ -200,7 +279,7 @@ namespace SuperParser
         public void CPU_Add(List<string> list, int j)
         {
             int price;
-            string name = "";
+            string name = Names[j];
             string socket = "";
             string cores = "";
             string threads = "";
@@ -213,7 +292,7 @@ namespace SuperParser
 
             foreach (string i in list)
             {
-                if (i.Contains("AMD"))
+                if (i.Contains("AMD")&&socket=="")
                 {
                     chipset = "AMD";
                     var soc = i.Split();
@@ -251,7 +330,7 @@ namespace SuperParser
         {
             // гитхаб сосать
             int price = 0;
-            string name = list[1];
+            string name = Names[j];
             string mem = null;
             string addpower = null;
             string recbp = null;
@@ -298,7 +377,7 @@ namespace SuperParser
         {
             // гитхаб сосать
             int price = 0;
-            string name = "name";
+            string name = Names[j];
             string socket = list[1];
             string Chipset = null;
             string MemType = null;
@@ -343,13 +422,13 @@ namespace SuperParser
         public void Case_Add(List<string> list, int j)
         {
             int Price=0;
-            string Name=null;
+            string Name= Names[j];
             string MaxGPULength=null;
             var prices1 = Prices[j].Split();
             Price = Convert.ToInt32(prices1[2]) * 1000 + Convert.ToInt32(prices1[3]);
             foreach (string i in list)
             {
-                if(i.Contains("мм")&&MaxGPULength==null)
+                if(i.Contains("мм")&&!i.Contains("x") &&MaxGPULength==null)
                 {
                     MaxGPULength = i;
                 }
@@ -361,7 +440,7 @@ namespace SuperParser
         public void HDD_Add(List<string> list, int j)
         {
               int Price=0;
-              string Name=null;
+              string Name= Names[j];
               string Volume=null;
               string Revs=null;
               var prices1 = Prices[j].Split();
@@ -384,7 +463,7 @@ namespace SuperParser
         public void SSD_Add(List<string> list, int j)
         {
              int Price=0;
-             string Name=null;
+             string Name= Names[j];
              string Volume=null;
              bool M_2=true;
             var prices1 = Prices[j].Split();

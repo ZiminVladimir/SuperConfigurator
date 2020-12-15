@@ -25,7 +25,7 @@ namespace SuperParser
         public async Task<string> GetSourceByPage(int id, string i) // id - это id страницы
         {
             string currentUrl = url.Replace("https://www.e-katalog.ru/list/189/", i);
-            currentUrl = url.Replace("{CurrentId}", id.ToString());//Подменяем {CurrentId} на номер страницы
+            currentUrl = currentUrl.Replace("{CurrentId}", id.ToString());//Подменяем {CurrentId} на номер страницы
             //string currentUrl = "https://www.e-katalog.ru/MSI-GEFORCE-RTX-3070-SUPRIM-X-8G.htm";
             HttpResponseMessage responce = await client.GetAsync(currentUrl); //Получаем ответ с сайта.
             string source = default;

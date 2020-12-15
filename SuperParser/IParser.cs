@@ -7,5 +7,9 @@ namespace SuperParser
         List<string> Parse(IHtmlDocument document);
         List<string> Parse1(IHtmlDocument document);
         List<string> ParsePrice(IHtmlDocument document);
+        List<string> ParseName(IHtmlDocument document);
+        List<string> ParseCategories(IHtmlDocument document);
+        List<string> ParseRAM(IHtmlDocument document);
+        List<string> ParseMB(IHtmlDocument document);
     }
 }
