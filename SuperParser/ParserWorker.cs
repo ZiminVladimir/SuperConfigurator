@@ -32,6 +32,9 @@ namespace SuperParser
         ContainerCPU CCPU = new ContainerCPU();
         ContainerGPU CGPU = new ContainerGPU();
         ContainerMB CMB = new ContainerMB();
+        ContainerCase CCase = new ContainerCase();
+        ContainerHDD CHDD = new ContainerHDD();
+        ContainerSSD CSSD = new ContainerSSD();
         public ParserWorker() { }
         public IParser Parser
         {
@@ -324,14 +327,48 @@ namespace SuperParser
 
             }
             Case cas = new Case(Price,Name,MaxGPULength);
+            CCase.Add(cas);
         }
         public void HDD_Add(List<string> list, int j)
         {
-              int Price;
-             string Name;
-             string Volume;
-            string Revs;
+              int Price=0;
+              string Name=null;
+              string Volume=null;
+              string Revs=null;
+              var prices1 = Prices[j].Split();
+              Price = Convert.ToInt32(prices1[2]) * 1000 + Convert.ToInt32(prices1[3]);
+            foreach (string i in list)
+            {
+                if(i.Contains("ГБ"))
+                {
+                    Volume = i;
+                }
+                if(i.Contains("об/мин"))
+                {
+                    Revs = i;
+                }
+            }
+            HDD hdd = new HDD(Price, Name, Volume, Revs);
+            CHDD.Add(hdd);
 
+        }
+        public void SSD_Add(List<string> list, int j)
+        {
+             int Price=0;
+             string Name=null;
+             string Volume=null;
+             bool M_2=true;
+            var prices1 = Prices[j].Split();
+            Price = Convert.ToInt32(prices1[2]) * 1000 + Convert.ToInt32(prices1[3]);
+            foreach (string i in list)
+            {
+                if(i.Contains("ГБ"))
+                {
+                    Volume = i;
+                }    
+            }
+            SSD ssd = new SSD(Price, Name, Volume, M_2);
+            CSSD.Add(ssd);
         }
         }
 }
