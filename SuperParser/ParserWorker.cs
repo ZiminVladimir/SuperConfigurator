@@ -145,6 +145,35 @@ namespace SuperParser
             }
         }
 
+        public void RAM_Add(List<string> list, int j)
+        {
+            int price;
+            string Name = "";
+            string Type = "";
+            string Frequency = "";
+            string Volume = "";
+            string FormFactor = "";
+            string Number = "";
+            var prices1 = Prices[j].Split();
+            price = Convert.ToInt32(prices1[2]) * 1000 + Convert.ToInt32(prices1[3]);
+
+            foreach (string i in list)
+            {
+                if (i.Contains("DDR"))
+                {
+                    Type = i;
+                }
+                else if (i.Contains("МГц"))
+                {
+                    Frequency = i;
+                }
+                else if (i.Contains("ГБ"))
+                {
+                    Volume = i;
+                }
+                
+            }
+        }
         public void PowerSupply_Add(List<string> list, int j)
         {
             int price;
