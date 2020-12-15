@@ -141,6 +141,7 @@ namespace SuperParser
             }
         }
 
+        
         public void CPU_Add(List<string> list, int j)
         {
             int price;
