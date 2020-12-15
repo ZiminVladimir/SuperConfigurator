@@ -28,6 +28,7 @@ namespace SuperParser
         IParserSettings parserSettings; //настройки для загрузчика кода страниц
         HtmlLoader loader; //загрузчик кода страницы
         bool isActive; //активность парсера
+        ContainerPS CPS = new ContainerPS();
         ContainerCPU CCPU = new ContainerCPU();
         ContainerGPU CGPU = new ContainerGPU();
         ContainerMB CMB = new ContainerMB();
@@ -141,7 +142,29 @@ namespace SuperParser
             }
         }
 
-        
+        public void PowerSupply_Add(List<string> list, int j)
+        {
+            int price;
+            string name = "";
+            string power = list[0];
+            string GPUPins = "";
+            string MBPins = "";
+            string CPUPins = "";
+            var prices1 = Prices[j].Split();
+            price = Convert.ToInt32(prices1[2]) * 1000 + Convert.ToInt32(prices1[3]);
+
+            foreach (string i in list)
+            {
+                if (i.Contains("pin"))
+                {
+                    MBPins = i[0].ToString() + i[1].ToString();
+                    CPUPins = i[2].ToString();
+                }
+            }
+            PowerSupply ps = new PowerSupply(price, name, power, GPUPins, MBPins, CPUPins);
+            CPS.Add(ps);
+        }
+
         public void CPU_Add(List<string> list, int j)
         {
             int price;
