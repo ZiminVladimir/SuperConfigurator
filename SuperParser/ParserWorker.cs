@@ -252,6 +252,8 @@ namespace SuperParser
             bool M_2=true;
             string MainPins=null;
             string CPUPins=null;
+            var prices1 = Prices[j].Split();
+            price = Convert.ToInt32(prices1[2]) * 1000 + Convert.ToInt32(prices1[3]);
             foreach (string i in list)
             {
                 if(i.Contains("Intel"))
@@ -282,6 +284,31 @@ namespace SuperParser
                 MotherBoard mb = new MotherBoard(price, name, socket, Chipset, MemType, MemFreq, MemVol, M_2, MainPins, CPUPins);
             CMB.Add(mb);
             
+        }
+        public void Case_Add(List<string> list, int j)
+        {
+            int Price=0;
+            string Name=null;
+            string MaxGPULength=null;
+            var prices1 = Prices[j].Split();
+            Price = Convert.ToInt32(prices1[2]) * 1000 + Convert.ToInt32(prices1[3]);
+            foreach (string i in list)
+            {
+                if(i.Contains("мм")&&MaxGPULength==null)
+                {
+                    MaxGPULength = i;
+                }
+
+            }
+            Case cas = new Case(Price,Name,MaxGPULength);
+        }
+        public void HDD_Add(List<string> list, int j)
+        {
+              int Price;
+             string Name;
+             string Volume;
+            string Revs;
+
         }
         }
 }
