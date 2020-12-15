@@ -51,7 +51,7 @@ namespace SuperConfigurator
             };
             pss = new List<PowerSupply>()
             {
-                new PowerSupply(2700, "FSP PNR-I", "500 Вт", "6+2", "24", "4")
+               // new PowerSupply(2700, "FSP PNR-I", "500 Вт", "6+2", "24", "4")
             };
             rams = new List<RAM>()
             {
@@ -402,8 +402,8 @@ namespace SuperConfigurator
                             bool eight = false;
                             bool eightplus6 = false;
                             bool eightplus8 = false;
-                            if (p.GPUPins == "6+2") sixplus2 = true;
-                            else if (p.GPUPins == "2*(6+2)") sixplus2x2 = true;
+                           // if (p.GPUPins == "6+2") sixplus2 = true;
+                           // else if (p.GPUPins == "2*(6+2)") sixplus2x2 = true;
                             if (chosengpu.AddPowerPin == "6") six = true;
                             else if (chosengpu.AddPowerPin == "8") eight = true;
                             else if (chosengpu.AddPowerPin == "8+6") eightplus6 = true;
@@ -440,8 +440,8 @@ namespace SuperConfigurator
                             bool eight = false;
                             bool eightplus6 = false;
                             bool eightplus8 = false;
-                            if (p.GPUPins == "6+2") sixplus2 = true;
-                            else if (p.GPUPins == "2*(6+2)") sixplus2x2 = true;
+                           // if (p.GPUPins == "6+2") sixplus2 = true;
+                           // else if (p.GPUPins == "2*(6+2)") sixplus2x2 = true;
                             if (chosengpu.AddPowerPin == "6") six = true;
                             else if (chosengpu.AddPowerPin == "8") eight = true;
                             else if (chosengpu.AddPowerPin == "8+6") eightplus6 = true;
@@ -477,8 +477,8 @@ namespace SuperConfigurator
                             bool eight = false;
                             bool eightplus6 = false;
                             bool eightplus8 = false;
-                            if (p.GPUPins == "6+2") sixplus2 = true;
-                            else if (p.GPUPins == "2*(6+2)") sixplus2x2 = true;
+                          //  if (p.GPUPins == "6+2") sixplus2 = true;
+                          //  else if (p.GPUPins == "2*(6+2)") sixplus2x2 = true;
                             if (chosengpu.AddPowerPin == "6") six = true;
                             else if (chosengpu.AddPowerPin == "8") eight = true;
                             else if (chosengpu.AddPowerPin == "8+6") eightplus6 = true;
@@ -514,8 +514,8 @@ namespace SuperConfigurator
                             bool eight = false;
                             bool eightplus6 = false;
                             bool eightplus8 = false;
-                            if (p.GPUPins == "6+2") sixplus2 = true;
-                            else if (p.GPUPins == "2*(6+2)") sixplus2x2 = true;
+                           // if (p.GPUPins == "6+2") sixplus2 = true;
+                           // else if (p.GPUPins == "2*(6+2)") sixplus2x2 = true;
                             if (chosengpu.AddPowerPin == "6") six = true;
                             else if (chosengpu.AddPowerPin == "8") eight = true;
                             else if (chosengpu.AddPowerPin == "8+6") eightplus6 = true;
@@ -552,8 +552,8 @@ namespace SuperConfigurator
                             bool eight = false;
                             bool eightplus6 = false;
                             bool eightplus8 = false;
-                            if (p.GPUPins == "6+2") sixplus2 = true;
-                            else if (p.GPUPins == "2*(6+2)") sixplus2x2 = true;
+                         //   if (p.GPUPins == "6+2") sixplus2 = true;
+                         //   else if (p.GPUPins == "2*(6+2)") sixplus2x2 = true;
                             if (chosengpu.AddPowerPin == "6") six = true;
                             else if (chosengpu.AddPowerPin == "8") eight = true;
                             else if (chosengpu.AddPowerPin == "8+6") eightplus6 = true;
