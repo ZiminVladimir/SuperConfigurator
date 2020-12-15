@@ -140,6 +140,7 @@ namespace SuperParser
         }
         public void GPU_Add(List<string> list, int j)
         {
+            // гитхаб сосать
             int price = 0;
             string name = list[1];
             string mem = null;
