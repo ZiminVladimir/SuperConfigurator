@@ -113,7 +113,7 @@ namespace SuperParser
             List<string> list = new List<string>();
             List<string> result = new List<string>();
             //string j = "https://www.e-katalog.ru/list/188/";
-            for (int i = parserSettings.StartPoint; i <= parserSettings.EndPoint; i++)
+            for (int i = parserSettings.StartPoint; i <= 1; i++)
             {
                 //if (IsActive)
                 {
@@ -282,8 +282,12 @@ namespace SuperParser
                 }
                 
 
-                OnComplited?.Invoke(this);
+                //OnComplited?.Invoke(this);
                 isActive = false;
+                if (CCPU.listCPU.Count == 24 && CGPU.listGPU.Count == 24 && CPS.listPS.Count == 24 && CMB.listMB.Count == 24 && CSSD.listSSD.Count == 24 && CCase.listCase.Count == 24 && CRAM.listRAM.Count == 24)
+                {
+                    //OnComplited?.Invoke(this);
+                }
             }
         }
 
