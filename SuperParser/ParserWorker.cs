@@ -184,5 +184,6 @@ namespace SuperParser
             GPU gpu = new GPU(price, name, mem, power, recbp, length, addpower);
             CGPU.Add(gpu);
         }
+        //123
     }
 }
