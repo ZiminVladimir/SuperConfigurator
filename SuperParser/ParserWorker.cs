@@ -28,6 +28,7 @@ namespace SuperParser
         IParserSettings parserSettings; //настройки для загрузчика кода страниц
         HtmlLoader loader; //загрузчик кода страницы
         bool isActive; //активность парсера
+        ContainerCPU CCPU = new ContainerCPU();
         ContainerGPU CGPU = new ContainerGPU();
         ContainerMB CMB = new ContainerMB();
         public ParserWorker() { }
@@ -139,6 +140,57 @@ namespace SuperParser
                 isActive = false;
             }
         }
+
+        public void CPU_Add(List<string> list, int j)
+        {
+            int price;
+            string name = "";
+            string socket = "";
+            string cores = "";
+            string threads = "";
+            string chipset = "";
+            string memvol = "";
+            string memfreq = "";
+            string memtype = "";
+            var prices1 = Prices[j].Split();
+            price = Convert.ToInt32(prices1[2]) * 1000 + Convert.ToInt32(prices1[3]);
+
+            foreach (string i in list)
+            {
+                if (i.Contains("AMD"))
+                {
+                    chipset = "AMD";
+                    var soc = i.Split();
+                    socket = soc[1];
+                }
+                else if (i.Contains("Intel"))
+                {
+                    chipset = "Intel";
+                    var soc = i.Split();
+                    if (soc.Length > 2) socket = soc[1] + " " + soc[2];
+                    else socket = soc[1];
+                }
+                else if (i.Contains("cores"))
+                {
+                    cores = i;
+                }
+                else if (i.Contains("threads"))
+                {
+                    threads = i;
+                }
+                else if (i.Contains("ГБ"))
+                {
+                    memvol = i;
+                }
+                else if (i.Contains("МГц"))
+                {
+                    memfreq = i;
+                }
+            }
+            CPU Cpu = new CPU(price, name, socket, cores, threads, chipset, memvol, memfreq, memtype);
+            CCPU.Add(Cpu);
+        }
+        
         public void GPU_Add(List<string> list, int j)
         {
             // гитхаб сосать
