@@ -29,6 +29,7 @@ namespace SuperParser
         HtmlLoader loader; //загрузчик кода страницы
         bool isActive; //активность парсера
         ContainerGPU CGPU = new ContainerGPU();
+        ContainerMB CMB = new ContainerMB();
         public ParserWorker() { }
         public IParser Parser
         {
@@ -212,6 +213,49 @@ namespace SuperParser
             GPU gpu = new GPU(price, name, mem, power, recbp, length, addpower);
             CGPU.Add(gpu);
         }
-        //123
-    }
+        public void MotherBoard_Add(List<string> list, int j)
+        {
+            // гитхаб сосать
+            int price = 0;
+            string name = "name";
+            string socket = list[1];
+            string Chipset = null;
+            string MemType = null;
+            string MemFreq = null;
+            string MemVol=null;
+            bool M_2=true;
+            string MainPins=null;
+            string CPUPins=null;
+            foreach (string i in list)
+            {
+                if(i.Contains("Intel"))
+                {
+                    Chipset = "Intel";
+                }
+                else if(i.Contains("AMD"))
+                {
+                    Chipset = "AMD";
+                }
+                else if(i.Contains("МГц"))
+                {
+                    MemFreq = i;
+                }
+                else if(i.Contains("ГБ"))
+                {
+                    MemVol = i;
+                }
+                else if(i.Contains("-контактный"))
+                {
+                    MainPins = i;
+                }
+                else if(i.Contains("-контактное"))
+                {
+                    CPUPins = i;
+                }
+            }
+                MotherBoard mb = new MotherBoard(price, name, socket, Chipset, MemType, MemFreq, MemVol, M_2, MainPins, CPUPins);
+            CMB.Add(mb);
+            
+        }
+        }
 }
