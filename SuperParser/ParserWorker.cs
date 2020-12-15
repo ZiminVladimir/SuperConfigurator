@@ -138,6 +138,33 @@ namespace SuperParser
                 isActive = false;
             }
         }
+
+        public void CPU_Add(List<string> list, int j)
+        {
+            int price;
+            string name = null;
+            string socket = null;
+            string cores = null;
+            string threads = null;
+            string chipset = null;
+            string memvol = null;
+            string memfreq = null;
+            string memtype = null;
+            var prices1 = Prices[j].Split();
+            price = Convert.ToInt32(prices1[2]) * 1000 + Convert.ToInt32(prices1[3]);
+
+            foreach (string i in list)
+            {
+                if (i.Contains("AMD"))
+                {
+                    chipset = "AMD";
+                    var soc = i.Split();
+                    socket = soc[1];
+                }
+                else if (i.Contains())
+            }
+        }
+        
         public void GPU_Add(List<string> list, int j)
         {
             // гитхаб сосать

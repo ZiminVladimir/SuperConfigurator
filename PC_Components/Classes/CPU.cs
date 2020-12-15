@@ -15,13 +15,12 @@ namespace PC_Components
         public string Cores;
         public string Threads;
         public string Chipset;//for parasha(intel)
-        public bool IGPU;
         public string MemVol;
         public string MemFreq;
         public string MemType;
 
         public CPU() { }
-        public CPU(int Pr, string N, string S, string C, string T, string Ch, bool I, string MV, string MF, string MT)
+        public CPU(int Pr, string N, string S, string C, string T, string Ch, string MV, string MF, string MT)
         {
             Price = Pr;
             Name = N;
@@ -29,7 +28,6 @@ namespace PC_Components
             Cores = C;
             Threads = T;
             Chipset = Ch;
-            IGPU = I;
             MemVol = MV;
             MemFreq = MF;
             MemType = MT;

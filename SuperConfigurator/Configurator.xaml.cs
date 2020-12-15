@@ -35,7 +35,7 @@ namespace SuperConfigurator
         {
             cpus = new List<CPU>()
             {
-                new CPU(10050, "AMD Ryzen 5 2600", "AM4", "6 cores", "12 threads", "AMD", false, "64 ГБ", "2933 МГц", "ddr4")
+                new CPU(10050, "AMD Ryzen 5 2600", "AM4", "6 cores", "12 threads", "AMD", "64 ГБ", "2933 МГц", "ddr4")
             };
             gpus = new List<GPU>()
             {
