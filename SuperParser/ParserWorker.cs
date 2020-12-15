@@ -250,7 +250,8 @@ namespace SuperParser
             int price;
             string name = Names[j];
             string power = list[0];
-            string GPUPins = "";
+            string GPUPins6 = "";
+            string GPUPins8 = "";
             string MBPins = "";
             string CPUPins = "";
             var prices1 = Prices[j].Split();
@@ -266,13 +267,16 @@ namespace SuperParser
             }
             for(int i=0;i<categories.Count;i++)
             {
-                if (categories[i].Contains("PCI-E"))
+                if (categories[i].Contains("6pin"))
                 {
-                    var a = categories[i].Split();
-                    GPUPins = a[1];
+                    GPUPins6 = list[i];
+                }
+                else if (categories[i].Contains("8pin"))
+                {
+                    GPUPins8 = list[i];
                 }
             }
-            PowerSupply ps = new PowerSupply(price, name, power, GPUPins, MBPins, CPUPins);
+            PowerSupply ps = new PowerSupply(price, name, power, GPUPins6, GPUPins8, MBPins, CPUPins);
             CPS.Add(ps);
         }
 

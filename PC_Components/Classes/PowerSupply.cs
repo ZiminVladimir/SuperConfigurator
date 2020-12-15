@@ -11,17 +11,19 @@ namespace PC_Components
         public int Price;
         public string Name;
         public string Power;
-        public string GPUPins;
+        public string GPUPins6;
+        public string GPUPins8;
         public string MBPins;
         public string CPUPins;
 
         public PowerSupply() { }
-        public PowerSupply(int Pr, string N, string P, string GP, string MB, string CP)
+        public PowerSupply(int Pr, string N, string P, string GP6, string GP8, string MB, string CP)
         {
             Price = Pr;
             Name = N;
             Power = P;
-            GPUPins = GP;
+            GPUPins6 = GP6;
+            GPUPins8 = GP8;
             MBPins = MB;
             CPUPins = CP;
         }
