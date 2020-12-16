@@ -43,8 +43,20 @@ namespace SuperParser
         public List<string> ParseName(IHtmlDocument document)
         {
             list3 = new List<string>();
-            IEnumerable<IElement> items = document.QuerySelectorAll("a")
-                .Where(item => item.ClassName != null && item.ClassName.Contains("model-short-title no-u"));
+            IEnumerable<IElement> items = document.QuerySelectorAll("div")
+                .Where(item => item.ClassName != null && item.ClassName.Contains("op1-tt"));
+            foreach (var item in items)
+            {
+                list3.Add(item.TextContent);
+            }
+
+            return list3;
+        }
+        public List<string> ParseNameBlue(IHtmlDocument document)
+        {
+            list3 = new List<string>();
+            IEnumerable<IElement> items = document.QuerySelectorAll("span")
+                .Where(item => item.ClassName != null && item.ClassName.Contains("blue"));
             foreach (var item in items)
             {
                 list3.Add(item.TextContent);
@@ -70,7 +82,7 @@ namespace SuperParser
         {
             list1 = new List<string>();
             IEnumerable<IElement> items = document.QuerySelectorAll("div")
-                .Where(item => item.ClassName != null && item.ClassName.Equals("model-price-range"));
+                .Where(item => item.ClassName != null && item.ClassName.Equals("desc-big-price ib"));
 
             foreach (var item in items)
             {

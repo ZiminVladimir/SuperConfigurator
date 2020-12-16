@@ -11,5 +11,6 @@ namespace SuperParser
         List<string> ParseCategories(IHtmlDocument document);
         List<string> ParseRAM(IHtmlDocument document);
         List<string> ParseMB(IHtmlDocument document);
+        List<string> ParseNameBlue(IHtmlDocument document);
     }
 }
