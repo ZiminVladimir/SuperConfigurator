@@ -127,8 +127,8 @@ namespace SuperParser
                             resultGPU = parser.Parse(document);
                         PricesGPU.AddRange(parser.ParsePrice(document));
                         NamesGPU.AddRange(parser.ParseName(document));
-                            list = resultGPU;
-                            Worker1(list, j);
+                            list.AddRange(resultGPU);
+                            Worker1(list, j, i);
                         }
                     else if (j == 1)
                     {
@@ -137,8 +137,8 @@ namespace SuperParser
                             resultMB = parser.Parse(document);
                         PricesMB.AddRange(parser.ParsePrice(document));
                         NamesMB.AddRange(parser.ParseName(document));
-                            list= resultMB;
-                            Worker1(list, j);
+                            list.AddRange(resultMB);
+                            Worker1(list, j, i);
                         }
                     else if (j == 2)
                     {
@@ -147,8 +147,8 @@ namespace SuperParser
                             resultCPU = parser.Parse(document);
                         PricesCPU.AddRange(parser.ParsePrice(document));
                         NamesCPU.AddRange(parser.ParseName(document));
-                            list=resultCPU;
-                            Worker1(list, j);
+                            list.AddRange(resultCPU);
+                            Worker1(list, j, i);
                         }
                     else if (j == 3)
                     {
@@ -157,8 +157,8 @@ namespace SuperParser
                             resultRAM = parser.Parse(document);
                         PricesRAM.AddRange(parser.ParsePrice(document));
                         NamesRAM.AddRange(parser.ParseName(document));
-                            list=resultRAM;
-                            Worker1(list, j);
+                            list.AddRange(resultRAM);
+                            Worker1(list, j, i);
                         }
                     else if (j == 4)
                     {
@@ -167,8 +167,8 @@ namespace SuperParser
                             resultSSD = parser.Parse(document);
                         PricesSSD.AddRange(parser.ParsePrice(document));
                         NamesSSD.AddRange(parser.ParseName(document));
-                            list=resultSSD;
-                Worker1(list,j);
+                            list.AddRange(resultSSD);
+                        Worker1(list, j, i);
                     }
                     else if (j == 5)
                     {
@@ -177,8 +177,8 @@ namespace SuperParser
                             resultCAS = parser.Parse(document);
                         PricesCAS.AddRange(parser.ParsePrice(document));
                         NamesCAS.AddRange(parser.ParseName(document));
-                            list=resultCAS;
-                            Worker1(list, j);
+                            list.AddRange(resultCAS);
+                            Worker1(list, j, i);
                         }
                     else if (j == 6)
                     {
@@ -187,8 +187,8 @@ namespace SuperParser
                             resultPS = parser.Parse(document);
                         PricesPS.AddRange(parser.ParsePrice(document));
                         NamesPS.AddRange(parser.ParseName(document));
-                            list=resultPS;
-                            Worker1(list, j);
+                            list.AddRange(resultPS);
+                            Worker1(list, j, i);
                         }
                 }
                     //OnNewData?.Invoke(this, result);
@@ -222,73 +222,73 @@ namespace SuperParser
             }
             return source;
         }
-        public async void Worker1(List<string> list,int j)
+        public async void Worker1(List<string> list,int j, int PageCount)
         {
             List<List<string>> res = new List<List<string>>();
             List<string> result1 = new List<string>();
             List<string> categoties = new List<string>();
             List<string> hrefs = new List<string>();
             //ContainerGPU CGPU = new ContainerGPU();
+            int count = 0 + PageCount * 24;
+            for (int i = count; i < list.Count; i++)
             {
-                for (int i = 0; i < list.Count; i++)
+                string source = await GetSourceByPage1(i, list);
+                HtmlParser domParser = new HtmlParser();
+                IHtmlDocument document = await domParser.ParseDocumentAsync(source);
+                if (j == 0)
                 {
-                    string source = await GetSourceByPage1(i, list);
-                    HtmlParser domParser = new HtmlParser();
-                    IHtmlDocument document = await domParser.ParseDocumentAsync(source);
-                    if(j==0)
-                    {
-                        result1 = parser.Parse1(document);
-                        GPU_Add(result1, i);
-                    }
-                    else if (j == 1)
-                    {
-                        hrefs = parser.ParseMB(document);
-                        string source1 = await GetSourceByPageMB(i, list,hrefs);
-                        HtmlParser domParser1 = new HtmlParser();
-                        IHtmlDocument document1 = await domParser1.ParseDocumentAsync(source1);
-                        result1 = parser.Parse1(document1);
-                        MotherBoard_Add(result1, i);
-                    }
-                    else if (j == 2)
-                    {
-                        result1 = parser.Parse1(document);
-                        CPU_Add(result1, i);
-                    }
-                    else if (j == 3)
-                    {
-                        result1 = parser.ParseRAM(document);
-                        RAM_Add(result1, i);
-                    }
-                    else if (j == 4)
-                    {
-                        result1 = parser.ParseRAM(document);
-                        SSD_Add(result1, i);
-                    }
-                    else if (j == 5)
-                    {
-                        hrefs = parser.ParseMB(document);
-                        string source1 = await GetSourceByPageMB(i, list, hrefs);
-                        HtmlParser domParser1 = new HtmlParser();
-                        IHtmlDocument document1 = await domParser1.ParseDocumentAsync(source1);
-                        result1 = parser.Parse1(document1);
-                        Case_Add(result1, i);
-                    }
-                    else if (j == 6)
-                    {
-                        result1 = parser.Parse1(document);
-                        categoties = parser.ParseCategories(document);
-                        PowerSupply_Add(result1, i,categoties);
-                    }
+                    result1 = parser.Parse1(document);
+                    GPU_Add(result1, i);
                 }
-                
-
-                OnComplited?.Invoke(this);
-                isActive = false;
-                if (CCPU.listCPU.Count == 48 && CGPU.listGPU.Count == 48 && CPS.listPS.Count == 48 && CMB.listMB.Count == 48 && CSSD.listSSD.Count == 48 && CCase.listCase.Count == 48 && CRAM.listRAM.Count == 48)
+                else if (j == 1)
                 {
-                    OnComplited?.Invoke(this);
+                    hrefs = parser.ParseMB(document);
+                    string source1 = await GetSourceByPageMB(i, list, hrefs);
+                    HtmlParser domParser1 = new HtmlParser();
+                    IHtmlDocument document1 = await domParser1.ParseDocumentAsync(source1);
+                    result1 = parser.Parse1(document1);
+                    MotherBoard_Add(result1, i);
+                }
+                else if (j == 2)
+                {
+                    result1 = parser.Parse1(document);
+                    CPU_Add(result1, i);
+                }
+                else if (j == 3)
+                {
+                    result1 = parser.ParseRAM(document);
+                    RAM_Add(result1, i);
+                }
+                else if (j == 4)
+                {
+                    result1 = parser.ParseRAM(document);
+                    SSD_Add(result1, i);
+                }
+                else if (j == 5)
+                {
+                    hrefs = parser.ParseMB(document);
+                    string source1 = await GetSourceByPageMB(i, list, hrefs);
+                    HtmlParser domParser1 = new HtmlParser();
+                    IHtmlDocument document1 = await domParser1.ParseDocumentAsync(source1);
+                    result1 = parser.Parse1(document1);
+                    Case_Add(result1, i);
+                }
+                else if (j == 6)
+                {
+                    result1 = parser.Parse1(document);
+                    categoties = parser.ParseCategories(document);
+                    PowerSupply_Add(result1, i, categoties);
                 }
             }
+
+
+            OnComplited?.Invoke(this);
+            isActive = false;
+            if (CCPU.listCPU.Count == 48 && CGPU.listGPU.Count == 48 && CPS.listPS.Count == 48 && CMB.listMB.Count == 48 && CSSD.listSSD.Count == 48 && CCase.listCase.Count == 48 && CRAM.listRAM.Count == 48)
+            {
+                OnComplited?.Invoke(this);
+            }
+
         }
 
         public void RAM_Add(List<string> list, int j)
