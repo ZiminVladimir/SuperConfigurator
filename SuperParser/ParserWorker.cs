@@ -249,10 +249,6 @@ namespace SuperParser
                     {
                         continue;
                     }
-                    if (PricesMB[0] == "от 8 366 до 8 799")
-                    {
-
-                    }
                     NamesMB = parser.ParseNameBlue(document);
                     //if (NamesMB[0] == " ASRock B550M Pro4")
                     //{
@@ -337,9 +333,9 @@ namespace SuperParser
                 }
             }
 
-            OnComplited?.Invoke(this);
+            //OnComplited?.Invoke(this);
             isActive = false;
-            if (CCPU.listCPU.Count >= 43 && CGPU.listGPU.Count >= 43 && CPS.listPS.Count >= 43 && CMB.listMB.Count >= 43 && CSSD.listSSD.Count >= 43 && CCase.listCase.Count >= 43 && CRAM.listRAM.Count >= 43)
+            if (CCPU.listCPU.Count >= 91 && CGPU.listGPU.Count >= 113 && CPS.listPS.Count >= 84 && CMB.listMB.Count >= 117 && CSSD.listSSD.Count >= 119 && CCase.listCase.Count >= 111 && CRAM.listRAM.Count >= 93)
             {
                 OnComplited?.Invoke(this);
             }
