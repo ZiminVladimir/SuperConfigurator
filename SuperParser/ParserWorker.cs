@@ -107,7 +107,7 @@ namespace SuperParser
         public async void Worker()
         {
             //ssilki[0] = "https://www.e-katalog.ru/MSI-GEFORCE-RTX-3070-SUPRIM-X-8G.htm";
-            for (int j = 0; j < ssilki.Count; j++)
+            for (int j = 1; j < 2; j++)
             { 
             List<string> list = new List<string>();
             List<string> result = new List<string>();
@@ -293,45 +293,51 @@ namespace SuperParser
                 {
                     HtmlParser domParser = new HtmlParser();
                     IHtmlDocument document = await domParser.ParseDocumentAsync(source);
-                    PricesSSD = parser.ParsePrice(document);
-                    if (PricesSSD.Count == 0)
+                    List<string> PricesSSD1 = new List<string>();
+                    PricesSSD1 = parser.ParsePrice(document);
+                    if (PricesSSD1.Count == 0)
                     {
                         continue;
                     }
-                    NamesSSD = parser.ParseName(document);
+                    List<string> NamesSSD1 = new List<string>();
+                    NamesSSD1 = parser.ParseName(document);
                     result1 = parser.ParseRAM(document);
-                    SSD_Add(result1, i);
+                    SSD_Add(result1, i, NamesSSD1, PricesSSD1);
                 }
                 else if (j == 5)
                 {
                     HtmlParser domParser = new HtmlParser();
                     IHtmlDocument document = await domParser.ParseDocumentAsync(source);
-                    PricesCAS = parser.ParsePrice(document);
-                    if (PricesCAS.Count == 0)
+                    List<string> PricesCAS1 = new List<string>();
+                    PricesCAS1 = parser.ParsePrice(document);
+                    if (PricesCAS1.Count == 0)
                     {
                         continue;
                     }
-                    NamesCAS = parser.ParseNameBlue(document);
+                    List<string> NamesCAS1 = new List<string>();
+                    NamesCAS1 = parser.ParseName(document);
                     hrefs = parser.ParseMB(document);
                     string source1 = await GetSourceByPageMB(i, list, hrefs);
                     HtmlParser domParser1 = new HtmlParser();
                     IHtmlDocument document1 = await domParser1.ParseDocumentAsync(source1);
                     result1 = parser.Parse1(document1);
-                    Case_Add(result1, i);
+                    Case_Add(result1, i, NamesCAS1, PricesCAS1);
                 }
                 else if (j == 6)
                 {
                     HtmlParser domParser = new HtmlParser();
                     IHtmlDocument document = await domParser.ParseDocumentAsync(source);
-                    PricesPS = parser.ParsePrice(document);
-                    if (PricesPS.Count == 0)
+                    List<string> PricesPS1 = new List<string>();
+                    PricesPS1 = parser.ParsePrice(document);
+                    if (PricesPS1.Count == 0)
                     {
                         continue;
                     }
-                    NamesPS = parser.ParseName(document);
+                    List<string> NamesPS1 = new List<string>(); 
+                    NamesPS1 = parser.ParseName(document);
                     result1 = parser.Parse1(document);
                     categoties = parser.ParseCategories(document);
-                    PowerSupply_Add(result1, i, categoties);
+                    PowerSupply_Add(result1, i, categoties, NamesPS1, PricesPS1);
                 }
             }
             count++;
@@ -433,10 +439,10 @@ namespace SuperParser
                 }
             }
         }
-        public void PowerSupply_Add(List<string> list, int j, List<string>categories)
+        public void PowerSupply_Add(List<string> list, int j, List<string>categories, List<string> NamesPS1, List<string> PricesPS1)
         {
             int price;
-            string name = NamesPS[0];
+            string name = NamesPS1[0];
             bool fl = true;
             foreach (var p in CPS.listPS)
             {
@@ -449,9 +455,9 @@ namespace SuperParser
             string GPUPins8 = "";
             string MBPins = "";
             string CPUPins = "";
-                if (PricesPS.Count != 0)
+                if (PricesPS1.Count != 0)
                 {
-                    var prices1 = PricesPS[0].Split();
+                    var prices1 = PricesPS1[0].Split();
                     if (prices1.Length > 7)
                     {
                         price = Convert.ToInt32(prices1[1]) * 1000 + Convert.ToInt32(prices1[2]);
@@ -676,10 +682,10 @@ namespace SuperParser
             }
             
         }
-        public void Case_Add(List<string> list, int j)
+        public void Case_Add(List<string> list, int j, List<string> NamesCAS1, List<string> PricesCAS1)
         {
             int Price=0;
-            string Name= NamesCAS[0];
+            string Name= NamesCAS1[0];
             bool fl = true;
             foreach (var c in CCase.listCase)
             {
@@ -688,9 +694,9 @@ namespace SuperParser
             if (fl)
             {
                 string MaxGPULength = null;
-                if (PricesCAS.Count != 0)
+                if (PricesCAS1.Count != 0)
                 {
-                    var prices1 = PricesCAS[0].Split();
+                    var prices1 = PricesCAS1[0].Split();
                     Price = Convert.ToInt32(prices1[1]) * 1000 + Convert.ToInt32(prices1[2]);
                     foreach (string i in list)
                     {
@@ -739,10 +745,10 @@ namespace SuperParser
             }
 
         }
-        public void SSD_Add(List<string> list, int j)
+        public void SSD_Add(List<string> list, int j, List<string> NamesSSD1, List<string> PricesSSD1)
         {
              int Price=0;
-             string Name= NamesSSD[0];
+             string Name= NamesSSD1[0];
             bool fl = true;
             foreach (var s in CSSD.listSSD)
             {
@@ -752,9 +758,9 @@ namespace SuperParser
             {
                 string Volume = null;
                 bool M_2 = true;
-                if (PricesSSD.Count != 0)
+                if (PricesSSD1.Count != 0)
                 {
-                    var prices1 = PricesSSD[0].Split();
+                    var prices1 = PricesSSD1[0].Split();
                     Price = Convert.ToInt32(prices1[1]) * 1000 + Convert.ToInt32(prices1[2]);
                     foreach (string i in list)
                     {
