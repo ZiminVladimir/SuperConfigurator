@@ -208,7 +208,7 @@ namespace SuperParser
             return source;
         }
         public object locker = new object();
-        public async void Worker1(List<string> list,int j, int PageCount)
+        public async void Worker1(List<string> list,int k, int PageCount)
         {
             isActive = false;
             List<List<string>> res = new List<List<string>>();
@@ -227,20 +227,22 @@ namespace SuperParser
                 }
                 string source = await GetSourceByPage1(i, list);
                 
-                if (j == 0)
+                if (k == 0)
                 {
+                    List<string> PricesGPU1 = new List<string>();
+                    List<string> NamesGPU1 = new List<string>();
                     HtmlParser domParser = new HtmlParser();
                     IHtmlDocument document = await domParser.ParseDocumentAsync(source);
-                    PricesGPU = parser.ParsePrice(document);
+                    PricesGPU1 = parser.ParsePrice(document);
                     if(PricesGPU.Count==0)
                     {
                         continue;
                     }
-                    NamesGPU = parser.ParseName(document);
+                    NamesGPU1 = parser.ParseName(document);
                     result1 = parser.Parse1(document);
-                    GPU_Add(result1, i);
+                    GPU_Add(result1, i, PricesGPU1,NamesGPU1);
                 }
-                else if (j == 1)
+                else if (k == 1)
                 {
                     HtmlParser domParser = new HtmlParser();
                     IHtmlDocument document = await domParser.ParseDocumentAsync(source);
@@ -249,7 +251,9 @@ namespace SuperParser
                     {
                         continue;
                     }
-                    NamesMB = parser.ParseNameBlue(document);
+                    List<string> PricesMB1 = new List<string>();
+                    List<string> NamesMB1 = new List<string>();
+                    NamesMB1 = parser.ParseNameBlue(document);
                     //if (NamesMB[0] == " ASRock B550M Pro4")
                     //{
 
@@ -260,36 +264,40 @@ namespace SuperParser
                     IHtmlDocument document1 = await domParser1.ParseDocumentAsync(source1);
                     result1 = parser.Parse1(document1);
                     categoties = parser.ParseCategories(document1);
-                    MotherBoard_Add(result1, i, categoties);
+                    MotherBoard_Add(result1, i, categoties,PricesMB1,NamesMB1);
                 }
-                else if (j == 2)
+                else if (k == 2)
                 {
+                    List<string> PricesCPU1 = new List<string>();
+                    List<string> NamesCPU1 = new List<string>();
                     HtmlParser domParser = new HtmlParser();
                     IHtmlDocument document = await domParser.ParseDocumentAsync(source);
-                    PricesCPU = parser.ParsePrice(document);
+                    PricesCPU1 = parser.ParsePrice(document);
                     if (PricesCPU.Count == 0)
                     {
                         continue;
                     }
-                    NamesCPU = parser.ParseName(document);
+                    NamesCPU1 = parser.ParseName(document);
                     result1 = parser.Parse1(document);
                     categoties = parser.ParseCategories(document);
-                    CPU_Add(result1, i,categoties);
+                    CPU_Add(result1, i,categoties, PricesCPU1, NamesCPU1);
                 }
-                else if (j == 3)
+                else if (k == 3)
                 {
+                    List<string> PricesRAM1 = new List<string>();
+                    List<string> NamesRAM1 = new List<string>();
                     HtmlParser domParser = new HtmlParser();
                     IHtmlDocument document = await domParser.ParseDocumentAsync(source);
-                    PricesRAM = parser.ParsePrice(document);
+                    PricesRAM1 = parser.ParsePrice(document);
                     if (PricesRAM.Count == 0)
                     {
                         continue;
                     }
-                    NamesRAM = parser.ParseName(document);
+                    NamesRAM1 = parser.ParseName(document);
                     result1 = parser.ParseRAM(document);
-                    RAM_Add(result1, i);
+                    RAM_Add(result1, i, PricesRAM1, NamesRAM1);
                 }
-                else if (j == 4)
+                else if (k == 4)
                 {
                     HtmlParser domParser = new HtmlParser();
                     IHtmlDocument document = await domParser.ParseDocumentAsync(source);
@@ -304,7 +312,7 @@ namespace SuperParser
                     result1 = parser.ParseRAM(document);
                     SSD_Add(result1, i, NamesSSD1, PricesSSD1);
                 }
-                else if (j == 5)
+                else if (k == 5)
                 {
                     HtmlParser domParser = new HtmlParser();
                     IHtmlDocument document = await domParser.ParseDocumentAsync(source);
@@ -323,7 +331,7 @@ namespace SuperParser
                     result1 = parser.Parse1(document1);
                     Case_Add(result1, i, NamesCAS1, PricesCAS1);
                 }
-                else if (j == 6)
+                else if (k == 6)
                 {
                     HtmlParser domParser = new HtmlParser();
                     IHtmlDocument document = await domParser.ParseDocumentAsync(source);
@@ -386,10 +394,10 @@ namespace SuperParser
             }
         }
 
-        public void RAM_Add(List<string> list, int j)
+        public void RAM_Add(List<string> list, int j,List<string>PricesRAM1,List<string>NamesRAM1)
         {
             int price;
-            string Name = NamesRAM[0];
+            string Name = NamesRAM1[0];
             bool fl = true;
             foreach (var r in CRAM.listRAM)
             {
@@ -402,9 +410,9 @@ namespace SuperParser
                 string Volume = "";
                 string FormFactor = "";
                 string Number = "";
-                if (PricesRAM.Count != 0)
+                if (PricesRAM1.Count != 0)
                 {
-                    var prices1 = PricesRAM[0].Split();
+                    var prices1 = PricesRAM1[0].Split();
                     if (prices1.Length > 7)
                     {
                         price = Convert.ToInt32(prices1[1]) * 1000 + Convert.ToInt32(prices1[2]);
@@ -490,10 +498,10 @@ namespace SuperParser
             }
         }
 
-        public void CPU_Add(List<string> list, int j,List<string>categories)
+        public void CPU_Add(List<string> list, int j,List<string>categories, List<string> PricesCPU1, List<string> NamesCPU1)
         {
             int price;
-            string name = NamesCPU[0];
+            string name = NamesCPU1[0];
             bool fl = true;
             //foreach (var c in CCPU.listCPU)
             {
@@ -508,7 +516,7 @@ namespace SuperParser
                 string memvol = "";
                 string memfreq = "";
                 string memtype = "";
-                if (PricesCPU.Count != 0)
+                if (PricesCPU1.Count != 0)
                 {
                     var prices1 = PricesCPU[0].Split();
                     price = Convert.ToInt32(prices1[1]) * 1000 + Convert.ToInt32(prices1[2]);
@@ -558,11 +566,11 @@ namespace SuperParser
             }
         }
         
-        public void GPU_Add(List<string> list, int j)
+        public void GPU_Add(List<string> list, int j, List<string> PricesGPU1,List<string>NamesGPU1)
         {
             // гитхаб сосать
             int price = 0;
-            string name = NamesGPU[0];
+            string name = NamesGPU1[0];
             bool fl = true;
             //foreach (var g in CGPU.listGPU)
             {
@@ -575,7 +583,7 @@ namespace SuperParser
                 string recbp = null;
                 string power = null;
                 string length = null;
-                if (PricesGPU.Count != 0)
+                if (PricesGPU1.Count != 0)
                 {
                     var prices1 = PricesGPU[0].Split();
                     price = Convert.ToInt32(prices1[1]) * 1000 + Convert.ToInt32(prices1[2]);
@@ -616,12 +624,16 @@ namespace SuperParser
                 }
             }
         }
-        public void MotherBoard_Add(List<string> list, int j, List<string> categories)
+        public void MotherBoard_Add(List<string> list, int j, List<string> categories, List<string> PricesMB1, List<string> NamesMB1)
         {
             // гитхаб сосать
             int price = 0;
             bool fl = true; 
-            string name = NamesMB[0];
+            string name = NamesMB1[0];
+            if(name== " ASRock B450 Steel Legend")
+            {
+                fl = true;
+            }
             if (name == " ASRock B550M Pro4") fl = false;
             foreach (var g in CMB.listMB)
             {
@@ -639,7 +651,7 @@ namespace SuperParser
                 string CPUPins = null;
                 if (PricesMB.Count != 0)
                 {
-                    var prices1 = PricesMB[0].Split();
+                    var prices1 = PricesMB1[0].Split();
                     price = Convert.ToInt32(prices1[1]) * 1000 + Convert.ToInt32(prices1[2]);
                     foreach(string i in categories)
                     {
