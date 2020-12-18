@@ -285,13 +285,13 @@ namespace SuperConfigurator
                 {
                     foreach (RAM r in rams)
                     {
-                        var v = r.Volume.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        var v = r.Volume.Split();
                         string volume = v[0];
-                        var frRam = r.Frequency.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        var frRam = r.Frequency.Split();
                         string frecram = v[0];//for фриквенси для рам 
-                        var frCPU = chosencpu.MemFreq.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        var frCPU = chosencpu.MemFreq.Split();
                         string freccpu = v[0];// для фриквенси проца
-                        var frMB = chosenmb.MemFreq.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        var frMB = chosenmb.MemFreq.Split();
                         string frecMB = v[0];// для фриквенси матери
                         if (r.FormFactor == "DIMM" && r.Price < 1500 && int.Parse(volume) == 4 && r.Price > max && r.Type == chosencpu.MemType && int.Parse(frecram) <= int.Parse(freccpu) && int.Parse(frecram) <= int.Parse(frecMB)) max = r.Price;
                     }
@@ -388,9 +388,9 @@ namespace SuperConfigurator
                 {
                     foreach (PowerSupply p in pss)
                     {
-                        var r = chosengpu.RecomPowSup.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        var r = chosengpu.RecomPowSup.Split();
                         string RecPowSup = r[0];
-                        var po = p.Power.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        var po = p.Power.Split();
                         string power = po[0];
                         if (p.Price < 3000 && int.Parse(power) >= int.Parse(RecPowSup) && p.MBPins == chosenmb.MainPins && p.CPUPins == chosenmb.CPUPins)
                         {
@@ -647,12 +647,12 @@ namespace SuperConfigurator
                 //Выбираем корпус
                 max = budget - (chosencpu.Price + chosengpu.Price + chosenmb.Price + chosenps.Price + chosenram.Price + chosenram.Price + chosenssd.Price);
                 int max0 = 0;
-                var l = chosengpu.Length.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                var l = chosengpu.Length.Split();
                 string length = l[0];
                 foreach (Case c in cs)
                 {
-                    var le = c.MaxGPULength.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                    string lenCase = le[0];
+                    var le = c.MaxGPULength;
+                    string lenCase = le[0].ToString()+le[1].ToString() + le[2].ToString();
                     if (c.Price < max && c.Price > max0 && int.Parse(length) <= int.Parse(lenCase)) max0 = c.Price;
                 }
                 foreach (Case c in cs)
