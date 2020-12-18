@@ -259,7 +259,8 @@ namespace SuperParser
                     HtmlParser domParser1 = new HtmlParser();
                     IHtmlDocument document1 = await domParser1.ParseDocumentAsync(source1);
                     result1 = parser.Parse1(document1);
-                    MotherBoard_Add(result1, i);
+                    categoties = parser.ParseCategories(document1);
+                    MotherBoard_Add(result1, i, categoties);
                 }
                 else if (j == 2)
                 {
@@ -272,7 +273,8 @@ namespace SuperParser
                     }
                     NamesCPU = parser.ParseName(document);
                     result1 = parser.Parse1(document);
-                    CPU_Add(result1, i);
+                    categoties = parser.ParseCategories(document);
+                    CPU_Add(result1, i,categoties);
                 }
                 else if (j == 3)
                 {
@@ -482,7 +484,7 @@ namespace SuperParser
             }
         }
 
-        public void CPU_Add(List<string> list, int j)
+        public void CPU_Add(List<string> list, int j,List<string>categories)
         {
             int price;
             string name = NamesCPU[0];
@@ -504,7 +506,14 @@ namespace SuperParser
                 {
                     var prices1 = PricesCPU[0].Split();
                     price = Convert.ToInt32(prices1[1]) * 1000 + Convert.ToInt32(prices1[2]);
-
+                    foreach(string i in categories)
+                    {
+                        if (i.Contains("DDR"))
+                        {
+                            var ddr = i.Split();
+                            memtype = ddr[ddr.Length - 1];
+                        }
+                    }
                     foreach (string i in list)
                     {
                         if (i.Contains("AMD") && socket == "")
@@ -601,11 +610,11 @@ namespace SuperParser
                 }
             }
         }
-        public void MotherBoard_Add(List<string> list, int j)
+        public void MotherBoard_Add(List<string> list, int j, List<string> categories)
         {
             // гитхаб сосать
             int price = 0;
-            bool fl = true; ;
+            bool fl = true; 
             string name = NamesMB[0];
             if (name == " ASRock B550M Pro4") fl = false;
             foreach (var g in CMB.listMB)
@@ -626,6 +635,14 @@ namespace SuperParser
                 {
                     var prices1 = PricesMB[0].Split();
                     price = Convert.ToInt32(prices1[1]) * 1000 + Convert.ToInt32(prices1[2]);
+                    foreach(string i in categories)
+                    {
+                        if(i.Contains("DDR"))
+                        {
+                            var ddr = i.Split();
+                            MemType = ddr[ddr.Length-1];
+                        }
+                    }
                     foreach (string i in list)
                     {
                         if (i.Contains("Intel"))
