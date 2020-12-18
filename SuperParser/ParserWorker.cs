@@ -107,7 +107,7 @@ namespace SuperParser
         public async void Worker()
         {
             //ssilki[0] = "https://www.e-katalog.ru/MSI-GEFORCE-RTX-3070-SUPRIM-X-8G.htm";
-            for (int j = 0; j < ssilki.Count; j++)
+            for (int j = 1; j < 2; j++)
             { 
             List<string> list = new List<string>();
             List<string> result = new List<string>();
@@ -208,7 +208,7 @@ namespace SuperParser
             return source;
         }
         public object locker = new object();
-        public async void Worker1(List<string> list,int j, int PageCount)
+        public async void Worker1(List<string> list,int k, int PageCount)
         {
             isActive = false;
             List<List<string>> res = new List<List<string>>();
@@ -227,7 +227,7 @@ namespace SuperParser
                 }
                 string source = await GetSourceByPage1(i, list);
                 
-                if (j == 0)
+                if (k == 0)
                 {
                     HtmlParser domParser = new HtmlParser();
                     IHtmlDocument document = await domParser.ParseDocumentAsync(source);
@@ -240,7 +240,7 @@ namespace SuperParser
                     result1 = parser.Parse1(document);
                     GPU_Add(result1, i);
                 }
-                else if (j == 1)
+                else if (k == 1)
                 {
                     HtmlParser domParser = new HtmlParser();
                     IHtmlDocument document = await domParser.ParseDocumentAsync(source);
@@ -249,7 +249,8 @@ namespace SuperParser
                     {
                         continue;
                     }
-                    NamesMB = parser.ParseNameBlue(document);
+                    List<string> NamesMB1 = new List<string>();
+                    NamesMB1 = parser.ParseNameBlue(document);
                     //if (NamesMB[0] == " ASRock B550M Pro4")
                     //{
 
@@ -260,9 +261,9 @@ namespace SuperParser
                     IHtmlDocument document1 = await domParser1.ParseDocumentAsync(source1);
                     result1 = parser.Parse1(document1);
                     categoties = parser.ParseCategories(document1);
-                    MotherBoard_Add(result1, i, categoties);
+                    MotherBoard_Add(result1, i, categoties,NamesMB1);
                 }
-                else if (j == 2)
+                else if (k == 2)
                 {
                     HtmlParser domParser = new HtmlParser();
                     IHtmlDocument document = await domParser.ParseDocumentAsync(source);
@@ -276,7 +277,7 @@ namespace SuperParser
                     categoties = parser.ParseCategories(document);
                     CPU_Add(result1, i,categoties);
                 }
-                else if (j == 3)
+                else if (k == 3)
                 {
                     HtmlParser domParser = new HtmlParser();
                     IHtmlDocument document = await domParser.ParseDocumentAsync(source);
@@ -289,7 +290,7 @@ namespace SuperParser
                     result1 = parser.ParseRAM(document);
                     RAM_Add(result1, i);
                 }
-                else if (j == 4)
+                else if (k == 4)
                 {
                     HtmlParser domParser = new HtmlParser();
                     IHtmlDocument document = await domParser.ParseDocumentAsync(source);
@@ -302,7 +303,7 @@ namespace SuperParser
                     result1 = parser.ParseRAM(document);
                     SSD_Add(result1, i);
                 }
-                else if (j == 5)
+                else if (k == 5)
                 {
                     HtmlParser domParser = new HtmlParser();
                     IHtmlDocument document = await domParser.ParseDocumentAsync(source);
@@ -319,7 +320,7 @@ namespace SuperParser
                     result1 = parser.Parse1(document1);
                     Case_Add(result1, i);
                 }
-                else if (j == 6)
+                else if (k == 6)
                 {
                     HtmlParser domParser = new HtmlParser();
                     IHtmlDocument document = await domParser.ParseDocumentAsync(source);
@@ -610,12 +611,16 @@ namespace SuperParser
                 }
             }
         }
-        public void MotherBoard_Add(List<string> list, int j, List<string> categories)
+        public void MotherBoard_Add(List<string> list, int j, List<string> categories,List<string> NamesMB1)
         {
             // гитхаб сосать
             int price = 0;
             bool fl = true; 
-            string name = NamesMB[0];
+            string name = NamesMB1[0];
+            if(name== " ASRock B450 Steel Legend")
+            {
+                fl = true;
+            }
             if (name == " ASRock B550M Pro4") fl = false;
             foreach (var g in CMB.listMB)
             {
