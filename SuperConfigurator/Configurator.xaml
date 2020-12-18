@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SuperConfigurator"
         mc:Ignorable="d"
-        Title="Configurator" Height="450" Width="800">
+        Title="Configurator" Height="450" Width="800" ResizeMode="NoResize">
     <Grid>
         <TextBox x:Name="BudgetTextBox" HorizontalAlignment="Left" Height="40" Margin="35,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="142"/>
-        <Label x:Name="FinalComponentsLabel" Content="" Margin="261,80,35,80" FontSize="15"/>
+        <Label x:Name="FinalComponentsLabel" Content="" Margin="214,80,25,80" FontSize="15"/>
         <Button x:Name="BuildPC" Content="Собрать ПК" HorizontalAlignment="Left" Height="40" Margin="35,137,0,0" VerticalAlignment="Top" Width="142" Click="BuildAllPC_Click"/>
         <Label Content="Введите ваш бюджет в рублях без валюты" HorizontalAlignment="Left" Height="28" Margin="35,38,0,0" VerticalAlignment="Top" Width="287" FontFamily="Calibri" FontSize="15"/>
         <Button x:Name="Exit" Content="Выход" HorizontalAlignment="Left" Height="40" Margin="35,192,0,0" VerticalAlignment="Top" Width="142" Click="Exit_Click"/>
