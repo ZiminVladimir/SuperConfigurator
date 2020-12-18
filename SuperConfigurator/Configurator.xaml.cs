@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using SuperParser;
 using PC_Components;
+using System.IO;
+using Newtonsoft.Json;
 
 
 namespace SuperConfigurator
@@ -33,38 +35,34 @@ namespace SuperConfigurator
         List<Case> cs;
         public Configurator()
         {
-            cpus = new List<CPU>()
+           using(var sr = new StreamReader("GPU.json"))
             {
-                new CPU(10050, "AMD Ryzen 5 2600", "AM4", "6 cores", "12 threads", "AMD", "64 ГБ", "2933 МГц", "ddr4")
-            };
-            gpus = new List<GPU>()
+                gpus = JsonConvert.DeserializeObject<List<GPU>>(sr.ReadToEnd());
+            }
+            using (var sr = new StreamReader("MB.json"))
             {
-                new GPU(22200, "NVIDIA GeForce GTX 1660 Ti", "6 ГБ", "120 Вт", "450 Вт", "170 мм", "8")
-            };
-            hdds = new List<HDD>()
+                mbs = JsonConvert.DeserializeObject<List<MotherBoard>>(sr.ReadToEnd());
+            }
+            using (var sr = new StreamReader("CPU.json"))
             {
-                new HDD(2980, "WD Blue", "1000 ГБ", "7200 Об/мин")
-            };
-            mbs = new List<MotherBoard>()
+                cpus = JsonConvert.DeserializeObject<List<CPU>>(sr.ReadToEnd());
+            }
+            using (var sr = new StreamReader("RAM.json"))
             {
-                new MotherBoard(4290, "Gigabyte a320-s2h v2", "AM4", "AMD", "ddr4", "3200 МГц", "32 ГБ", true, "24-контактный", "8-контактное")
-            };
-            pss = new List<PowerSupply>()
+                rams = JsonConvert.DeserializeObject<List<RAM>>(sr.ReadToEnd());
+            }
+            using (var sr = new StreamReader("PS.json"))
             {
-               // new PowerSupply(2700, "FSP PNR-I", "500 Вт", "6+2", "24", "4")
-            };
-            rams = new List<RAM>()
+                pss = JsonConvert.DeserializeObject<List<PowerSupply>>(sr.ReadToEnd());
+            }
+            using (var sr = new StreamReader("Case.json"))
             {
-                new RAM(2512, "Hynix", "ddr4", "2400 МГц", "8 ГБ", "DIMM", "1 шт")
-            };
-            ssds = new List<SSD>()
+                cs = JsonConvert.DeserializeObject<List<Case>>(sr.ReadToEnd());
+            }
+            using (var sr = new StreamReader("SSD.json"))
             {
-                new SSD(3990, "kingston a400", "480 ГБ", false)
-            };
-            cs = new List<Case>()
-            {
-                new Case(1220, "ExeGate AB-222", "235 мм")
-            };
+                ssds = JsonConvert.DeserializeObject<List<SSD>>(sr.ReadToEnd());
+            }
             InitializeComponent();
         }
 

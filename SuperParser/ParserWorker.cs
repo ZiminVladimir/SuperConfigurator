@@ -7,6 +7,8 @@ using System.Net;
 using System.Net.Http;
 using PC_Components;
 using System.Threading.Tasks;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace SuperParser
 {
@@ -25,6 +27,7 @@ namespace SuperParser
         E_CatalogParser FP = new E_CatalogParser();
         List<string> Prices = new List<string>();
         public int count = 0;
+        
         List<string> PricesGPU = new List<string>();
         List<string> PricesCPU = new List<string>();
         List<string> PricesMB = new List<string>();
@@ -52,7 +55,7 @@ namespace SuperParser
         IParser parser;
         IParserSettings parserSettings; //настройки для загрузчика кода страниц
         HtmlLoader loader; //загрузчик кода страницы
-        bool isActive=true; //активность парсера
+        bool isActive; //активность парсера
         ContainerPS CPS = new ContainerPS();
         ContainerCPU CCPU = new ContainerCPU();
         ContainerGPU CGPU = new ContainerGPU();
@@ -100,10 +103,6 @@ namespace SuperParser
                 Worker();
         }
 
-        public void Stop() //Останавливаем парсер
-        {
-            isActive = false;
-        }
 
         public async void Worker()
         {
@@ -211,12 +210,13 @@ namespace SuperParser
         public object locker = new object();
         public async void Worker1(List<string> list,int j, int PageCount)
         {
+            isActive = false;
             List<List<string>> res = new List<List<string>>();
             List<string> result1 = new List<string>();
             List<string> categoties = new List<string>();
             List<string> hrefs = new List<string>();
             //ContainerGPU CGPU = new ContainerGPU();
-            int count = 0 + PageCount * 24;
+           // int count = 0 + PageCount * 24;
 
             for (int i = 0; i < list.Count; i++)
             {
@@ -332,14 +332,50 @@ namespace SuperParser
                     PowerSupply_Add(result1, i, categoties);
                 }
             }
-
+            count++;
             //OnComplited?.Invoke(this);
-            isActive = false;
-            if (CCPU.listCPU.Count >= 91 && CGPU.listGPU.Count >= 113 && CPS.listPS.Count >= 84 && CMB.listMB.Count >= 117 && CSSD.listSSD.Count >= 119 && CCase.listCase.Count >= 111 && CRAM.listRAM.Count >= 93)
+            //if (CCPU.listCPU.Count >= 91 && CGPU.listGPU.Count >= 113 && CPS.listPS.Count >= 84 && CMB.listMB.Count >= 117 && CSSD.listSSD.Count >= 119 && CCase.listCase.Count >= 111 && CRAM.listRAM.Count >= 93)
+            //{
+            //    //OnComplited?.Invoke(this);
+            //    isActive = false;
+            //}
+            isActive = true;
+            if(count>=35)
             {
-                OnComplited?.Invoke(this);
+                Serialize();
             }
 
+        }
+        public void Serialize()
+        {
+            using(var sw = new StreamWriter("GPU.json"))
+            {
+                sw.WriteLine(JsonConvert.SerializeObject(CGPU.listGPU));
+            }
+            using (var sw = new StreamWriter("MB.json"))
+            {
+                sw.WriteLine(JsonConvert.SerializeObject(CMB.listMB));
+            }
+            using (var sw = new StreamWriter("CPU.json"))
+            {
+                sw.WriteLine(JsonConvert.SerializeObject(CCPU.listCPU));
+            }
+            using (var sw = new StreamWriter("RAM.json"))
+            {
+                sw.WriteLine(JsonConvert.SerializeObject(CRAM.listRAM));
+            }
+            using (var sw = new StreamWriter("Case.json"))
+            {
+                sw.WriteLine(JsonConvert.SerializeObject(CCase.listCase));
+            }
+            using (var sw = new StreamWriter("PS.json"))
+            {
+                sw.WriteLine(JsonConvert.SerializeObject(CPS.listPS));
+            }
+            using (var sw = new StreamWriter("SSD.json"))
+            {
+                sw.WriteLine(JsonConvert.SerializeObject(CSSD.listSSD));
+            }
         }
 
         public void RAM_Add(List<string> list, int j)

@@ -36,8 +36,13 @@ namespace SuperConfigurator
             //System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             //System.Windows.Forms.Application.Run(new Form1());
             //Form1 form = new Form1();
-            parser_E_Catalog.Settings = new E_CatalogSettings();
-            parser_E_Catalog.Start();
+            //parser_E_Catalog.Settings = new E_CatalogSettings();
+            Warning w = new Warning();
+            Visibility = Visibility.Hidden;
+            w.ShowDialog();
+            Visibility = Visibility.Visible;
+            //parser_E_Catalog.Start();
+            //Change();
         }
 
         private void BuildPC_Click(object sender, RoutedEventArgs e)
@@ -47,5 +52,21 @@ namespace SuperConfigurator
             conf.ShowDialog();
             Visibility = Visibility.Visible;
         }
+        //public async void Change()
+        //{
+        //    if (ProgressBar.Value == 14)
+        //        return;
+        //    else
+        //    {                
+        //        if (parser_E_Catalog.IsActive)
+        //            Progress();
+        //        await Task.Delay(1000);
+        //        Change();
+        //    }
+        //}
+        //public void Progress()
+        //{
+        //    ProgressBar.Value++;
+        //}
     }
 }

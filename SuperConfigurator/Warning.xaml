@@ -1,0 +1,41 @@
+﻿<Window x:Class="SuperConfigurator.Warning"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SuperConfigurator"
+        mc:Ignorable="d"
+        Title="Warning" Height="304.917" Width="556.558" ResizeMode="NoResize">
+    <Grid Margin="0,0,2,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="413*"/>
+            <ColumnDefinition Width="134*"/>
+        </Grid.ColumnDefinitions>
+        <Label x:Name="LabelWarning" Content="Внимание!" HorizontalAlignment="Left" Margin="210,10,0,0" VerticalAlignment="Top" Height="39" Width="139" FontSize="24" FontWeight="Bold"/>
+        <TextBox x:Name="Check" HorizontalAlignment="Left" Height="23" Margin="231,146,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="91" FontSize="18"/>
+        <Button x:Name="ButtonOK" Content="ОК" HorizontalAlignment="Left" Margin="107,200,0,0" VerticalAlignment="Top" Width="87" Height="24" Click="ButtonOK_Click"/>
+        <Button x:Name="ButtonNOOk" Content="Отмена" HorizontalAlignment="Left" Margin="362,200,0,0" VerticalAlignment="Top" Width="87" Height="24" Grid.ColumnSpan="2" Click="ButtonNOOk_Click"/>
+        <ProgressBar x:Name="ProgressBar" HorizontalAlignment="Left" Height="17" Margin="64,238,0,0" VerticalAlignment="Top" Width="432" RenderTransformOrigin="0.5,0.5" Maximum="36" Grid.ColumnSpan="2" Visibility="Hidden">
+            <ProgressBar.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.231"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </ProgressBar.RenderTransform>
+        </ProgressBar>
+        <Label x:Name="LabelWarning_Copy" Content="Данная процедура может занять до 20 минут и потребует ресурсов вашего компьютера." HorizontalAlignment="Left" Margin="26,53,0,0" VerticalAlignment="Top" Height="25" Width="505" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.051"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Label x:Name="LabelWarning_Copy1" Content="Для того что бы продолжить, напишите в поле нижк слово &quot;Обновить&quot;." HorizontalAlignment="Left" Margin="59,83,0,0" VerticalAlignment="Top" Height="25" Width="442" Grid.ColumnSpan="2"/>
+
+    </Grid>
+</Window>
