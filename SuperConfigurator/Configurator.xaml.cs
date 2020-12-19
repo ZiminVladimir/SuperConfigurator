@@ -149,7 +149,7 @@ namespace SuperConfigurator
                 {
                     var cor = c.Cores.Split();
                     int co = int.Parse(cor[0]);
-                    if (co < 17 && !c.Chipset.Contains("SP3"))
+                    if (co < 17 && !c.Chipset.Contains("SP3") && !c.Chipset.Contains("2066"))
                     {
                         if (c.Price <= tempprice && co > cores && c.Price >= tempprice / 2) { max = c.Price; cores = co; }
                     }
