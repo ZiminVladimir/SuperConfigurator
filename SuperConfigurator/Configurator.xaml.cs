@@ -95,17 +95,24 @@ namespace SuperConfigurator
                 // Поиск видеокарты
                 double max = 0;
                 double tempprice = 0;
+                string nameg = "";
                 if (budget > 45000)
                 {
                     tempprice = budget * 0.4;
                     
                     foreach (GPU g in gpus)
                     {
-                        if (g.Price > max && g.Price <= tempprice) max = g.Price;
+                        if (g.Name != "")
+                        {
+                            var m = g.Memory.Split();
+                            int mem = 0;
+                            if (m[0].Length < 3) mem = int.Parse(m[0]);
+                            if (g.Price > max && g.Price <= tempprice && mem > 4) { max = g.Price; nameg = g.Name; }
+                        }
                     }
                     foreach (GPU g in gpus)
                     {
-                        if (g.Price == max)
+                        if (g.Price == max && g.Name == nameg)
                         {
                             sb.AppendFormat("Видеокарта:" + g.Name + " ——— " + g.Price.ToString());
                             sb.AppendLine();
@@ -118,11 +125,14 @@ namespace SuperConfigurator
                     tempprice = budget * 0.35;
                     foreach (GPU g in gpus)
                     {
-                        if (g.Price > max && g.Price <= tempprice) max = g.Price;
+                        if (g.Name.Length > 4)
+                        {
+                            if (g.Price > max && g.Price <= tempprice) { max = g.Price; nameg = g.Name; }
+                        }
                     }
                     foreach (GPU g in gpus)
                     {
-                        if (g.Price == max)
+                        if (g.Price == max && g.Name == nameg)
                         {
                             sb.AppendFormat("Видеокарта:" + g.Name + " ——— " + g.Price.ToString());
                             sb.AppendLine();
@@ -139,7 +149,10 @@ namespace SuperConfigurator
                 {
                     var cor = c.Cores.Split();
                     int co = int.Parse(cor[0]);
-                    if (c.Price <= tempprice && co > cores && c.Price >= tempprice/2) { max = c.Price; cores = co; }
+                    if (co < 17 && !c.Chipset.Contains("SP3"))
+                    {
+                        if (c.Price <= tempprice && co > cores && c.Price >= tempprice / 2) { max = c.Price; cores = co; }
+                    }
                 }
                 foreach (CPU c in cpus)
                 {
@@ -358,6 +371,7 @@ namespace SuperConfigurator
                 // Выбираем память
                 max = 0;
                 int max2 = 9999;
+                string namer = "";
                 if (budget < 38000) // продумать ситуацию с комплектами по 1, 2 и 4 плашки
                 {
                     foreach (RAM r in rams)
@@ -370,11 +384,11 @@ namespace SuperConfigurator
                         string freccpu = v[0];// для фриквенси проца
                         var frMB = chosenmb.MemFreq.Split();
                         string frecMB = v[0];// для фриквенси матери
-                        if (r.FormFactor == "DIMM" && r.Price < 1500 && int.Parse(volume) == 4 && r.Price < max2 && r.Type == chosencpu.MemType && int.Parse(frecram) <= int.Parse(freccpu) && int.Parse(frecram) <= int.Parse(frecMB)) max2 = r.Price;
+                        if (r.FormFactor == "DIMM" && r.Price < 1500 && int.Parse(volume) == 4 && r.Price < max2 && r.Type == chosencpu.MemType && int.Parse(frecram) <= int.Parse(freccpu) && int.Parse(frecram) <= int.Parse(frecMB)) { max2 = r.Price; namer = r.Name; }
                     }
                     foreach (RAM r in rams)
                     {
-                        if (r.Price == max2)
+                        if (r.Price == max2 && r.Name == namer)
                         {
                             int price = r.Price * 2;
                             sb.AppendFormat("Оперативная память:" + r.Name + " " + r.Volume + " ——— " + price.ToString() + "(2 плашки)");
@@ -395,11 +409,11 @@ namespace SuperConfigurator
                         string freccpu = v[0];// для фриквенси проца
                         var frMB = chosenmb.MemFreq.Split();
                         string frecMB = v[0];// для фриквенси матери
-                        if (r.FormFactor == "DIMM" && r.Price < 2600 && int.Parse(volume) == 8 && r.Price < max2 && r.Type == chosencpu.MemType && int.Parse(frecram) <= int.Parse(freccpu) && int.Parse(frecram) <= int.Parse(frecMB)) max2 = r.Price;
+                        if (r.FormFactor == "DIMM" && r.Price < 2600 && int.Parse(volume) == 8 && r.Price < max2 && r.Type == chosencpu.MemType && int.Parse(frecram) <= int.Parse(freccpu) && int.Parse(frecram) <= int.Parse(frecMB)) { max2 = r.Price; namer = r.Name; }
                     }
                     foreach (RAM r in rams)
                     {
-                        if (r.Price == max2)
+                        if (r.Price == max2 && r.Name == namer)
                         {
                             int price = r.Price * 2;
                             sb.AppendFormat("Оперативная память:" + r.Name + " " + r.Volume + " ——— " + price.ToString() + "(2 плашки)");
@@ -414,17 +428,17 @@ namespace SuperConfigurator
                     {
                         var v = r.Volume.Split();
                         string volume = v[0];
-                        var frRam = r.Frequency.Split();
-                        string frecram = v[0];//for фриквенси для рам 
-                        var frCPU = chosencpu.MemFreq.Split();
-                        string freccpu = v[0];// для фриквенси проца
-                        var frMB = chosenmb.MemFreq.Split();
-                        string frecMB = v[0];// для фриквенси матери
-                        if (r.FormFactor == "DIMM" && r.Price < 3000 && int.Parse(volume) == 8 && r.Price > max && r.Type == chosencpu.MemType && int.Parse(frecram) <= int.Parse(freccpu) && int.Parse(frecram) <= int.Parse(frecMB)) max = r.Price;
+                        //var frRam = r.Frequency.Split();
+                        //string frecram = v[0];//for фриквенси для рам 
+                        //var frCPU = chosencpu.MemFreq.Split();
+                        //string freccpu = v[0];// для фриквенси проца
+                        //var frMB = chosenmb.MemFreq.Split();
+                        //string frecMB = v[0];// для фриквенси матери
+                        if (r.FormFactor == "DIMM" && r.Price < 3000 && int.Parse(volume) == 8 && r.Price > max && r.Type == chosencpu.MemType) { max2 = r.Price; namer = r.Name; }
                     }
                     foreach (RAM r in rams)
                     {
-                        if (r.Price == max)
+                        if (r.Price == max2 && r.Name == namer)
                         {
                             int price = r.Price * 2;
                             sb.AppendFormat("Оперативная память:" + r.Name + " " + r.Volume + " ——— " + price.ToString() + "(2 плашки)");
@@ -445,11 +459,11 @@ namespace SuperConfigurator
                         string freccpu = v[0];// для фриквенси проца
                         var frMB = chosenmb.MemFreq.Split();
                         string frecMB = v[0];// для фриквенси матери
-                        if (r.FormFactor == "DIMM" && r.Price < 6100 && int.Parse(volume) == 16 && r.Price > max && r.Type == chosencpu.MemType && int.Parse(frecram) <= int.Parse(freccpu) && int.Parse(frecram) <= int.Parse(frecMB)) max = r.Price;
+                        if (r.FormFactor == "DIMM" && r.Price < 6100 && int.Parse(volume) == 16 && r.Price > max && r.Type == chosencpu.MemType && int.Parse(frecram) <= int.Parse(freccpu) && int.Parse(frecram) <= int.Parse(frecMB)) { max2 = r.Price; namer = r.Name; }
                     }
                     foreach (RAM r in rams)
                     {
-                        if (r.Price == max)
+                        if (r.Price == max2 && r.Name == namer)
                         {
                             int price = r.Price * 2;
                             sb.AppendFormat("Оперативная память:" + r.Name + " " + r.Volume + " ——— " + price.ToString() + "(2 плашки)");
@@ -519,8 +533,14 @@ namespace SuperConfigurator
                 {
                     foreach (PowerSupply p in pss)
                     {
-                        var r = chosengpu.RecomPowSup.Split();
-                        string RecPowSup = r[0];
+                        string RecPowSup;
+                        var r = new string[10];
+                        if (chosengpu.RecomPowSup == null) RecPowSup = "300";
+                        else
+                        {
+                            r = chosengpu.RecomPowSup.Split();
+                            RecPowSup = r[0];
+                        }
                         var po = p.Power.Split();
                         string power = po[0];
                         if (p.Price < 4200 && int.Parse(power) >= int.Parse(RecPowSup) && p.MBPins == mbpins && p.CPUPins == cpupins)
@@ -553,8 +573,14 @@ namespace SuperConfigurator
                 {
                     foreach (PowerSupply p in pss)
                     {
-                        var r = chosengpu.RecomPowSup.Split();
-                        string RecPowSup = r[0];
+                        string RecPowSup;
+                        var r = new string[10];
+                        if (chosengpu.RecomPowSup == null) RecPowSup = "300";
+                        else
+                        {
+                            r = chosengpu.RecomPowSup.Split();
+                            RecPowSup = r[0];
+                        }
                         var po = p.Power.Split();
                         string power = po[0];
                         if (p.Price < 5200 && int.Parse(power) >= int.Parse(RecPowSup) && p.MBPins == mbpins && p.CPUPins == cpupins)
@@ -587,8 +613,14 @@ namespace SuperConfigurator
                 {
                     foreach (PowerSupply p in pss)
                     {
-                        var r = chosengpu.RecomPowSup.Split();
-                        string RecPowSup = r[0];
+                        string RecPowSup;
+                        var r = new string[10];
+                        if (chosengpu.RecomPowSup == null) RecPowSup = "300";
+                        else
+                        {
+                            r = chosengpu.RecomPowSup.Split();
+                            RecPowSup = r[0];
+                        }
                         var po = p.Power.Split();
                         string power = po[0];
                         if (p.Price < 6100 && int.Parse(power) >= int.Parse(RecPowSup) && p.MBPins == mbpins && p.CPUPins == cpupins)
@@ -621,8 +653,14 @@ namespace SuperConfigurator
                 {
                     foreach (PowerSupply p in pss)
                     {
-                        var r = chosengpu.RecomPowSup.Split();
-                        string RecPowSup = r[0];
+                        string RecPowSup;
+                        var r = new string[10];
+                        if (chosengpu.RecomPowSup == null) RecPowSup = "300";
+                        else
+                        {
+                            r = chosengpu.RecomPowSup.Split();
+                            RecPowSup = r[0];
+                        }
                         var po = p.Power.Split();
                         string power = po[0];
                         if (p.Price < 10000 && int.Parse(power) >= int.Parse(RecPowSup) && p.MBPins == mbpins && p.CPUPins == cpupins)
@@ -675,6 +713,7 @@ namespace SuperConfigurator
                 }
                 else if (budget >= 50000 && budget < 80000)
                 {
+                    max = 9999;
                     foreach (SSD s in ssds)
                     {
                         var v = s.Volume.Split();
@@ -693,8 +732,8 @@ namespace SuperConfigurator
                 }
                 else if (budget >= 80000 && budget < 200000)
                 {
-                    int max1 = 10000;
-                    max = 0;
+                    //int max1 = 10000;
+                    max = 10000;
                     foreach (SSD s in ssds)
                     {
                         var v = s.Volume.Split();
@@ -717,7 +756,9 @@ namespace SuperConfigurator
                     max = 0;
                     foreach (SSD s in ssds)
                     {
-                        if (s.Volume == "1000 ГБ" && s.Price < max1 && s.Price > max) max = s.Price;
+                        var v = s.Volume.Split();
+                        int vol = int.Parse(v[0]);
+                        if ((vol == 1000 || vol == 960 || vol == 1024) && s.Price < max1 && s.Price > max && s.Price < max1) max = s.Price;
                     }
                     foreach (SSD s in ssds)
                     {
