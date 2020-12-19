@@ -796,7 +796,7 @@ namespace SuperConfigurator
             sb.AppendFormat("Материнская плата:" + chosenmb.Name + " ——— " + chosenmb.Price.ToString());
             sb.AppendLine();
             int price = chosenram.Price * 2;
-            sb.AppendFormat("Оперативная память:" + chosenram.Name + " " + chosenram.Volume + chosenram.Volume + " ——— " + price.ToString() + "(2 плашки)");
+            sb.AppendFormat("Оперативная память:" + chosenram.Name + " (" + chosenram.Volume + "+" + chosenram.Volume + ") ——— " + price.ToString() + "(2 плашки)");
             sb.AppendLine();
             sb.AppendFormat("Блок питания:" + chosenps.Name + " " + chosenps.Power + " ——— " + chosenps.Price.ToString());
             sb.AppendLine();
