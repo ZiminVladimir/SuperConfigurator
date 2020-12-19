@@ -112,7 +112,7 @@ namespace SuperParser
             List<string> list = new List<string>();
             List<string> result = new List<string>();
             //string j = "https://www.e-katalog.ru/list/188/";
-            for (int i = 0; i <= 4; i++)
+            for (int i = 0; i <= 34; i++)
             {
                 //if (IsActive)
                 {
@@ -121,6 +121,10 @@ namespace SuperParser
                                                                         //можно прочитать на GitHub, это интересное чтиво с примерами.
                     if (j == 0)
                     {
+                            if (i > 36)
+                            {
+                                continue;
+                            }
                             HtmlParser domParser = new HtmlParser();
                             IHtmlDocument document = await domParser.ParseDocumentAsync(source);
                             resultGPU = parser.Parse(document);
@@ -129,6 +133,10 @@ namespace SuperParser
                         }
                     else if (j == 1)
                     {
+                            if (i > 35)
+                            {
+                                continue;
+                            }
                             HtmlParser domParser = new HtmlParser();
                             IHtmlDocument document = await domParser.ParseDocumentAsync(source);
                             resultMB = parser.Parse(document);
@@ -137,6 +145,10 @@ namespace SuperParser
                         }
                     else if (j == 2)
                     {
+                            if (i > 5)
+                            {
+                                continue;
+                            }
                             HtmlParser domParser = new HtmlParser();
                             IHtmlDocument document = await domParser.ParseDocumentAsync(source);
                             resultCPU = parser.Parse(document);
@@ -145,6 +157,10 @@ namespace SuperParser
                         }
                     else if (j == 3)
                     {
+                            if (i > 21)
+                            {
+                                continue;
+                            }
                             HtmlParser domParser = new HtmlParser();
                             IHtmlDocument document = await domParser.ParseDocumentAsync(source);
                             resultRAM = parser.Parse(document);
@@ -153,6 +169,10 @@ namespace SuperParser
                         }
                     else if (j == 4)
                     {
+                            if (i > 21)
+                            {
+                                continue;
+                            }
                             HtmlParser domParser = new HtmlParser();
                             IHtmlDocument document = await domParser.ParseDocumentAsync(source);
                             resultSSD = parser.Parse(document);
@@ -161,6 +181,10 @@ namespace SuperParser
                     }
                     else if (j == 5)
                     {
+                            if (i > 66)
+                            {
+                                continue;
+                            }
                             HtmlParser domParser = new HtmlParser();
                             IHtmlDocument document = await domParser.ParseDocumentAsync(source);
                             resultCAS = parser.Parse(document);
@@ -169,6 +193,10 @@ namespace SuperParser
                         }
                     else if (j == 6)
                     {
+                            if (i > 11)
+                            {
+                                continue;
+                            }
                             HtmlParser domParser = new HtmlParser();
                             IHtmlDocument document = await domParser.ParseDocumentAsync(source);
                             resultPS = parser.Parse(document);
@@ -363,7 +391,7 @@ namespace SuperParser
             //    isActive = false;
             //}
             isActive = true;
-            if(count>=35)
+            if(count>=160)
             {
                 Serialize();
             }
@@ -406,6 +434,7 @@ namespace SuperParser
             int price;
             string Name = NamesRAM1[0];
             bool fl = true;
+            if (list.Count == 0) fl = false;
             foreach (var r in CRAM.listRAM)
             {
                 if (r.Name == Name) fl = false;
@@ -458,48 +487,51 @@ namespace SuperParser
         {
             int price;
             string name = NamesPS1[0];
-            bool fl = true;
-            foreach (var p in CPS.listPS)
+            if (list.Count != 0)
             {
-                if (p.Name == name) fl = false;
-            }
-            if (fl)
-            { 
-            string power = list[0];
-            string GPUPins6 = "";
-            string GPUPins8 = "";
-            string MBPins = "";
-            string CPUPins = "";
-                if (PricesPS1.Count != 0)
+                bool fl = true;
+                foreach (var p in CPS.listPS)
                 {
-                    var prices1 = PricesPS1[0].Split();
-                    if (prices1.Length > 7)
+                    if (p.Name == name) fl = false;
+                }
+                if (fl)
+                {
+                    string power = list[0];
+                    string GPUPins6 = "";
+                    string GPUPins8 = "";
+                    string MBPins = "";
+                    string CPUPins = "";
+                    if (PricesPS1.Count != 0)
                     {
-                        price = Convert.ToInt32(prices1[1]) * 1000 + Convert.ToInt32(prices1[2]);
-
-
-
-                        foreach (string i in list)
+                        var prices1 = PricesPS1[0].Split();
+                        if (prices1.Length > 7)
                         {
-                            if (i.Contains("pin") && MBPins == "")
+                            price = Convert.ToInt32(prices1[1]) * 1000 + Convert.ToInt32(prices1[2]);
+
+
+
+                            foreach (string i in list)
                             {
-                                MBPins = i[0].ToString() + i[1].ToString();
-                                CPUPins = i[3].ToString();
+                                if (i.Contains("pin") && MBPins == "")
+                                {
+                                    MBPins = i[0].ToString() + i[1].ToString();
+                                    CPUPins = i[3].ToString();
+                                }
                             }
+                            for (int i = 0; i < categories.Count; i++)
+                            {
+                                if (categories[i].Contains("6pin"))
+                                {
+                                    GPUPins6 = list[i];
+                                }
+                                else if (categories[i].Contains("8pin"))
+                                {
+                                    GPUPins8 = list[i];
+                                }
+                            }
+                            PowerSupply ps = new PowerSupply(price, name, power, GPUPins6, GPUPins8, MBPins, CPUPins);
+                            CPS.Add(ps);
                         }
-                        for (int i = 0; i < categories.Count; i++)
-                        {
-                            if (categories[i].Contains("6pin"))
-                            {
-                                GPUPins6 = list[i];
-                            }
-                            else if (categories[i].Contains("8pin"))
-                            {
-                                GPUPins8 = list[i];
-                            }
-                        }
-                        PowerSupply ps = new PowerSupply(price, name, power, GPUPins6, GPUPins8, MBPins, CPUPins);
-                        CPS.Add(ps);
                     }
                 }
             }
@@ -509,66 +541,83 @@ namespace SuperParser
         {
             int price;
             string name = NamesCPU1[0];
-            bool fl = true;
-            //foreach (var c in CCPU.listCPU)
+            if (name != "AMD 2650")
             {
-                //if (c.Name == name) fl = false;
-            }
-            if (fl)
-            {
-                string socket = "";
-                string cores = "";
-                string threads = "";
-                string chipset = "";
-                string memvol = "";
-                string memfreq = "";
-                string memtype = "";
-                if (PricesCPU1.Count != 0)
+                bool fl = true;
+                if (list.Count == 0) fl = false;
+                
+                if (fl)
                 {
-                    var prices1 = PricesCPU1[0].Split();
-                    price = Convert.ToInt32(prices1[1]) * 1000 + Convert.ToInt32(prices1[2]);
-                    foreach(string i in categories)
+                    string socket = "";
+
+                    string cores = "";
+                    string threads = "";
+                    string chipset = "";
+                    //if (socket.Contains("AMD")) chipset = "AMD";
+                    //else if (socket.Contains("Intel")) chipset = "Intel";
+                    string memvol = "";
+                    string memfreq = "";
+                    string memtype = "";
+                    if (PricesCPU1.Count != 0)
                     {
-                        if (i.Contains("DDR"))
+                        var prices1 = PricesCPU1[0].Split();
+                        price = Convert.ToInt32(prices1[1]) * 1000 + Convert.ToInt32(prices1[2]);
+                        foreach (string i in categories)
                         {
-                            var ddr = i.Split();
-                            memtype = ddr[ddr.Length - 1];
+                            if (i.Contains("DDR"))
+                            {
+                                var ddr = i.Split();
+                                memtype = ddr[ddr.Length - 1];
+                            }
                         }
+                        foreach (string i in list)
+                        {
+                            if (i.Contains("AMD") && socket == "")
+                            {
+                                chipset = "AMD";
+                                var soc = i.Split();
+                                socket = soc[1];
+                            }
+                            else if (i.Contains("Intel") && socket == "")
+                            {
+                                chipset = "Intel";
+                                var soc = i.Split();
+                                if (soc.Length == 2)
+                                {
+                                    socket = soc[0] + " " + soc[1];
+                                }
+                                else if (soc.Length == 3)
+                                {
+                                    socket = soc[0] + " " + soc[1] + " " + soc[2];
+                                }
+                                else if (soc.Length == 4)
+                                {
+                                    socket = soc[0] + " " + soc[1] + " " + soc[2] + " " + soc[3];
+                                }
+                                else socket = soc[1];
+                            }
+
+
+                            else if (i.Contains("cores"))
+                            {
+                                cores = i;
+                            }
+                            else if (i.Contains("threads"))
+                            {
+                                threads = i;
+                            }
+                            else if (i.Contains("ГБ"))
+                            {
+                                memvol = i;
+                            }
+                            else if (i.Contains("МГц"))
+                            {
+                                memfreq = i;
+                            }
+                        }
+                        CPU Cpu = new CPU(price, name, socket, cores, threads, chipset, memvol, memfreq, memtype);
+                        CCPU.Add(Cpu);
                     }
-                    foreach (string i in list)
-                    {
-                        if (i.Contains("AMD") && socket == "")
-                        {
-                            chipset = "AMD";
-                            var soc = i.Split();
-                            socket = soc[1];
-                        }
-                        else if (i.Contains("Intel"))
-                        {
-                            chipset = "Intel";
-                            var soc = i.Split();
-                            if (soc.Length > 2) socket = soc[1] + " " + soc[2];
-                            else socket = soc[1];
-                        }
-                        else if (i.Contains("cores"))
-                        {
-                            cores = i;
-                        }
-                        else if (i.Contains("threads"))
-                        {
-                            threads = i;
-                        }
-                        else if (i.Contains("ГБ"))
-                        {
-                            memvol = i;
-                        }
-                        else if (i.Contains("МГц"))
-                        {
-                            memfreq = i;
-                        }
-                    }
-                    CPU Cpu = new CPU(price, name, socket, cores, threads, chipset, memvol, memfreq, memtype);
-                    CCPU.Add(Cpu);
                 }
             }
         }
@@ -579,6 +628,7 @@ namespace SuperParser
             int price = 0;
             string name = NamesGPU1[0];
             bool fl = true;
+            if (list.Count == 0) fl = false;
             //foreach (var g in CGPU.listGPU)
             {
                 //if (g.Name == name) fl = false;
@@ -637,66 +687,69 @@ namespace SuperParser
             int price = 0;
             bool fl = true; 
             string name = NamesMB1[0];
-            if(name== " ASRock B450 Steel Legend")
+            if (list.Count != 0)
             {
-                fl = true;
-            }
-            if (name == " ASRock B550M Pro4") fl = false;
-            foreach (var g in CMB.listMB)
-            {
-                if (g.Name == name) fl = false;
-            }
-            if (fl)
-            {
-                string socket = list[1];
-                string Chipset = null;
-                string MemType = null;
-                string MemFreq = null;
-                string MemVol = null;
-                bool M_2 = true;
-                string MainPins = null;
-                string CPUPins = null;
-                if (PricesMB1.Count != 0)
+                if (name == " ASRock B450 Steel Legend")
                 {
-                    var prices1 = PricesMB1[0].Split();
-                    price = Convert.ToInt32(prices1[1]) * 1000 + Convert.ToInt32(prices1[2]);
-                    foreach(string i in categories)
+                    fl = true;
+                }
+                if (name == " ASRock B550M Pro4") fl = false;
+                foreach (var g in CMB.listMB)
+                {
+                    if (g.Name == name) fl = false;
+                }
+                if (fl)
+                {
+                    string socket = list[1];
+                    string Chipset = null;
+                    string MemType = null;
+                    string MemFreq = null;
+                    string MemVol = null;
+                    bool M_2 = true;
+                    string MainPins = null;
+                    string CPUPins = null;
+                    if (PricesMB1.Count != 0)
                     {
-                        if(i.Contains("DDR"))
+                        var prices1 = PricesMB1[0].Split();
+                        price = Convert.ToInt32(prices1[1]) * 1000 + Convert.ToInt32(prices1[2]);
+                        foreach (string i in categories)
                         {
-                            var ddr = i.Split();
-                            MemType = ddr[ddr.Length-1];
+                            if (i.Contains("DDR"))
+                            {
+                                var ddr = i.Split();
+                                MemType = ddr[ddr.Length - 1];
+                            }
                         }
+                        foreach (string i in list)
+                        {
+                            if (i.Contains("Intel"))
+                            {
+                                Chipset = "Intel";
+                            }
+                            else if (i.Contains("AMD"))
+                            {
+                                Chipset = "AMD";
+                            }
+                            else if (i.Contains("МГц"))
+                            {
+                                MemFreq = i;
+                            }
+                            else if (i.Contains("ГБ"))
+                            {
+                                MemVol = i;
+                            }
+                            else if (i.Contains("-контактный"))
+                            {
+                                MainPins = i;
+                            }
+                            else if (i.Contains("-контактное"))
+                            {
+                                CPUPins = i;
+                            }
+                        }
+                        MotherBoard mb = new MotherBoard(price, name, socket, Chipset, MemType, MemFreq, MemVol, M_2, MainPins, CPUPins);
+                        CMB.Add(mb);
                     }
-                    foreach (string i in list)
-                    {
-                        if (i.Contains("Intel"))
-                        {
-                            Chipset = "Intel";
-                        }
-                        else if (i.Contains("AMD"))
-                        {
-                            Chipset = "AMD";
-                        }
-                        else if (i.Contains("МГц"))
-                        {
-                            MemFreq = i;
-                        }
-                        else if (i.Contains("ГБ"))
-                        {
-                            MemVol = i;
-                        }
-                        else if (i.Contains("-контактный"))
-                        {
-                            MainPins = i;
-                        }
-                        else if (i.Contains("-контактное"))
-                        {
-                            CPUPins = i;
-                        }
-                    }
-                    MotherBoard mb = new MotherBoard(price, name, socket, Chipset, MemType, MemFreq, MemVol, M_2, MainPins, CPUPins);
-                    CMB.Add(mb);
                 }
             }
             
@@ -706,6 +759,7 @@ namespace SuperParser
             int Price=0;
             string Name= NamesCAS1[0];
             bool fl = true;
+            if (list.Count == 0) fl = false;
             foreach (var c in CCase.listCase)
             {
                 if (c.Name == Name) fl = false;
@@ -735,6 +789,7 @@ namespace SuperParser
              int Price=0;
              string Name= NamesSSD1[0];
             bool fl = true;
+            if (list.Count == 0) fl = false;
             foreach (var s in CSSD.listSSD)
             {
                 if (s.Name == Name) fl = false;

@@ -49,7 +49,7 @@ namespace SuperConfigurator
         }
         public async void Change()
         {
-            if (ProgressBar.Value == 36)
+            if (ProgressBar.Value == 161)
             {
                 MessageBox.Show("База обновлена");
                 Close();
