@@ -33,6 +33,14 @@ namespace SuperConfigurator
         List<RAM> rams;
         List<SSD> ssds;
         List<Case> cs;
+
+        GPU chosengpu = new GPU();
+        CPU chosencpu = new CPU();
+        MotherBoard chosenmb = new MotherBoard();
+        RAM chosenram = new RAM();
+        PowerSupply chosenps = new PowerSupply();
+        SSD chosenssd = new SSD();
+        Case chosencase = new Case();
         public Configurator()
         {
            using(var sr = new StreamReader("GPU.json"))
@@ -84,17 +92,11 @@ namespace SuperConfigurator
             {
                 if (budget >= 30000)
                 {
-                    StringBuilder sb = new StringBuilder();
-                    GPU chosengpu = new GPU();
-                    CPU chosencpu = new CPU();
-                    MotherBoard chosenmb = new MotherBoard();
-                    RAM chosenram = new RAM();
-                    PowerSupply chosenps = new PowerSupply();
-                    SSD chosenssd = new SSD();
-                    Case chosencase = new Case();
+                    
+                    
 
                     // Поиск видеокарты
-                    double max = 0;
+                    int max = 0;
                     double tempprice = 0;
                     string nameg = "";
                     if (budget > 45000)
@@ -115,13 +117,11 @@ namespace SuperConfigurator
                         {
                             if (g.Price == max && g.Name == nameg)
                             {
-                                sb.AppendFormat("Видеокарта:" + g.Name + " ——— " + g.Price.ToString());
-                                sb.AppendLine();
                                 chosengpu = g;
                             }
                         }
                     }
-                    else if (budget <= 44999)
+                    else if (budget <= 45000)
                     {
                         tempprice = budget * 0.35;
                         foreach (GPU g in gpus)
@@ -135,8 +135,6 @@ namespace SuperConfigurator
                         {
                             if (g.Price == max && g.Name == nameg)
                             {
-                                sb.AppendFormat("Видеокарта:" + g.Name + " ——— " + g.Price.ToString());
-                                sb.AppendLine();
                                 chosengpu = g;
                             }
                         }
@@ -159,8 +157,6 @@ namespace SuperConfigurator
                     {
                         if (c.Price == max)
                         {
-                            sb.AppendFormat("Процессор:" + c.Name + " ——— " + c.Price.ToString());
-                            sb.AppendLine();
                             chosencpu = c;
                         }
                     }
@@ -185,8 +181,6 @@ namespace SuperConfigurator
                             {
                                 if (m.Price == max && m.Name == namemb)
                                 {
-                                    sb.AppendFormat("Материнская плата:" + m.Name + " ——— " + m.Price.ToString());
-                                    sb.AppendLine();
                                     chosenmb = m;
                                 }
                             }
@@ -206,8 +200,6 @@ namespace SuperConfigurator
                             {
                                 if (m.Price == max && m.Name == namemb)
                                 {
-                                    sb.AppendFormat("Материнская плата:" + m.Name + " ——— " + m.Price.ToString());
-                                    sb.AppendLine();
                                     chosenmb = m;
                                 }
                             }
@@ -231,8 +223,6 @@ namespace SuperConfigurator
                             {
                                 if (m.Price == max && m.Name == namemb)
                                 {
-                                    sb.AppendFormat("Материнская плата:" + m.Name + " ——— " + m.Price.ToString());
-                                    sb.AppendLine();
                                     chosenmb = m;
                                 }
                             }
@@ -256,8 +246,6 @@ namespace SuperConfigurator
                             {
                                 if (m.Price == max && m.Name == namemb)
                                 {
-                                    sb.AppendFormat("Материнская плата:" + m.Name + " ——— " + m.Price.ToString());
-                                    sb.AppendLine();
                                     chosenmb = m;
                                 }
                             }
@@ -275,8 +263,6 @@ namespace SuperConfigurator
                             {
                                 if (m.Price == max && m.Name == namemb)
                                 {
-                                    sb.AppendFormat("Материнская плата:" + m.Name + " ——— " + m.Price.ToString());
-                                    sb.AppendLine();
                                     chosenmb = m;
                                 }
                             }
@@ -291,8 +277,6 @@ namespace SuperConfigurator
                             {
                                 if (m.Price == max && m.Name == namemb)
                                 {
-                                    sb.AppendFormat("Материнская плата:" + m.Name + " ——— " + m.Price.ToString());
-                                    sb.AppendLine();
                                     chosenmb = m;
                                 }
                             }
@@ -307,8 +291,6 @@ namespace SuperConfigurator
                             {
                                 if (m.Price == max && m.Name == namemb)
                                 {
-                                    sb.AppendFormat("Материнская плата:" + m.Name + " ——— " + m.Price.ToString());
-                                    sb.AppendLine();
                                     chosenmb = m;
                                 }
                             }
@@ -323,8 +305,6 @@ namespace SuperConfigurator
                             {
                                 if (m.Price == max && m.Name == namemb)
                                 {
-                                    sb.AppendFormat("Материнская плата:" + m.Name + " ——— " + m.Price.ToString());
-                                    sb.AppendLine();
                                     chosenmb = m;
                                 }
                             }
@@ -339,8 +319,6 @@ namespace SuperConfigurator
                             {
                                 if (m.Price == max && m.Name == namemb)
                                 {
-                                    sb.AppendFormat("Материнская плата:" + m.Name + " ——— " + m.Price.ToString());
-                                    sb.AppendLine();
                                     chosenmb = m;
                                 }
                             }
@@ -355,21 +333,12 @@ namespace SuperConfigurator
                             {
                                 if (m.Price == max && m.Name == namemb)
                                 {
-                                    sb.AppendFormat("Материнская плата:" + m.Name + " ——— " + m.Price.ToString());
-                                    sb.AppendLine();
                                     chosenmb = m;
                                 }
                             }
                         }
                     }
 
-                    foreach (var m in mbs)
-                    {
-                        if (m.Socket == chosencpu.Socket && m.Price < 4500)
-                        {
-
-                        }
-                    }
                     // Выбираем память
                     max = 0;
                     int max2 = 9999;
@@ -392,9 +361,6 @@ namespace SuperConfigurator
                         {
                             if (r.Price == max2 && r.Name == namer)
                             {
-                                int price = r.Price * 2;
-                                sb.AppendFormat("Оперативная память:" + r.Name + " " + r.Volume + " ——— " + price.ToString() + "(2 плашки)");
-                                sb.AppendLine();
                                 chosenram = r;
                             }
                         }
@@ -417,9 +383,6 @@ namespace SuperConfigurator
                         {
                             if (r.Price == max2 && r.Name == namer)
                             {
-                                int price = r.Price * 2;
-                                sb.AppendFormat("Оперативная память:" + r.Name + " " + r.Volume + " ——— " + price.ToString() + "(2 плашки)");
-                                sb.AppendLine();
                                 chosenram = r;
                             }
                         }
@@ -442,9 +405,6 @@ namespace SuperConfigurator
                         {
                             if (r.Price == max2 && r.Name == namer)
                             {
-                                int price = r.Price * 2;
-                                sb.AppendFormat("Оперативная память:" + r.Name + " " + r.Volume + " ——— " + price.ToString() + "(2 плашки)");
-                                sb.AppendLine();
                                 chosenram = r;
                             }
                         }
@@ -467,9 +427,6 @@ namespace SuperConfigurator
                         {
                             if (r.Price == max2 && r.Name == namer)
                             {
-                                int price = r.Price * 2;
-                                sb.AppendFormat("Оперативная память:" + r.Name + " " + r.Volume + " ——— " + price.ToString() + "(2 плашки)");
-                                sb.AppendLine();
                                 chosenram = r;
                             }
                         }
@@ -525,8 +482,6 @@ namespace SuperConfigurator
                         {
                             if (p.Price == max && p.Name == nameps)
                             {
-                                sb.AppendFormat("Блок питания:" + p.Name + " " + p.Power + " ——— " + p.Price.ToString());
-                                sb.AppendLine();
                                 chosenps = p;
                             }
                         }
@@ -565,8 +520,6 @@ namespace SuperConfigurator
                         {
                             if (p.Price == max && p.Name == nameps)
                             {
-                                sb.AppendFormat("Блок питания:" + p.Name + " " + p.Power + " ——— " + p.Price.ToString());
-                                sb.AppendLine();
                                 chosenps = p;
                             }
                         }
@@ -605,8 +558,6 @@ namespace SuperConfigurator
                         {
                             if (p.Price == max && p.Name == nameps)
                             {
-                                sb.AppendFormat("Блок питания:" + p.Name + " " + p.Power + " ——— " + p.Price.ToString());
-                                sb.AppendLine();
                                 chosenps = p;
                             }
                         }
@@ -645,8 +596,6 @@ namespace SuperConfigurator
                         {
                             if (p.Price == max && p.Name == nameps)
                             {
-                                sb.AppendFormat("Блок питания:" + p.Name + " " + p.Power + " ——— " + p.Price.ToString());
-                                sb.AppendLine();
                                 chosenps = p;
                             }
                         }
@@ -685,8 +634,6 @@ namespace SuperConfigurator
                         {
                             if (p.Price == max && p.Name == nameps)
                             {
-                                sb.AppendFormat("Блок питания:" + p.Name + " " + p.Power + " ——— " + p.Price.ToString());
-                                sb.AppendLine();
                                 chosenps = p;
                             }
                         }
@@ -707,8 +654,6 @@ namespace SuperConfigurator
                         {
                             if (s.Price == max)
                             {
-                                sb.AppendFormat("Твердотельный накопитель:" + s.Name + " " + s.Volume + " ——— " + s.Price.ToString());
-                                sb.AppendLine();
                                 chosenssd = s;
                             }
                         }
@@ -726,8 +671,6 @@ namespace SuperConfigurator
                         {
                             if (s.Price == max)
                             {
-                                sb.AppendFormat("Твердотельный накопитель:" + s.Name + " " + s.Volume + " ——— " + s.Price.ToString());
-                                sb.AppendLine();
                                 chosenssd = s;
                             }
                         }
@@ -746,8 +689,6 @@ namespace SuperConfigurator
                         {
                             if (s.Price == max)
                             {
-                                sb.AppendFormat("Твердотельный накопитель:" + s.Name + " " + s.Volume + " ——— " + s.Price.ToString());
-                                sb.AppendLine();
                                 chosenssd = s;
                             }
                         }
@@ -766,8 +707,6 @@ namespace SuperConfigurator
                         {
                             if (s.Price == max)
                             {
-                                sb.AppendFormat("Твердотельный накопитель:" + s.Name + " " + s.Volume + " ——— " + s.Price.ToString());
-                                sb.AppendLine();
                                 chosenssd = s;
                             }
                         }
@@ -784,25 +723,90 @@ namespace SuperConfigurator
                         var le = c.MaxGPULength;
                         if (le == null || le == "") continue;
                         string lenCase = le[0].ToString() + le[1].ToString() + le[2].ToString();
-                        if (c.Price < max && c.Price > max0 && int.Parse(length) <= int.Parse(lenCase) && !c.Name.Contains("Рекомендуем")) { max0 = c.Price; name = c.Name; }
+                        if (c.Price < 3100 && c.Price > max0 && int.Parse(length) <= int.Parse(lenCase) && !c.Name.Contains("Рекомендуем")) { max0 = c.Price; name = c.Name; }
                     }
                     foreach (Case c in cs)
                     {
                         if (c.Price == max0 && c.Name == name)
                         {
-                            sb.AppendFormat("Корпус:" + c.Name + " ——— " + c.Price.ToString());
-                            sb.AppendLine();
                             chosencase = c;
                         }
                     }
-                    FinalComponentsLabel.Content = sb.ToString();
+                    max =chosencpu.Price + chosengpu.Price + chosenmb.Price + chosenps.Price + chosenram.Price + chosenram.Price + chosenssd.Price + chosencase.Price;
+                    int ost = budget - max;
+                    if (ost > 500)
+                    {
+                        if (budget > 45000)
+                        {
+                            tempprice = budget * 0.4;
+                            tempprice += ost;
+
+                            foreach (GPU g in gpus)
+                            {
+                                if (g.Name != "" && !g.Name.Contains("PNY") && !g.Name.Contains("Quadro"))
+                                {
+                                    var m = g.Memory.Split();
+                                    int mem = 0;
+                                    if (m[0].Length < 3) mem = int.Parse(m[0]);
+                                    if (g.Price > max && g.Price <= tempprice && mem > 4) { max = g.Price; nameg = g.Name; }
+                                }
+                            }
+                            foreach (GPU g in gpus)
+                            {
+                                if (g.Price == max && g.Name == nameg)
+                                {
+                                    chosengpu = g;
+                                }
+                            }
+                        }
+                        else if (budget <= 44999)
+                        {
+                            tempprice = budget * 0.35;
+                            tempprice += ost;
+                            foreach (GPU g in gpus)
+                            {
+                                if (g.Name.Length > 4 && !g.Name.Contains("PNY") && !g.Name.Contains("Quadro"))
+                                {
+                                    if (g.Price > max && g.Price <= tempprice) { max = g.Price; nameg = g.Name; }
+                                }
+                            }
+                            foreach (GPU g in gpus)
+                            {
+                                if (g.Price == max && g.Name == nameg)
+                                {
+                                    chosengpu = g;
+                                }
+                            }
+                        }
+                    }
+                    Write();
                 }
                 else if (budget < 30000 && budget > -1) MessageBox.Show("К сожалению, наименьший бюджет для сборки ПК в нашем сервисе — 30.000 рублей.");
                 else MessageBox.Show("Введите ваш бюджет в рублях!");
                 //if (budget == 0) MessageBox.Show("Введите ваш бюджет в рублях!");
             }
         }
+        private void Write()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("Видеокарта:" + chosengpu.Name + " ——— " + chosengpu.Price.ToString());
+            sb.AppendLine();
+            sb.AppendFormat("Процессор:" + chosencpu.Name + " ——— " + chosencpu.Price.ToString());
+            sb.AppendLine();
+            sb.AppendFormat("Материнская плата:" + chosenmb.Name + " ——— " + chosenmb.Price.ToString());
+            sb.AppendLine();
+            int price = chosenram.Price * 2;
+            sb.AppendFormat("Оперативная память:" + chosenram.Name + " " + chosenram.Volume + chosenram.Volume + " ——— " + price.ToString() + "(2 плашки)");
+            sb.AppendLine();
+            sb.AppendFormat("Блок питания:" + chosenps.Name + " " + chosenps.Power + " ——— " + chosenps.Price.ToString());
+            sb.AppendLine();
+            sb.AppendFormat("Твердотельный накопитель:" + chosenssd.Name + " " + chosenssd.Volume + " ——— " + chosenssd.Price.ToString());
+            sb.AppendLine();
+            sb.AppendFormat("Корпус:" + chosencase.Name + " ——— " + chosencase.Price.ToString());
+            sb.AppendLine();
 
+            FinalComponentsLabel.Content = sb.ToString();
+        }
             private void Exit_Click(object sender, RoutedEventArgs e)
             {
                 MessageBox.Show("Благодарим за использование нашего сервиса! Если у вас есть предложения по добавлению функционала или приложение работает некорректно, то направляйте запросы на электронную почту kb11so@yandex.ru.");
