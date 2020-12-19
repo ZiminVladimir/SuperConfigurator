@@ -80,7 +80,7 @@ namespace SuperConfigurator
                     MessageBox.Show("Введите ваш бюджет в рублях!");
                 }
             }
-            if (budget < 700000)
+            if (budget < 501000)
             {
                 if (budget >= 30000)
                 {
