@@ -139,16 +139,7 @@
     <Resource Include="globe_PNG2-2044x2048.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="kisspng-home-appliance-major-appliance-icon-desktop-pc-5a7b19edf30153.2072960815180170059954.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Без имени-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="596-5961369_manuteno-de-computadores-em-santos-sp-notebook-ou.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="remont-pk.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="png-transparent-laptop-computer-icons-display-device-laptop-electronics-computer-laptop.png" />
@@ -161,9 +152,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Warning.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="png-transparent-gray-metal-gear-illustration-hardware-accessory-angle-developer-black-folder-angle-alumin-folders-home-page.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="papka.png" />

@@ -83,9 +83,9 @@ namespace SuperConfigurator.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _596_5961369_manuteno_de_computadores_em_santos_sp_notebook_ou {
+        internal static System.Drawing.Bitmap earth {
             get {
-                object obj = ResourceManager.GetObject("_596_5961369_manuteno_de_computadores_em_santos_sp_notebook_ou", resourceCulture);
+                object obj = ResourceManager.GetObject("earth", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,31 +103,9 @@ namespace SuperConfigurator.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap kisspng_home_appliance_major_appliance_icon_desktop_pc_5a7b19edf30153_2072960815180170059954 {
+        internal static System.Drawing.Bitmap papka {
             get {
-                object obj = ResourceManager.GetObject("kisspng_home_appliance_major_appliance_icon_desktop_pc_5a7b19edf30153_20729608151" +
-                        "80170059954", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap png_transparent_laptop_computer_icons_display_device_laptop_electronics_computer_laptop {
-            get {
-                object obj = ResourceManager.GetObject("png_transparent_laptop_computer_icons_display_device_laptop_electronics_computer_" +
-                        "laptop", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap remont_pk {
-            get {
-                object obj = ResourceManager.GetObject("remont_pk", resourceCulture);
+                object obj = ResourceManager.GetObject("papka", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -138,16 +116,6 @@ namespace SuperConfigurator.Properties {
         internal static System.Drawing.Bitmap Warning {
             get {
                 object obj = ResourceManager.GetObject("Warning", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Без_имени_1 {
-            get {
-                object obj = ResourceManager.GetObject("Без_имени_1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
