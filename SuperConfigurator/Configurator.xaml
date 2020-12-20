@@ -5,12 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SuperConfigurator"
         mc:Ignorable="d"
-        Title="Configurator" Height="450" Width="800" ResizeMode="NoResize">
-    <Grid>
+        Title="Configurator" Height="635.656" Width="1016.393" ResizeMode="NoResize">
+    <Window.Background>
+        <ImageBrush ImageSource="1600179999_23-p-fon-dlya-prezentatsii-po-informatike-32.jpg"/>
+    </Window.Background>
+    <Grid Margin="114,47,233,183">
         <TextBox x:Name="BudgetTextBox" HorizontalAlignment="Left" Height="40" Margin="35,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="142"/>
-        <Label x:Name="FinalComponentsLabel" Content="" Margin="35,137,29.6,23" FontSize="15"/>
-        <Button x:Name="BuildPC" Content="Собрать ПК" HorizontalAlignment="Left" Height="40" Margin="213,80,0,0" VerticalAlignment="Top" Width="142" Click="BuildAllPC_Click"/>
+        <Label x:Name="FinalComponentsLabel" Content="" Margin="35,137,29.6,23"/>
+        <Button x:Name="BuildPC" Content="Собрать ПК" HorizontalAlignment="Left" Height="40" Margin="213,80,0,0" VerticalAlignment="Top" Width="142" Click="BuildAllPC_Click" Background="#FFE1E9FE"/>
         <Label Content="Введите ваш бюджет в рублях без валюты" HorizontalAlignment="Left" Height="28" Margin="35,38,0,0" VerticalAlignment="Top" Width="287" FontFamily="Calibri" FontSize="15"/>
-        <Button x:Name="Exit" Content="Выход" HorizontalAlignment="Left" Height="40" Margin="391,80,0,0" VerticalAlignment="Top" Width="142" Click="Exit_Click" RenderTransformOrigin="2.078,-0.399"/>
+        <Button x:Name="Exit" Content="Выход" HorizontalAlignment="Left" Height="40" Margin="391,80,0,0" VerticalAlignment="Top" Width="142" Click="Exit_Click" RenderTransformOrigin="2.078,-0.399" Background="#FFE1E9FE"/>
     </Grid>
 </Window>

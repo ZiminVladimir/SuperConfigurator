@@ -43,6 +43,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
@@ -130,6 +131,36 @@
       <Project>{4e671625-426b-4e67-b809-4351ff4b97bb}</Project>
       <Name>SuperParser</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="1600179956_1-p-fon-dlya-prezentatsii-po-informatike-1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="globe_PNG2-2044x2048.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="kisspng-home-appliance-major-appliance-icon-desktop-pc-5a7b19edf30153.2072960815180170059954.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Без имени-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="596-5961369_manuteno-de-computadores-em-santos-sp-notebook-ou.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="remont-pk.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="png-transparent-laptop-computer-icons-display-device-laptop-electronics-computer-laptop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Без имени-5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="1600179999_23-p-fon-dlya-prezentatsii-po-informatike-32.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Warning.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

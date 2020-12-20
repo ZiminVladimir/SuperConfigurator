@@ -6,8 +6,24 @@
         xmlns:local="clr-namespace:SuperConfigurator"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" ResizeMode="NoResize">
+    <Window.Background>
+        <ImageBrush ImageSource="1600179956_1-p-fon-dlya-prezentatsii-po-informatike-1.jpg"/>
+    </Window.Background>
     <Grid>
-        <Button x:Name="BaseUpdate" Content="Обновить базу" HorizontalAlignment="Left" Height="49" Margin="212,195,0,0" VerticalAlignment="Top" Width="121" Click="BaseUpdate_Click"/>
-        <Button Content="Собрать ПК" HorizontalAlignment="Left" Height="73" Margin="450,171,0,0" VerticalAlignment="Top" Width="133" Click="BuildPC_Click"/>
+        <Image x:Name="BaseUpdate1" HorizontalAlignment="Left" Height="100" Margin="242,171,0,0" VerticalAlignment="Top" Width="93" Source="globe_PNG2-2044x2048.png" MouseDown="BaseUpdate1_MouseDown">
+            <Image.OpacityMask>
+                <ImageBrush ImageSource="globe_PNG2-2044x2048.png"/>
+            </Image.OpacityMask>
+        </Image>
+        <Image x:Name="BuildPC" HorizontalAlignment="Left" Height="127" Margin="482,154,0,0" VerticalAlignment="Top" Width="120" Source="Без имени-5.png" MouseDown="BuildPC_MouseDown" RenderTransformOrigin="0.5,0.5">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.433"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
     </Grid>
 </Window>

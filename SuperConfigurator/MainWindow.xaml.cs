@@ -52,6 +52,22 @@ namespace SuperConfigurator
             conf.ShowDialog();
             Visibility = Visibility.Visible;
         }
+
+        private void BaseUpdate1_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Warning w = new Warning();
+            Visibility = Visibility.Hidden;
+            w.ShowDialog();
+            Visibility = Visibility.Visible;
+        }
+
+        private void BuildPC_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Configurator conf = new Configurator();
+            Visibility = Visibility.Hidden;
+            conf.ShowDialog();
+            Visibility = Visibility.Visible;
+        }
         //public async void Change()
         //{
         //    if (ProgressBar.Value == 14)
