@@ -112,7 +112,7 @@ namespace SuperParser
             List<string> list = new List<string>();
             List<string> result = new List<string>();
             //string j = "https://www.e-katalog.ru/list/188/";
-            for (int i = 0; i <= 34; i++)
+            for (int i = 0; i <= 5; i++)
             {
                 //if (IsActive)
                 {
@@ -391,7 +391,7 @@ namespace SuperParser
             //    isActive = false;
             //}
             isActive = true;
-            if(count>=160)
+            if(count>=36)
             {
                 Serialize();
             }
