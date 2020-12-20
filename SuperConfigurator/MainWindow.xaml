@@ -5,17 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SuperConfigurator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" ResizeMode="NoResize">
+        Title="MainWindow" Height="450" Width="800" ResizeMode="NoResize" Icon="earth.png">
     <Window.Background>
         <ImageBrush ImageSource="1600179956_1-p-fon-dlya-prezentatsii-po-informatike-1.jpg"/>
     </Window.Background>
     <Grid>
-        <Image x:Name="BaseUpdate1" HorizontalAlignment="Left" Height="100" Margin="242,171,0,0" VerticalAlignment="Top" Width="93" Source="globe_PNG2-2044x2048.png" MouseDown="BaseUpdate1_MouseDown">
+        <Image x:Name="BaseUpdate1" HorizontalAlignment="Left" Height="100" Margin="213,171,0,0" VerticalAlignment="Top" Width="93" Source="globe_PNG2-2044x2048.png" MouseDown="BaseUpdate1_MouseDown">
             <Image.OpacityMask>
                 <ImageBrush ImageSource="globe_PNG2-2044x2048.png"/>
             </Image.OpacityMask>
         </Image>
-        <Image x:Name="BuildPC" HorizontalAlignment="Left" Height="127" Margin="482,154,0,0" VerticalAlignment="Top" Width="120" Source="Без имени-5.png" MouseDown="BuildPC_MouseDown" RenderTransformOrigin="0.5,0.5">
+        <Image x:Name="BuildPC" HorizontalAlignment="Left" Height="127" Margin="490,154,0,0" VerticalAlignment="Top" Width="120" Source="Без имени-5.png" MouseDown="BuildPC_MouseDown" RenderTransformOrigin="0.5,0.5">
             <Image.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -25,5 +25,7 @@
                 </TransformGroup>
             </Image.RenderTransform>
         </Image>
+        <Label Content="Обновить базу" HorizontalAlignment="Left" Margin="197,271,0,0" VerticalAlignment="Top" Width="125" FontSize="16" Foreground="#FFD3F110"/>
+        <Label Content="Собрать ПК" HorizontalAlignment="Left" Margin="502,271,0,0" VerticalAlignment="Top" FontSize="16" Foreground="#FFD3F110"/>
     </Grid>
 </Window>

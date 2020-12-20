@@ -162,5 +162,14 @@
   <ItemGroup>
     <Resource Include="Warning.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="png-transparent-gray-metal-gear-illustration-hardware-accessory-angle-developer-black-folder-angle-alumin-folders-home-page.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="papka.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="earth.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

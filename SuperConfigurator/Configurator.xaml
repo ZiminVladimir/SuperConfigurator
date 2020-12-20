@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SuperConfigurator"
         mc:Ignorable="d"
-        Title="Configurator" Height="635.656" Width="1016.393" ResizeMode="NoResize">
+        Title="Configurator" Height="635.656" Width="1016.393" ResizeMode="NoResize" Icon="papka.png">
     <Window.Background>
         <ImageBrush ImageSource="1600179999_23-p-fon-dlya-prezentatsii-po-informatike-32.jpg"/>
     </Window.Background>
