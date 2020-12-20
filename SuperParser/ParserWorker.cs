@@ -1,9 +1,7 @@
 ﻿using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
-using SuperParser;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using PC_Components;
 using System.Threading.Tasks;
@@ -16,34 +14,20 @@ namespace SuperParser
     {
         public bool flag;
         readonly HttpClient client = new HttpClient();
-        // public List<string> list = new List<string>();
-        List<string> ssilki = new List<string>() { "https://www.e-katalog.ru/list/189/",
+        List<string> ssilki = new List<string>() 
+        { 
+            "https://www.e-katalog.ru/list/189/",
             "https://www.e-katalog.ru/list/187/",
             "https://www.e-katalog.ru/list/186/",
             "https://www.e-katalog.ru/list/188/",
             "https://www.e-katalog.ru/list/61/",
             "https://www.e-katalog.ru/list/193/",
-            "https://www.e-katalog.ru/list/351/" };
+            "https://www.e-katalog.ru/list/351/" 
+        };
+
         E_CatalogParser FP = new E_CatalogParser();
         List<string> Prices = new List<string>();
         public int count = 0;
-        
-        //List<string> PricesGPU = new List<string>();
-        //List<string> PricesCPU = new List<string>();
-        //List<string> PricesMB = new List<string>();
-        //List<string> PricesRAM = new List<string>();
-        //List<string> PricesPS = new List<string>();
-        //List<string> PricesCAS = new List<string>();
-        //List<string> PricesSSD = new List<string>();
-        //List<string> PricesHDD = new List<string>();
-        //List<string> NamesGPU = new List<string>();
-        //List<string> NamesCPU = new List<string>();
-        //List<string> NamesMB = new List<string>();
-        //List<string> NamesRAM = new List<string>();
-        //List<string> NamesPS = new List<string>();
-        //List<string> NamesCAS = new List<string>();
-        //List<string> NamesSSD = new List<string>();
-        //List<string> NamesHDD = new List<string>();
         List<string> resultGPU = new List<string>();
         List<string> resultCPU = new List<string>();
         List<string> resultMB = new List<string>();
@@ -55,7 +39,6 @@ namespace SuperParser
         IParser parser;
         IParserSettings parserSettings; //настройки для загрузчика кода страниц
         HtmlLoader loader; //загрузчик кода страницы
-        bool isActive; //активность парсера
         ContainerPS CPS = new ContainerPS();
         ContainerCPU CCPU = new ContainerCPU();
         ContainerGPU CGPU = new ContainerGPU();
@@ -81,44 +64,26 @@ namespace SuperParser
             }
         }
 
-        public bool IsActive //проверяем активность парсера.
-        {
-            get { return isActive; }
-        }
-
-        //Это событие возвращает спаршенные за итерацию данные( первый аргумент ссылка на парсер, и сами данные вторым аргументом)
-        //public event Action<object, T> OnNewData;
-        //Это событие отвечает информирование при завершении работы парсера.
-        public event Action<object> OnComplited;
-
-        //1-й конструктор, в качестве аргумента будет передеваться класс реализующий интерфейс IParser
         public ParserWorker(IParser parser)
         {
             this.parser = parser;
         }
 
-        public void Start() //Запускаем парсер
+        public void Start()
         {
-            // if (flag) Worker1();
                 Worker();
         }
 
 
         public async void Worker()
         {
-            //ssilki[0] = "https://www.e-katalog.ru/MSI-GEFORCE-RTX-3070-SUPRIM-X-8G.htm";
             for (int j = 0; j < ssilki.Count; j++)
             { 
             List<string> list = new List<string>();
             List<string> result = new List<string>();
-            //string j = "https://www.e-katalog.ru/list/188/";
             for (int i = 0; i <= 34; i++)
             {
-                //if (IsActive)
-                {
-                    string source = await loader.GetSourceByPage(i, ssilki[j]); //Получаем код страницы
-                                                                        //Здесь магия AngleShap, подробнее об интерфейсе IHtmlDocument и классе HtmlParser, 
-                                                                        //можно прочитать на GitHub, это интересное чтиво с примерами.
+                    string source = await loader.GetSourceByPage(i, ssilki[j]);
                     if (j == 0)
                     {
                             if (i > 36)
@@ -202,57 +167,42 @@ namespace SuperParser
                             resultPS = parser.Parse(document);
                             list.AddRange(resultPS);
                             Worker1(list, j, i);
-                        }
-                }
-                    //OnNewData?.Invoke(this, result);
+                    }
+                
             }
 
             }            
-            Console.WriteLine("1");
         }
 
-        public async Task<string> GetSourceByPage1(int i, List<string> list) // id - это id страницы
+        public async Task<string> GetSourceByPage1(int i, List<string> list)
         {
             string mainurl = "https://www.e-katalog.ru/";
-            string currentUrl1 = mainurl + list[i];//Подменяем {CurrentId} на номер страницы
-            HttpResponseMessage responce = await client.GetAsync(currentUrl1); //Получаем ответ с сайта.
+            string currentUrl1 = mainurl + list[i];
+            HttpResponseMessage responce = await client.GetAsync(currentUrl1); //Получаем ответ с сайта
             string source = default;
-            //if (responce != null && responce.StatusCode == HttpStatusCode.OK)
-            {
-                source = await responce.Content.ReadAsStringAsync(); //Помещаем код страницы в переменную.
-            }
+            source = await responce.Content.ReadAsStringAsync(); //Помещаем код страницы в переменную
             return source;
         }
-        public async Task<string> GetSourceByPageMB(int i, List<string> list,List<string>href) // id - это id страницы
+
+        public async Task<string> GetSourceByPageMB(int i, List<string> list, List<string>href)
         {
             string mainurl = href[0];
-            //string currentUrl1 = mainurl + list[i];//Подменяем {CurrentId} на номер страницы
-            HttpResponseMessage responce = await client.GetAsync(mainurl); //Получаем ответ с сайта.
+            HttpResponseMessage responce = await client.GetAsync(mainurl); //Получаем ответ с сайта
             string source = default;
-            //if (responce != null && responce.StatusCode == HttpStatusCode.OK)
-            {
-                source = await responce.Content.ReadAsStringAsync(); //Помещаем код страницы в переменную.
-            }
+            source = await responce.Content.ReadAsStringAsync(); //Помещаем код страницы в переменную
+            
             return source;
         }
         public object locker = new object();
         public async void Worker1(List<string> list,int k, int PageCount)
         {
-            isActive = false;
             List<List<string>> res = new List<List<string>>();
             List<string> result1 = new List<string>();
             List<string> categoties = new List<string>();
             List<string> hrefs = new List<string>();
-            //ContainerGPU CGPU = new ContainerGPU();
-           // int count = 0 + PageCount * 24;
 
             for (int i = 0; i < list.Count; i++)
             {
-                if (i==0)
-                {
-                    i++;
-                    i--;
-                }
                 string source = await GetSourceByPage1(i, list);
                 
                 if (k == 0)
@@ -283,10 +233,6 @@ namespace SuperParser
                     }
                     
                     NamesMB1 = parser.ParseNameBlue(document);
-                    //if (NamesMB[0] == " ASRock B550M Pro4")
-                    //{
-
-                    //}
                     hrefs = parser.ParseMB(document);
                     string source1 = await GetSourceByPageMB(i, list, hrefs);
                     HtmlParser domParser1 = new HtmlParser();
@@ -384,13 +330,6 @@ namespace SuperParser
                 }
             }
             count++;
-            //OnComplited?.Invoke(this);
-            //if (CCPU.listCPU.Count >= 91 && CGPU.listGPU.Count >= 113 && CPS.listPS.Count >= 84 && CMB.listMB.Count >= 117 && CSSD.listSSD.Count >= 119 && CCase.listCase.Count >= 111 && CRAM.listRAM.Count >= 93)
-            //{
-            //    //OnComplited?.Invoke(this);
-            //    isActive = false;
-            //}
-            isActive = true;
             if(count>=160)
             {
                 Serialize();
@@ -507,9 +446,6 @@ namespace SuperParser
                         if (prices1.Length > 7)
                         {
                             price = Convert.ToInt32(prices1[1]) * 1000 + Convert.ToInt32(prices1[2]);
-
-
-
                             foreach (string i in list)
                             {
                                 if (i.Contains("pin") && MBPins == "")
@@ -553,8 +489,6 @@ namespace SuperParser
                     string cores = "";
                     string threads = "";
                     string chipset = "";
-                    //if (socket.Contains("AMD")) chipset = "AMD";
-                    //else if (socket.Contains("Intel")) chipset = "Intel";
                     string memvol = "";
                     string memfreq = "";
                     string memtype = "";
@@ -596,8 +530,6 @@ namespace SuperParser
                                 }
                                 else socket = soc[1];
                             }
-
-
                             else if (i.Contains("cores"))
                             {
                                 cores = i;
@@ -624,15 +556,10 @@ namespace SuperParser
         
         public void GPU_Add(List<string> list, int j, List<string> PricesGPU1,List<string>NamesGPU1)
         {
-            // гитхаб сосать
             int price = 0;
             string name = NamesGPU1[0];
             bool fl = true;
             if (list.Count == 0) fl = false;
-            //foreach (var g in CGPU.listGPU)
-            {
-                //if (g.Name == name) fl = false;
-            }
             if (fl)
             {
                 string mem = null;
@@ -669,8 +596,6 @@ namespace SuperParser
                         {
                             length = i;
                         }
-
-
                     }
                     if (power == null)
                     {
@@ -683,7 +608,6 @@ namespace SuperParser
         }
         public void MotherBoard_Add(List<string> list, int j, List<string> categories, List<string> PricesMB1, List<string> NamesMB1)
         {
-            // гитхаб сосать
             int price = 0;
             bool fl = true; 
             string name = NamesMB1[0];

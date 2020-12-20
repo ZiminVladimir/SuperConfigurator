@@ -25,10 +25,8 @@ namespace SuperConfigurator
         public MainWindow()
         {
             parser_E_Catalog = new ParserWorker(new E_CatalogParser());
-            parser_E_Catalog.OnComplited += Parser_OnComplited;
             InitializeComponent();
         }
-        public void Parser_OnComplited(object o) { MessageBox.Show("Работа завершена!"); }
         
 
         private void BaseUpdate1_MouseDown(object sender, MouseButtonEventArgs e)

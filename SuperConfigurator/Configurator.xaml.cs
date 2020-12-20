@@ -77,8 +77,8 @@ namespace SuperConfigurator
 
         private void BuildAllPC_Click(object sender, RoutedEventArgs e)
         {
-            if (BudgetTextBox.Text == "") MessageBox.Show("Введите ваш бюджет в рублях!");
-            else
+            //if (BudgetTextBox.Text == "") MessageBox.Show("Введите ваш бюджет в рублях!");
+            //else
             {
                 try
                 {
@@ -93,9 +93,6 @@ namespace SuperConfigurator
             {
                 if (budget >= 30000)
                 {
-                    
-                    
-
                     // Поиск видеокарты
                     int max = 0;
                     double tempprice = 0;
@@ -573,12 +570,6 @@ namespace SuperConfigurator
                             {
                                 var v = r.Volume.Split();
                                 string volume = v[0];
-                                //var frRam = r.Frequency.Split();
-                                //string frecram = v[0];//for фриквенси для рам 
-                                //var frCPU = chosencpu.MemFreq.Split();
-                                //string freccpu = v[0];// для фриквенси проца
-                                //var frMB = chosenmb.MemFreq.Split();
-                                //string frecMB = v[0];// для фриквенси матери
                                 if (r.Number.Contains("1") && r.FormFactor == "DIMM" && r.Price < 1500 && int.Parse(volume) == 4 && r.Price < max2 && r.Type == chosencpu.MemType)
                                 {
                                     max2 = r.Price;
@@ -607,12 +598,6 @@ namespace SuperConfigurator
                         {
                             var v = r.Volume.Split();
                             string volume = v[0];
-                            //var frRam = r.Frequency.Split();
-                            //string frecram = v[0];//for фриквенси для рам 
-                            //var frCPU = chosencpu.MemFreq.Split();
-                            //string freccpu = v[0];// для фриквенси проца
-                            //var frMB = chosenmb.MemFreq.Split();
-                            //string frecMB = v[0];// для фриквенси матери
                             if (r.Number.Contains("1") && r.FormFactor == "DIMM" && r.Price < 2600 && int.Parse(volume) == 8 && r.Price < max2 && r.Type == chosencpu.MemType)
                             {
                                 max2 = r.Price;
@@ -640,12 +625,6 @@ namespace SuperConfigurator
                         {
                             var v = r.Volume.Split();
                             string volume = v[0];
-                            //var frRam = r.Frequency.Split();
-                            //string frecram = v[0];//for фриквенси для рам 
-                            //var frCPU = chosencpu.MemFreq.Split();
-                            //string freccpu = v[0];// для фриквенси проца
-                            //var frMB = chosenmb.MemFreq.Split();
-                            //string frecMB = v[0];// для фриквенси матери
                             if (r.Number.Contains("1") && r.FormFactor == "DIMM" && r.Price < 3000 && int.Parse(volume) == 8 && r.Price < max2 && r.Type == chosencpu.MemType)
                             {
                                 max2 = r.Price;
@@ -673,12 +652,6 @@ namespace SuperConfigurator
                         {
                             var v = r.Volume.Split();
                             string volume = v[0];
-                            //var frRam = r.Frequency.Split();
-                            //string frecram = v[0];//for фриквенси для рам 
-                            //var frCPU = chosencpu.MemFreq.Split();
-                            //string freccpu = v[0];// для фриквенси проца
-                            //var frMB = chosenmb.MemFreq.Split();
-                            //string frecMB = v[0];// для фриквенси матери
                             if (r.Number.Contains("1") && r.FormFactor == "DIMM" && r.Price < 6000 && int.Parse(volume) == 16 && r.Price < max2 && r.Type == chosencpu.MemType)
                             {
                                 max2 = r.Price;
@@ -1050,8 +1023,7 @@ namespace SuperConfigurator
                     }
                     Write();
                 }
-                else if (budget < 30000 && budget > -1) MessageBox.Show("К сожалению, наименьший бюджет для сборки ПК в нашем сервисе — 30.000 рублей.");
-                else MessageBox.Show("Введите ваш бюджет в рублях!");
+                else if (budget < 30000) MessageBox.Show("Наименьший бюджет для сборки ПК в нашем сервисе — 30.000 рублей.");
                 //if (budget == 0) MessageBox.Show("Введите ваш бюджет в рублях!");
             }
         }
@@ -1087,11 +1059,10 @@ namespace SuperConfigurator
 
             FinalComponentsLabel.Content = sb.ToString();
         }
-            private void Exit_Click(object sender, RoutedEventArgs e)
-            {
-                MessageBox.Show("Благодарим за использование нашего сервиса! Если у вас есть предложения по добавлению функционала или приложение работает некорректно, то направляйте запросы на электронную почту kb11so@yandex.ru.");
-                Close();
-            }
-        
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Благодарим за использование нашего сервиса! Если у вас есть предложения по добавлению функционала или приложение работает некорректно — направляйте запросы на электронную почту kb11so@yandex.ru.");
+            Close();
+        }
     }
 }
