@@ -15,7 +15,7 @@
         <TextBox x:Name="Check" HorizontalAlignment="Left" Height="23" Margin="231,146,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="91" FontSize="18" Background="#FFFFFF0A"/>
         <Button x:Name="ButtonOK" Content="ОК" HorizontalAlignment="Left" Margin="107,200,0,0" VerticalAlignment="Top" Width="87" Height="24" Click="ButtonOK_Click"/>
         <Button x:Name="ButtonNOOk" Content="Отмена" HorizontalAlignment="Left" Margin="362,200,0,0" VerticalAlignment="Top" Width="87" Height="24" Grid.ColumnSpan="2" Click="ButtonNOOk_Click"/>
-        <ProgressBar x:Name="ProgressBar" HorizontalAlignment="Left" Height="17" Margin="64,238,0,0" VerticalAlignment="Top" Width="432" RenderTransformOrigin="0.5,0.5" Maximum="36" Grid.ColumnSpan="2" Visibility="Hidden">
+        <ProgressBar x:Name="ProgressBar" HorizontalAlignment="Left" Height="17" Margin="64,238,0,0" VerticalAlignment="Top" Width="432" RenderTransformOrigin="0.5,0.5" Maximum="161" Grid.ColumnSpan="2" Visibility="Hidden">
             <ProgressBar.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>

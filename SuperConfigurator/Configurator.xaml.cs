@@ -25,6 +25,7 @@ namespace SuperConfigurator
     public partial class Configurator : Window
     {
         int budget = -1;
+        bool two = false;
         List<CPU> cpus;
         List<GPU> gpus;
         List<HDD> hdds;
@@ -43,31 +44,31 @@ namespace SuperConfigurator
         Case chosencase = new Case();
         public Configurator()
         {
-           using(var sr = new StreamReader("GPU.json"))
+           using(var sr = new StreamReader(@"Resources\GPU.json"))
             {
                 gpus = JsonConvert.DeserializeObject<List<GPU>>(sr.ReadToEnd());
             }
-            using (var sr = new StreamReader("MB.json"))
+            using (var sr = new StreamReader(@"Resources\MB.json"))
             {
                 mbs = JsonConvert.DeserializeObject<List<MotherBoard>>(sr.ReadToEnd());
             }
-            using (var sr = new StreamReader("CPU.json"))
+            using (var sr = new StreamReader(@"Resources\CPU.json"))
             {
                 cpus = JsonConvert.DeserializeObject<List<CPU>>(sr.ReadToEnd());
             }
-            using (var sr = new StreamReader("RAM.json"))
+            using (var sr = new StreamReader(@"Resources\RAM.json"))
             {
                 rams = JsonConvert.DeserializeObject<List<RAM>>(sr.ReadToEnd());
             }
-            using (var sr = new StreamReader("PS.json"))
+            using (var sr = new StreamReader(@"Resources\PS.json"))
             {
                 pss = JsonConvert.DeserializeObject<List<PowerSupply>>(sr.ReadToEnd());
             }
-            using (var sr = new StreamReader("Case.json"))
+            using (var sr = new StreamReader(@"Resources\Case.json"))
             {
                 cs = JsonConvert.DeserializeObject<List<Case>>(sr.ReadToEnd());
             }
-            using (var sr = new StreamReader("SSD.json"))
+            using (var sr = new StreamReader(@"Resources\SSD.json"))
             {
                 ssds = JsonConvert.DeserializeObject<List<SSD>>(sr.ReadToEnd());
             }
@@ -148,9 +149,9 @@ namespace SuperConfigurator
                     {
                         var cor = c.Cores.Split();
                         int co = int.Parse(cor[0]);
-                        if (co < 17 && !c.Socket.Contains("SP3") && !c.Socket.Contains("2066") && !c.Name.Contains("Xeon"))
+                        if (co < 17 && !c.Socket.Contains("SP3") && !c.Socket.Contains("2066") && !c.Name.Contains("Xeon") && !c.Name.Contains("Threadripper"))
                         {
-                            if (c.Price <= tempprice && co > cores && c.Price >= tempprice / 2) { max = c.Price; cores = co; }
+                            if (c.Price <= tempprice && co > cores && c.Price >= tempprice / 3) { max = c.Price; cores = co; }
                         }
                     }
                     foreach (CPU c in cpus)
@@ -160,7 +161,14 @@ namespace SuperConfigurator
                             chosencpu = c;
                         }
                     }
-
+                    int count = 0;
+                    foreach (var m in mbs)
+                    {
+                        if (m.Socket.Contains("1200"))
+                        {
+                            count++;
+                        }
+                    }
                     // Поиск матери
                     max = 0;
                     string namemb = "";
@@ -338,8 +346,222 @@ namespace SuperConfigurator
                             }
                         }
                     }
+                    if (chosenmb.Name == null)
+                    {
+                        while (chosenmb.Name == null)
+                        {
+                            max = 0;
+                            cores = 0;
+                            tempprice = budget * 0.21;
+                            string namecpu = "";
+                            foreach (CPU c in cpus)
+                            {
+                                if (c.Socket.Equals(chosencpu.Socket))
+                                {
+                                    continue;
+                                }
+                                var cor = c.Cores.Split();
+                                int co = int.Parse(cor[0]);
+                                if (co < 17 && !c.Socket.Contains("SP3") && !c.Socket.Contains("2066") && !c.Name.Contains("Xeon") && !c.Name.Contains("Threadripper") && !c.Name.Equals(chosencpu.Name))
+                                {
+                                    if (c.Price <= tempprice && co > cores && c.Price >= tempprice / 3) { max = c.Price; cores = co; namecpu = c.Name; }
+                                }
+                            }
+                            foreach (CPU c in cpus)
+                            {
+                                if (c.Price == max && c.Name == namecpu)
+                                {
+                                    chosencpu = c;
+                                }
+                            }
+
+                            max = 0;
+                            namemb = "";
+                            if (chosencpu.Chipset == "AMD") //Амуде
+                            {
+                                if (budget < 60000)
+                                {
+                                    foreach (MotherBoard m in mbs)
+                                    {
+                                        string soc = "";
+                                        if (chosencpu.Socket.Split().Length == 1)
+                                        {
+                                            soc = "AMD" + " " + chosencpu.Socket;
+                                        }
+                                        if (m.Socket == soc && m.Price < 5000 && m.Price > max) { max = m.Price; namemb = m.Name; }
+                                    }
+                                    foreach (MotherBoard m in mbs)
+                                    {
+                                        if (m.Price == max && m.Name == namemb)
+                                        {
+                                            chosenmb = m;
+                                        }
+                                    }
+                                }
+                                else if (budget >= 60000 && budget < 81000)
+                                {
+                                    foreach (MotherBoard m in mbs)
+                                    {
+                                        string soc = "";
+                                        if (chosencpu.Socket.Split().Length == 1)
+                                        {
+                                            soc = "AMD" + " " + chosencpu.Socket;
+                                        }
+                                        if (m.Socket == soc && m.Price < 6000 && m.Price > max) { max = m.Price; namemb = m.Name; }
+                                    }
+                                    foreach (MotherBoard m in mbs)
+                                    {
+                                        if (m.Price == max && m.Name == namemb)
+                                        {
+                                            chosenmb = m;
+                                        }
+                                    }
+                                }
+                                else if (budget >= 81000 && budget < 101000)
+                                {
+                                    foreach (MotherBoard m in mbs)
+                                    {
+                                        string soc = "";
+                                        if (chosencpu.Socket.Split().Length == 1)
+                                        {
+                                            soc = "AMD" + " " + chosencpu.Socket;
+                                        }
+                                        if (m.Socket == soc && m.Price < 7000 && m.Price > max)
+                                        {
+                                            max = m.Price;
+                                            namemb = m.Name;
+                                        }
+                                    }
+                                    foreach (MotherBoard m in mbs)
+                                    {
+                                        if (m.Price == max && m.Name == namemb)
+                                        {
+                                            chosenmb = m;
+                                        }
+                                    }
+                                }
+                                else if (budget >= 101000)
+                                {
+                                    foreach (MotherBoard m in mbs)
+                                    {
+                                        string soc = "";
+                                        if (chosencpu.Socket.Split().Length == 1)
+                                        {
+                                            soc = "AMD" + " " + chosencpu.Socket;
+                                        }
+                                        if (m.Socket == soc && m.Price < 20000 && m.Price > max)
+                                        {
+                                            max = m.Price;
+                                            namemb = m.Name;
+                                        }
+                                    }
+                                    foreach (MotherBoard m in mbs)
+                                    {
+                                        if (m.Price == max && m.Name == namemb)
+                                        {
+                                            chosenmb = m;
+                                        }
+                                    }
+                                }
+                            }
+                            else if (chosencpu.Chipset != "AMD") //Интуль
+                            {
+                                if (budget <= 49000)
+                                {
+                                    foreach (MotherBoard m in mbs)
+                                    {
+                                        if (m.Socket == chosencpu.Socket && m.Price < 4500 && m.Price > max) { max = m.Price; namemb = m.Name; }
+                                    }
+                                    foreach (MotherBoard m in mbs)
+                                    {
+                                        if (m.Price == max && m.Name == namemb)
+                                        {
+                                            chosenmb = m;
+                                        }
+                                    }
+                                }
+                                else if (budget < 60000 && budget > 49000)
+                                {
+                                    foreach (MotherBoard m in mbs)
+                                    {
+                                        if (m.Socket == chosencpu.Socket && m.Price < 5000 && m.Price > max) { max = m.Price; namemb = m.Name; }
+                                    }
+                                    foreach (MotherBoard m in mbs)
+                                    {
+                                        if (m.Price == max && m.Name == namemb)
+                                        {
+                                            chosenmb = m;
+                                        }
+                                    }
+                                }
+                                else if (budget >= 60000 && budget < 81000)
+                                {
+                                    foreach (MotherBoard m in mbs)
+                                    {
+                                        if (m.Socket == chosencpu.Socket && m.Price < 6000 && m.Price > max) { max = m.Price; namemb = m.Name; }
+                                    }
+                                    foreach (MotherBoard m in mbs)
+                                    {
+                                        if (m.Price == max && m.Name == namemb)
+                                        {
+                                            chosenmb = m;
+                                        }
+                                    }
+                                }
+                                else if (budget >= 81000 && budget < 101000)
+                                {
+                                    foreach (MotherBoard m in mbs)
+                                    {
+                                        if (m.Socket == chosencpu.Socket && m.Price < 7000 && m.Price > max) { max = m.Price; namemb = m.Name; }
+                                    }
+                                    foreach (MotherBoard m in mbs)
+                                    {
+                                        if (m.Price == max && m.Name == namemb)
+                                        {
+                                            chosenmb = m;
+                                        }
+                                    }
+                                }
+                                else if (budget >= 101000 && budget < 120000)
+                                {
+                                    foreach (MotherBoard m in mbs)
+                                    {
+                                        if (m.Socket == chosencpu.Socket && m.Price < 11000 && m.Price > max) { max = m.Price; namemb = m.Name; }
+                                    }
+                                    foreach (MotherBoard m in mbs)
+                                    {
+                                        if (m.Price == max && m.Name == namemb)
+                                        {
+                                            chosenmb = m;
+                                        }
+                                    }
+                                }
+                                else if (budget > 120000)
+                                {
+                                    foreach (MotherBoard m in mbs)
+                                    {
+                                        if (m.Socket == chosencpu.Socket && m.Price < 20000 && m.Price > max) { max = m.Price; namemb = m.Name; }
+                                    }
+                                    foreach (MotherBoard m in mbs)
+                                    {
+                                        if (m.Price == max && m.Name == namemb)
+                                        {
+                                            chosenmb = m;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
 
                     // Выбираем память
+                    foreach(var r in rams)
+                    {
+                        if (r.Number.Contains("2") && r.FormFactor == "DIMM" && r.Price < 4000 && int.Parse(r.Volume[0].ToString()) == 8 && r.Price < 9999)
+                        {
+
+                        }
+                    }
                     max = 0;
                     int max2 = 9999;
                     string namer = "";
@@ -347,15 +569,29 @@ namespace SuperConfigurator
                     {
                         foreach (RAM r in rams)
                         {
-                            var v = r.Volume.Split();
-                            string volume = v[0];
-                            var frRam = r.Frequency.Split();
-                            string frecram = v[0];//for фриквенси для рам 
-                            var frCPU = chosencpu.MemFreq.Split();
-                            string freccpu = v[0];// для фриквенси проца
-                            var frMB = chosenmb.MemFreq.Split();
-                            string frecMB = v[0];// для фриквенси матери
-                            if (r.FormFactor == "DIMM" && r.Price < 1500 && int.Parse(volume) == 4 && r.Price < max2 && r.Type == chosencpu.MemType && int.Parse(frecram) <= int.Parse(freccpu) && int.Parse(frecram) <= int.Parse(frecMB)) { max2 = r.Price; namer = r.Name; }
+                            if (r.Price < 3700)
+                            {
+                                var v = r.Volume.Split();
+                                string volume = v[0];
+                                //var frRam = r.Frequency.Split();
+                                //string frecram = v[0];//for фриквенси для рам 
+                                //var frCPU = chosencpu.MemFreq.Split();
+                                //string freccpu = v[0];// для фриквенси проца
+                                //var frMB = chosenmb.MemFreq.Split();
+                                //string frecMB = v[0];// для фриквенси матери
+                                if (r.Number.Contains("1") && r.FormFactor == "DIMM" && r.Price < 1500 && int.Parse(volume) == 4 && r.Price < max2 && r.Type == chosencpu.MemType)
+                                {
+                                    max2 = r.Price;
+                                    namer = r.Name;
+                                    two = false;
+                                }
+                                else if (r.Number.Contains("2") && r.FormFactor == "DIMM" && r.Price < 3700 && int.Parse(volume) == 8 && r.Price < max2 && r.Type == chosencpu.MemType)
+                                {
+                                    max2 = r.Price;
+                                    namer = r.Name;
+                                    two = true;
+                                }
+                            }
                         }
                         foreach (RAM r in rams)
                         {
@@ -371,13 +607,24 @@ namespace SuperConfigurator
                         {
                             var v = r.Volume.Split();
                             string volume = v[0];
-                            var frRam = r.Frequency.Split();
-                            string frecram = v[0];//for фриквенси для рам 
-                            var frCPU = chosencpu.MemFreq.Split();
-                            string freccpu = v[0];// для фриквенси проца
-                            var frMB = chosenmb.MemFreq.Split();
-                            string frecMB = v[0];// для фриквенси матери
-                            if (r.FormFactor == "DIMM" && r.Price < 2600 && int.Parse(volume) == 8 && r.Price < max2 && r.Type == chosencpu.MemType && int.Parse(frecram) <= int.Parse(freccpu) && int.Parse(frecram) <= int.Parse(frecMB)) { max2 = r.Price; namer = r.Name; }
+                            //var frRam = r.Frequency.Split();
+                            //string frecram = v[0];//for фриквенси для рам 
+                            //var frCPU = chosencpu.MemFreq.Split();
+                            //string freccpu = v[0];// для фриквенси проца
+                            //var frMB = chosenmb.MemFreq.Split();
+                            //string frecMB = v[0];// для фриквенси матери
+                            if (r.Number.Contains("1") && r.FormFactor == "DIMM" && r.Price < 2600 && int.Parse(volume) == 8 && r.Price < max2 && r.Type == chosencpu.MemType)
+                            {
+                                max2 = r.Price;
+                                namer = r.Name;
+                                two = false;
+                            }
+                            else if (r.Number.Contains("2") && r.FormFactor == "DIMM" && r.Price < 5500 && int.Parse(volume) == 16 && r.Price < max2 && r.Type == chosencpu.MemType)
+                            {
+                                max2 = r.Price;
+                                namer = r.Name;
+                                two = true;
+                            }
                         }
                         foreach (RAM r in rams)
                         {
@@ -399,7 +646,18 @@ namespace SuperConfigurator
                             //string freccpu = v[0];// для фриквенси проца
                             //var frMB = chosenmb.MemFreq.Split();
                             //string frecMB = v[0];// для фриквенси матери
-                            if (r.FormFactor == "DIMM" && r.Price < 3000 && int.Parse(volume) == 8 && r.Price > max && r.Type == chosencpu.MemType) { max2 = r.Price; namer = r.Name; }
+                            if (r.Number.Contains("1") && r.FormFactor == "DIMM" && r.Price < 3000 && int.Parse(volume) == 8 && r.Price < max2 && r.Type == chosencpu.MemType)
+                            {
+                                max2 = r.Price;
+                                namer = r.Name;
+                                two = false;
+                            }
+                            else if (r.Number.Contains("2") && r.FormFactor == "DIMM" && r.Price < 6300 && int.Parse(volume) == 16 && r.Price < max2 && r.Type == chosencpu.MemType)
+                            {
+                                max2 = r.Price;
+                                namer = r.Name;
+                                two = true;
+                            }
                         }
                         foreach (RAM r in rams)
                         {
@@ -415,13 +673,24 @@ namespace SuperConfigurator
                         {
                             var v = r.Volume.Split();
                             string volume = v[0];
-                            var frRam = r.Frequency.Split();
-                            string frecram = v[0];//for фриквенси для рам 
-                            var frCPU = chosencpu.MemFreq.Split();
-                            string freccpu = v[0];// для фриквенси проца
-                            var frMB = chosenmb.MemFreq.Split();
-                            string frecMB = v[0];// для фриквенси матери
-                            if (r.FormFactor == "DIMM" && r.Price < 6100 && int.Parse(volume) == 16 && r.Price > max && r.Type == chosencpu.MemType && int.Parse(frecram) <= int.Parse(freccpu) && int.Parse(frecram) <= int.Parse(frecMB)) { max2 = r.Price; namer = r.Name; }
+                            //var frRam = r.Frequency.Split();
+                            //string frecram = v[0];//for фриквенси для рам 
+                            //var frCPU = chosencpu.MemFreq.Split();
+                            //string freccpu = v[0];// для фриквенси проца
+                            //var frMB = chosenmb.MemFreq.Split();
+                            //string frecMB = v[0];// для фриквенси матери
+                            if (r.Number.Contains("1") && r.FormFactor == "DIMM" && r.Price < 6000 && int.Parse(volume) == 16 && r.Price < max2 && r.Type == chosencpu.MemType)
+                            {
+                                max2 = r.Price;
+                                namer = r.Name;
+                                two = false;
+                            }
+                            else if (r.Number.Contains("2") && r.FormFactor == "DIMM" && r.Price < 13000 && int.Parse(volume) == 32 && r.Price < max2 && r.Type == chosencpu.MemType)
+                            {
+                                max2 = r.Price;
+                                namer = r.Name;
+                                two = true;
+                            }
                         }
                         foreach (RAM r in rams)
                         {
@@ -795,9 +1064,20 @@ namespace SuperConfigurator
             sb.AppendLine();
             sb.AppendFormat("Материнская плата:" + chosenmb.Name + " ——— " + chosenmb.Price.ToString());
             sb.AppendLine();
-            int price = chosenram.Price * 2;
-            sb.AppendFormat("Оперативная память:" + chosenram.Name + " (" + chosenram.Volume + "+" + chosenram.Volume + ") ——— " + price.ToString() + "(2 плашки)");
-            sb.AppendLine();
+            if (two)
+            {
+                int price = chosenram.Price;
+                var v = chosenram.Volume.Split();
+                int vol = int.Parse(v[0]) / 2;
+                sb.AppendFormat("Оперативная память:" + chosenram.Name + " (" + vol + "ГБ" + "+" + vol + "ГБ" + ") ——— " + price.ToString() + "(2 плашки)");
+                sb.AppendLine();
+            }
+            else
+            {
+                int price = chosenram.Price * 2;
+                sb.AppendFormat("Оперативная память:" + chosenram.Name + " (" + chosenram.Volume + "+" + chosenram.Volume + ") ——— " + price.ToString() + "(2 плашки)");
+                sb.AppendLine();
+            }
             sb.AppendFormat("Блок питания:" + chosenps.Name + " " + chosenps.Power + " ——— " + chosenps.Price.ToString());
             sb.AppendLine();
             sb.AppendFormat("Твердотельный накопитель:" + chosenssd.Name + " " + chosenssd.Volume + " ——— " + chosenssd.Price.ToString());

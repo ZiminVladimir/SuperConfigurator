@@ -118,6 +118,13 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Resource Include="Resources\Case.json" />
+    <Resource Include="Resources\CPU.json" />
+    <Resource Include="Resources\GPU.json" />
+    <Resource Include="Resources\MB.json" />
+    <Resource Include="Resources\PS.json" />
+    <Resource Include="Resources\RAM.json" />
+    <Resource Include="Resources\SSD.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
