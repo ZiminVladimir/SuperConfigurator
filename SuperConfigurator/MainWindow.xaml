@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SuperConfigurator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" ResizeMode="NoResize" Icon="earth.png">
+        Title="Super Configurator" Height="450" Width="800" ResizeMode="NoResize" Icon="earth.png">
     <Window.Background>
         <ImageBrush ImageSource="1600179956_1-p-fon-dlya-prezentatsii-po-informatike-1.jpg"/>
     </Window.Background>
