@@ -28,7 +28,7 @@ namespace SuperConfigurator
             sb.AppendLine();
             sb.Append("Данная процедура может занять до 4 часов и потребует ресурсов вашего компьютера.");
             sb.AppendLine();
-            sb.Append("Для того, чтобы продолжить, напишите в поле нижк слово Обновить.");
+            sb.Append("Для того, чтобы продолжить, напишите в поле ниже слово Обновить.");
             LabelWarning = new Label();
             LabelWarning.Content = sb.ToString();
             parser_E_Catalog = new ParserWorker(new E_CatalogParser());
