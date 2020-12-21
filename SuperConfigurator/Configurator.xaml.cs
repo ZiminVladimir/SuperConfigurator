@@ -1026,6 +1026,10 @@ namespace SuperConfigurator
                 else if (budget < 30000) MessageBox.Show("Наименьший бюджет для сборки ПК в нашем сервисе — 30.000 рублей.");
                 //if (budget == 0) MessageBox.Show("Введите ваш бюджет в рублях!");
             }
+            else if (budget >= 501000)
+            {
+                MessageBox.Show("Макисмальный бюджет для сборки — 500.000 рублей.");
+            }
         }
         private void Write()
         {
