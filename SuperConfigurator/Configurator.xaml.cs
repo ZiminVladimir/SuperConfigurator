@@ -24,6 +24,12 @@ namespace SuperConfigurator
     /// </summary>
     public partial class Configurator : Window
     {
+        BudgetsAndGigs bg;
+        int gpu;
+        int cpu;
+        int gigs;
+        bool memo = false;
+
         int budget = -1;
         bool two = false;
         List<CPU> cpus;
@@ -75,6 +81,27 @@ namespace SuperConfigurator
             InitializeComponent();
         }
 
+        private void GPUBudgetCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            CheckBox GPUBudgetCheckBox = (CheckBox)sender;
+            if (GPUBudgetCheckBox.IsChecked == true) BudgetGPUTextBox.Visibility = Visibility.Visible;
+            else if (GPUBudgetCheckBox.IsChecked == false) BudgetGPUTextBox.Visibility = Visibility.Hidden;
+        }
+
+        private void CPUBudgetCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            CheckBox CPUBudgetCheckBox = (CheckBox)sender;
+            if (CPUBudgetCheckBox.IsChecked == true) BudgetCPUTextBox.Visibility = Visibility.Visible;
+            else if (CPUBudgetCheckBox.IsChecked == false) BudgetCPUTextBox.Visibility = Visibility.Hidden;
+        }
+
+        private void GigsCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            CheckBox GigsCheckBox = (CheckBox)sender;
+            if (GigsCheckBox.IsChecked == true) GigsTextBox.Visibility = Visibility.Visible;
+            else if (GigsCheckBox.IsChecked == false) GigsTextBox.Visibility = Visibility.Hidden;
+        }
+
         private void BuildAllPC_Click(object sender, RoutedEventArgs e)
         {
             //if (BudgetTextBox.Text == "") MessageBox.Show("Введите ваш бюджет в рублях!");
@@ -83,12 +110,18 @@ namespace SuperConfigurator
                 try
                 {
                     budget = int.Parse(BudgetTextBox.Text);
+                    if (BudgetGPUTextBox.Visibility == Visibility.Visible) gpu = int.Parse(BudgetGPUTextBox.Text);
+                    if (BudgetCPUTextBox.Visibility == Visibility.Visible) cpu = int.Parse(BudgetCPUTextBox.Text);
+                    if (GigsTextBox.Visibility == Visibility.Visible) gigs = int.Parse(GigsTextBox.Text);
                 }
                 catch (Exception)
                 {
                     MessageBox.Show("Введите ваш бюджет в рублях!");
                 }
             }
+
+            bg = new BudgetsAndGigs(budget, gpu, cpu, gigs);
+            int gpuprice = bg.GPUBudget;
             if (budget < 501000)
             {
                 if (budget >= 30000)
@@ -97,10 +130,15 @@ namespace SuperConfigurator
                     int max = 0;
                     double tempprice = 0;
                     string nameg = "";
+                    
                     if (budget > 45000)
                     {
-                        tempprice = budget * 0.4;
-
+                        if (gpuprice == 0)
+                        {
+                            tempprice = budget * 0.4;
+                            memo = true;
+                        }
+                        else tempprice = bg.GPUBudget;
                         foreach (GPU g in gpus)
                         {
                             if (g.Name != "" && !g.Name.Contains("PNY") && !g.Name.Contains("Quadro"))
@@ -108,7 +146,14 @@ namespace SuperConfigurator
                                 var m = g.Memory.Split();
                                 int mem = 0;
                                 if (m[0].Length < 3) mem = int.Parse(m[0]);
-                                if (g.Price > max && g.Price <= tempprice && mem > 4) { max = g.Price; nameg = g.Name; }
+                                if (memo)
+                                {
+                                    if (g.Price > max && g.Price <= tempprice && mem > 4) { max = g.Price; nameg = g.Name; }
+                                }
+                                else
+                                {
+                                    if (g.Price > max && g.Price <= tempprice) { max = g.Price; nameg = g.Name; }
+                                }
                             }
                         }
                         foreach (GPU g in gpus)
@@ -121,7 +166,11 @@ namespace SuperConfigurator
                     }
                     else if (budget <= 45000)
                     {
-                        tempprice = budget * 0.35;
+                        if (gpuprice == 0)
+                        {
+                            tempprice = budget * 0.35;
+                        }
+                        else tempprice = bg.GPUBudget;
                         foreach (GPU g in gpus)
                         {
                             if (g.Name.Length > 4 && !g.Name.Contains("PNY") && !g.Name.Contains("Quadro"))
@@ -141,9 +190,15 @@ namespace SuperConfigurator
                     // Поиск процессора
                     max = 0;
                     int cores = 0;
+                    int cpuprice = bg.CPUBudget;
                     tempprice = budget * 0.21;
                     foreach (CPU c in cpus)
                     {
+                        if (cpuprice == 0)
+                        {
+                            tempprice = budget * 0.21;
+                        }
+                        else tempprice = bg.CPUBudget;
                         var cor = c.Cores.Split();
                         int co = int.Parse(cor[0]);
                         if (co < 17 && !c.Socket.Contains("SP3") && !c.Socket.Contains("2066") && !c.Name.Contains("Xeon") && !c.Name.Contains("Threadripper"))
@@ -158,14 +213,7 @@ namespace SuperConfigurator
                             chosencpu = c;
                         }
                     }
-                    int count = 0;
-                    foreach (var m in mbs)
-                    {
-                        if (m.Socket.Contains("1200"))
-                        {
-                            count++;
-                        }
-                    }
+
                     // Поиск матери
                     max = 0;
                     string namemb = "";
@@ -974,7 +1022,7 @@ namespace SuperConfigurator
                             chosencase = c;
                         }
                     }
-                    max =chosencpu.Price + chosengpu.Price + chosenmb.Price + chosenps.Price + chosenram.Price + chosenram.Price + chosenssd.Price + chosencase.Price;
+                    max = chosencpu.Price + chosengpu.Price + chosenmb.Price + chosenps.Price + chosenram.Price + chosenram.Price + chosenssd.Price + chosencase.Price;
                     int ost = budget - max;
                     if (ost > 500)
                     {
@@ -1030,37 +1078,51 @@ namespace SuperConfigurator
             {
                 MessageBox.Show("Макисмальный бюджет для сборки — 500.000 рублей.");
             }
+            gpu = 0;
+            cpu = 0;
+            gigs = 0;
         }
         private void Write()
         {
+            int price; 
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("Видеокарта:" + chosengpu.Name + " ——— " + chosengpu.Price.ToString());
             sb.AppendLine();
+            sb.AppendLine();
             sb.AppendFormat("Процессор:" + chosencpu.Name + " ——— " + chosencpu.Price.ToString());
+            sb.AppendLine();
             sb.AppendLine();
             sb.AppendFormat("Материнская плата:" + chosenmb.Name + " ——— " + chosenmb.Price.ToString());
             sb.AppendLine();
+            sb.AppendLine();
             if (two)
             {
-                int price = chosenram.Price;
+                price = chosenram.Price;
                 var v = chosenram.Volume.Split();
                 int vol = int.Parse(v[0]) / 2;
                 sb.AppendFormat("Оперативная память:" + chosenram.Name + " (" + vol + "ГБ" + "+" + vol + "ГБ" + ") ——— " + price.ToString() + "(2 плашки)");
                 sb.AppendLine();
+                sb.AppendLine();
             }
             else
             {
-                int price = chosenram.Price * 2;
+                price = chosenram.Price * 2;
                 sb.AppendFormat("Оперативная память:" + chosenram.Name + " (" + chosenram.Volume + "+" + chosenram.Volume + ") ——— " + price.ToString() + "(2 плашки)");
+                sb.AppendLine();
                 sb.AppendLine();
             }
             sb.AppendFormat("Блок питания:" + chosenps.Name + " " + chosenps.Power + " ——— " + chosenps.Price.ToString());
             sb.AppendLine();
+            sb.AppendLine();
             sb.AppendFormat("Твердотельный накопитель:" + chosenssd.Name + " " + chosenssd.Volume + " ——— " + chosenssd.Price.ToString());
+            sb.AppendLine();
             sb.AppendLine();
             sb.AppendFormat("Корпус:" + chosencase.Name + " ——— " + chosencase.Price.ToString());
             sb.AppendLine();
-
+            sb.AppendLine();
+            int all = chosencpu.Price + chosengpu.Price + chosenmb.Price + chosenps.Price + price + chosenssd.Price + chosencase.Price;
+            int ostatok = budget - all;
+            sb.AppendFormat("Остаток по бюджету: " + ostatok.ToString());
             FinalComponentsLabel.Content = sb.ToString();
         }
         private void Exit_Click(object sender, RoutedEventArgs e)
@@ -1068,5 +1130,7 @@ namespace SuperConfigurator
             MessageBox.Show("Благодарим за использование нашего сервиса! Если у вас есть предложения по добавлению функционала или приложение работает некорректно — направляйте запросы на электронную почту kb11so@yandex.ru.");
             Close();
         }
+
+        
     }
 }

@@ -68,6 +68,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BudgetsAndGigs.cs" />
     <Compile Include="Warning.xaml.cs">
       <DependentUpon>Warning.xaml</DependentUpon>
     </Compile>
