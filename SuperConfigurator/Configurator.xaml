@@ -15,7 +15,7 @@
             <ColumnDefinition Width="735*"/>
         </Grid.ColumnDefinitions>
         <TextBox x:Name="BudgetCPUTextBox" HorizontalAlignment="Left" Height="25" Margin="341.2,88,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="85" Grid.Column="1" Visibility="Hidden"/>
-        <Label x:Name="FinalComponentsLabel" Content="" Margin="22.2,164,30,9" Grid.Column="1"/>
+        <Label x:Name="FinalComponentsLabel" Content="" Margin="22.2,202,30,0" Grid.Column="1"/>
         <Button x:Name="BuildPC" Content="Собрать ПК" HorizontalAlignment="Left" Height="85" Margin="486.2,68,0,0" VerticalAlignment="Top" Width="85" Click="BuildAllPC_Click" Background="#FFE1E9FE" Grid.Column="1"/>
         <Label Content="Введите ваш общий бюджет в рублях" HorizontalAlignment="Left" Height="30" Margin="28.2,14,0,0" VerticalAlignment="Top" Width="294" FontFamily="Calibri" FontSize="14" Grid.Column="1"/>
         <Button x:Name="Exit" Content="Выход" HorizontalAlignment="Left" Height="85" Margin="620.2,68,0,0" VerticalAlignment="Top" Width="85" Click="Exit_Click" RenderTransformOrigin="2.078,-0.399" Background="#FFE1E9FE" Grid.Column="1"/>
@@ -28,5 +28,8 @@
         <CheckBox x:Name="GPUBudgetCheckBox" Content="CheckBox" HorizontalAlignment="Left" Height="18" Margin="10,56,0,0" VerticalAlignment="Top" Width="13" Grid.ColumnSpan="2" Click="GPUBudgetCheckBox_Click"/>
         <CheckBox x:Name="CPUBudgetCheckBox" Content="CheckBox" HorizontalAlignment="Left" Height="18" Margin="10,94,0,0" VerticalAlignment="Top" Width="13" Grid.ColumnSpan="2" Click="CPUBudgetCheckBox_Click"/>
         <CheckBox x:Name="GigsCheckBox" Content="CheckBox" HorizontalAlignment="Left" Height="18" Margin="10,134,0,0" VerticalAlignment="Top" Width="13" Grid.ColumnSpan="2" Click="GigsCheckBox_Click"/>
+        <TextBox x:Name="SSDTextBox" HorizontalAlignment="Left" Height="25" Margin="341.2,167,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="85" Grid.Column="1" Visibility="Hidden"/>
+        <Label Content="Ввести число гигабайт SSD самостоятельно" HorizontalAlignment="Left" Height="30" Margin="28.2,167,0,0" VerticalAlignment="Top" Width="294" FontFamily="Calibri" FontSize="14" Grid.Column="1"/>
+        <CheckBox x:Name="SSDCheckBox" Content="CheckBox" HorizontalAlignment="Left" Height="18" Margin="10,173,0,0" VerticalAlignment="Top" Width="13" Grid.ColumnSpan="2" Click="SSDCheckBox_Click"/>
     </Grid>
 </Window>

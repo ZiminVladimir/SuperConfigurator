@@ -28,12 +28,16 @@ namespace SuperConfigurator
         public int gpu;
         public int cpu;
         public int gigs;
-        public bool user = false;
+        public int ssd;
+        public bool usergpu = false;
+        public bool userram = false;
         public int max = 0;
         public double tempprice = 0;
         public string nameg = "";
         public string namemb = "";
         public int cores = 0;
+        public int allprice = 0;
+        int price;
 
 
         int budget = -1;
@@ -47,13 +51,13 @@ namespace SuperConfigurator
         List<SSD> ssds;
         List<Case> cs;
 
-        GPU chosengpu = new GPU();
-        CPU chosencpu = new CPU();
-        MotherBoard chosenmb = new MotherBoard();
-        RAM chosenram = new RAM();
-        PowerSupply chosenps = new PowerSupply();
-        SSD chosenssd = new SSD();
-        Case chosencase = new Case();
+        GPU chosengpu;
+        CPU chosencpu;
+        MotherBoard chosenmb;
+        RAM chosenram;
+        PowerSupply chosenps;
+        SSD chosenssd;
+        Case chosencase;
         public Configurator()
         {
            using(var sr = new StreamReader(@"Resources\GPU.json"))
@@ -108,14 +112,32 @@ namespace SuperConfigurator
             else if (GigsCheckBox.IsChecked == false) GigsTextBox.Visibility = Visibility.Hidden;
         }
 
+        private void SSDCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            CheckBox SSDCheckBox = (CheckBox)sender;
+            if (SSDCheckBox.IsChecked == true) SSDTextBox.Visibility = Visibility.Visible;
+            else if (SSDCheckBox.IsChecked == false) SSDTextBox.Visibility = Visibility.Hidden;
+        }
+
+        
+
         private void BuildAllPC_Click(object sender, RoutedEventArgs e)
         {
+            FinalComponentsLabel.Content = "";
+            chosengpu = new GPU();
+            chosencpu = new CPU();
+            chosenmb = new MotherBoard();
+            chosenram = new RAM();
+            chosenps = new PowerSupply();
+            chosenssd = new SSD();
+            chosencase = new Case();
             try
             {
                 budget = int.Parse(BudgetTextBox.Text);
                 if (BudgetGPUTextBox.Visibility == Visibility.Visible) gpu = int.Parse(BudgetGPUTextBox.Text);
                 if (BudgetCPUTextBox.Visibility == Visibility.Visible) cpu = int.Parse(BudgetCPUTextBox.Text);
                 if (GigsTextBox.Visibility == Visibility.Visible) gigs = int.Parse(GigsTextBox.Text);
+                if (SSDTextBox.Visibility == Visibility.Visible) ssd = int.Parse(SSDTextBox.Text);
             }
             catch (Exception)
             {
@@ -125,6 +147,7 @@ namespace SuperConfigurator
             bg = new BudgetsAndGigs(budget, gpu, cpu, gigs);
             int gpuprice = bg.GPUBudget;
             int cpuprice = bg.CPUBudget;
+            int ramgigs = bg.Gigs;
             if (budget < 501000)
             {
                 if (budget >= 30000)
@@ -136,10 +159,18 @@ namespace SuperConfigurator
                     else
                     {
                         GPUChoose_Users(gpuprice);
-                        user = true;
+                        usergpu = true;
                     }
 
-                    CPUChoose_Default(cpuprice);
+                    if (cpuprice == 0)
+                    {
+                        CPUChoose_Default();
+                    }
+                    else
+                    {
+                        CPUChoose_Users(cpuprice);
+                    }
+
                     MBChoose_Default();
 
                     if (chosenmb.Name == null)
@@ -147,12 +178,21 @@ namespace SuperConfigurator
                         MBChoose_IfNotFound();
                     }
 
-                    RAMChoose_Default();
+                    if (ramgigs == 0)
+                    {
+                        RAMChoose_Default();
+                    }
+                    else
+                    {
+                        RAMChoose_Users(ramgigs);
+                        userram = true;
+                    }
+
                     PSChoose_Default();
                     SSDChoose_Default();
                     CaseChoose_Default();
-                    
-                    if (!user)
+
+                    if (!usergpu)
                     {
                         max = chosencpu.Price + chosengpu.Price + chosenmb.Price + chosenps.Price + chosenram.Price + chosenram.Price + chosenssd.Price + chosencase.Price;
                         int ost = budget - max;
@@ -170,53 +210,99 @@ namespace SuperConfigurator
             cpu = 0;
             gigs = 0;
             budget = 0;
+            allprice = 0;
+            price = 0;
         }
         private void Write()
         {
-            int price; 
-            StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("Видеокарта:" + chosengpu.Name + " ——— " + chosengpu.Price.ToString());
-            sb.AppendLine();
-            sb.AppendLine();
-            sb.AppendFormat("Процессор:" + chosencpu.Name + " ——— " + chosencpu.Price.ToString());
-            sb.AppendLine();
-            sb.AppendLine();
-            sb.AppendFormat("Материнская плата:" + chosenmb.Name + " ——— " + chosenmb.Price.ToString());
-            sb.AppendLine();
-            sb.AppendLine();
-            if (two)
+            bool namenull = false;
+            if (chosencpu.Name = null || chosengpu.Name = null || chosenmb.Name = null || chosenps.Name = null || chosenram.Name = null || chosenssd.Name = null || chosencase.Name = null)
             {
-                price = chosenram.Price;
-                var v = chosenram.Volume.Split();
-                int vol = int.Parse(v[0]) / 2;
-                sb.AppendFormat("Оперативная память:" + chosenram.Name + " (" + vol + "ГБ" + "+" + vol + "ГБ" + ") ——— " + price.ToString() + "(2 плашки)");
-                sb.AppendLine();
-                sb.AppendLine();
+                namenull = true;
+            }
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("• Видеокарта:" + chosengpu.Name + " ——— " + chosengpu.Price.ToString());
+            sb.AppendLine();
+            sb.AppendLine();
+            sb.AppendFormat("• Процессор:" + chosencpu.Name + " ——— " + chosencpu.Price.ToString());
+            sb.AppendLine();
+            sb.AppendLine();
+            sb.AppendFormat("• Материнская плата:" + chosenmb.Name + " ——— " + chosenmb.Price.ToString());
+            sb.AppendLine();
+            sb.AppendLine();
+            if (!userram)
+            {
+                if (two)
+                {
+                    price = chosenram.Price;
+                    var v = chosenram.Volume.Split();
+                    int vol = int.Parse(v[0]) / 2;
+                    sb.AppendFormat("• Оперативная память:" + chosenram.Name + " (" + vol + "ГБ" + "+" + vol + "ГБ" + ") ——— " + price.ToString() + "(2 плашки)");
+                    sb.AppendLine();
+                    sb.AppendLine();
+                }
+                else
+                {
+                    price = chosenram.Price * 2;
+                    sb.AppendFormat("• Оперативная память:" + chosenram.Name + " (" + chosenram.Volume + "+" + chosenram.Volume + ") ——— " + price.ToString() + "(2 плашки)");
+                    sb.AppendLine();
+                    sb.AppendLine();
+                }
             }
             else
             {
-                price = chosenram.Price * 2;
-                sb.AppendFormat("Оперативная память:" + chosenram.Name + " (" + chosenram.Volume + "+" + chosenram.Volume + ") ——— " + price.ToString() + "(2 плашки)");
-                sb.AppendLine();
-                sb.AppendLine();
+                if (gigs == 4)
+                {
+                    sb.AppendFormat("• Оперативная память:" + chosenram.Name + " (" + chosenram.Volume + ") ——— " + chosenram.Price.ToString() + "(1 плашка)");
+                    sb.AppendLine();
+                    sb.AppendLine();
+                }
+                else
+                {
+                    if (two)
+                    {
+                        price = chosenram.Price;
+                        var v = chosenram.Volume.Split();
+                        int vol = int.Parse(v[0]) / 2;
+                        sb.AppendFormat("• Оперативная память:" + chosenram.Name + " (" + vol + "ГБ" + "+" + vol + "ГБ" + ") ——— " + price.ToString() + "(2 плашки)");
+                        sb.AppendLine();
+                        sb.AppendLine();
+                    }
+                    else
+                    {
+                        price = chosenram.Price * 2;
+                        sb.AppendFormat("• Оперативная память:" + chosenram.Name + " (" + chosenram.Volume + "+" + chosenram.Volume + ") ——— " + price.ToString() + "(2 плашки)");
+                        sb.AppendLine();
+                        sb.AppendLine();
+                    }
+                }
             }
-            sb.AppendFormat("Блок питания:" + chosenps.Name + " " + chosenps.Power + " ——— " + chosenps.Price.ToString());
+            sb.AppendFormat("• Блок питания:" + chosenps.Name + " " + chosenps.Power + " ——— " + chosenps.Price.ToString());
             sb.AppendLine();
             sb.AppendLine();
-            sb.AppendFormat("Твердотельный накопитель:" + chosenssd.Name + " " + chosenssd.Volume + " ——— " + chosenssd.Price.ToString());
+            sb.AppendFormat("• Твердотельный накопитель:" + chosenssd.Name + " " + chosenssd.Volume + " ——— " + chosenssd.Price.ToString());
             sb.AppendLine();
             sb.AppendLine();
-            sb.AppendFormat("Корпус:" + chosencase.Name + " ——— " + chosencase.Price.ToString());
+            sb.AppendFormat("• Корпус:" + chosencase.Name + " ——— " + chosencase.Price.ToString());
             sb.AppendLine();
             sb.AppendLine();
-            int all = chosencpu.Price + chosengpu.Price + chosenmb.Price + chosenps.Price + price + chosenssd.Price + chosencase.Price;
-            int ostatok = budget - all;
-            sb.AppendFormat("Остаток по бюджету: " + ostatok.ToString());
-            FinalComponentsLabel.Content = sb.ToString();
+            allprice = chosencpu.Price + chosengpu.Price + chosenmb.Price + chosenps.Price + price + chosenssd.Price + chosencase.Price;
+            int ostatok = budget - allprice;
+            if (ostatok >= 0 && !namenull)
+            {
+                sb.AppendFormat("• Остаток по бюджету: " + ostatok.ToString());
+                FinalComponentsLabel.Content = sb.ToString();
+            }
+            else if (ostatok < 0 || namenull)
+            {
+                MessageBox.Show("На основе введённых параметров собрать ПК не удалось. Попробуйте убрать галочки и воспользоваться автоматической сборкой.");
+            }
         }
 
         private void GPUChoose_Users(int gpuprice1)
         {
+            max = 0;
             if (budget > 45000)
             {
                 tempprice = gpuprice1;
@@ -481,17 +567,34 @@ namespace SuperConfigurator
             }
         }
 
-        private void CPUChoose_Default(int cpuprice)
+        private void CPUChoose_Users(int cpuprice1)
+        {
+            max = 0;
+            tempprice = cpuprice1;
+            foreach (CPU c in cpus)
+            {
+                var cor = c.Cores.Split();
+                int co = int.Parse(cor[0]);
+                if (co < 17 && !c.Socket.Contains("SP3") && !c.Socket.Contains("2066") && !c.Name.Contains("Xeon") && !c.Name.Contains("Threadripper"))
+                {
+                    if (c.Price <= tempprice && co > cores && c.Price >= tempprice / 3) { max = c.Price; cores = co; }
+                }
+            }
+            foreach (CPU c in cpus)
+            {
+                if (c.Price == max)
+                {
+                    chosencpu = c;
+                }
+            }
+        }
+
+        private void CPUChoose_Default()
         {
             max = 0;
             tempprice = budget * 0.21;
             foreach (CPU c in cpus)
             {
-                if (cpuprice == 0)
-                {
-                    tempprice = budget * 0.21;
-                }
-                else tempprice = bg.CPUBudget;
                 var cor = c.Cores.Split();
                 int co = int.Parse(cor[0]);
                 if (co < 17 && !c.Socket.Contains("SP3") && !c.Socket.Contains("2066") && !c.Name.Contains("Xeon") && !c.Name.Contains("Threadripper"))
@@ -721,7 +824,7 @@ namespace SuperConfigurator
             max = 0;
             int max2 = 9999;
             string namer = "";
-            if (budget < 38000) // продумать ситуацию с комплектами по 1, 2 и 4 плашки
+            if (budget < 38000)
             {
                 foreach (RAM r in rams)
                 {
@@ -822,6 +925,97 @@ namespace SuperConfigurator
                         max2 = r.Price;
                         namer = r.Name;
                         two = true;
+                    }
+                }
+                foreach (RAM r in rams)
+                {
+                    if (r.Price == max2 && r.Name == namer)
+                    {
+                        chosenram = r;
+                    }
+                }
+            }
+        }
+
+        private void RAMChoose_Users(int gigs1)
+        {
+            max = 0;
+            int max2 = 9999;
+            string namer = "";
+            if (gigs1 % 4 == 0)
+            {
+                foreach (RAM r in rams)
+                {
+                    var v = r.Volume.Split();
+                    string volume = v[0];
+                    if (gigs1 == 4)
+                    {
+                        if (r.Number.Contains("1") && r.FormFactor == "DIMM" && int.Parse(volume) == 4 && r.Price < max2 && r.Type == chosencpu.MemType)
+                        {
+                            max2 = r.Price;
+                            namer = r.Name;
+                            two = false;
+                        }
+                    }
+                    else if (gigs1 == 8)
+                    {
+                        if (r.Number.Contains("2") && r.FormFactor == "DIMM" && int.Parse(volume) == 8 && r.Price < max2 && r.Type == chosencpu.MemType)
+                        {
+                            max2 = r.Price;
+                            namer = r.Name;
+                            two = true;
+                        }
+                        else if (r.Number.Contains("1") && r.FormFactor == "DIMM" && int.Parse(volume) == 4 && r.Price < max2 && r.Type == chosencpu.MemType)
+                        {
+                            max2 = r.Price;
+                            namer = r.Name;
+                            two = false;
+                        }
+                    }
+                    else if (gigs1 == 16)
+                    {
+                        if (r.Number.Contains("2") && r.FormFactor == "DIMM" && int.Parse(volume) == 16 && r.Price < max2 && r.Type == chosencpu.MemType)
+                        {
+                            max2 = r.Price;
+                            namer = r.Name;
+                            two = true;
+                        }
+                        else if (r.Number.Contains("1") && r.FormFactor == "DIMM" && int.Parse(volume) == 8 && r.Price < max2 && r.Type == chosencpu.MemType)
+                        {
+                            max2 = r.Price;
+                            namer = r.Name;
+                            two = false;
+                        }
+                    }
+                    else if (gigs1 == 32)
+                    {
+                        if (r.Number.Contains("2") && r.FormFactor == "DIMM" && int.Parse(volume) == 32 && r.Price < max2 && r.Type == chosencpu.MemType)
+                        {
+                            max2 = r.Price;
+                            namer = r.Name;
+                            two = true;
+                        }
+                        else if (r.Number.Contains("1") && r.FormFactor == "DIMM" && int.Parse(volume) == 16 && r.Price < max2 && r.Type == chosencpu.MemType)
+                        {
+                            max2 = r.Price;
+                            namer = r.Name;
+                            two = false;
+                        }
+                    }
+                    else if (gigs1 == 64)
+                    {
+                        if (r.Number.Contains("2") && r.FormFactor == "DIMM" && int.Parse(volume) == 64 && r.Price < max2 && r.Type == chosencpu.MemType)
+                        {
+                            max2 = r.Price;
+                            namer = r.Name;
+                            two = true;
+                        }
+                        else if (r.Number.Contains("1") && r.FormFactor == "DIMM" && int.Parse(volume) == 32 && r.Price < max2 && r.Type == chosencpu.MemType)
+                        {
+                            max2 = r.Price;
+                            namer = r.Name;
+                            two = false;
+                        }
                     }
                 }
                 foreach (RAM r in rams)
@@ -1192,5 +1386,7 @@ namespace SuperConfigurator
             MessageBox.Show("Благодарим за использование нашего сервиса! Если у вас есть предложения по добавлению функционала или приложение работает некорректно — направляйте запросы на электронную почту kb11so@yandex.ru.");
             Close();
         }
+
+        
     }
 }
