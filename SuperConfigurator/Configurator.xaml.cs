@@ -144,13 +144,14 @@ namespace SuperConfigurator
                 MessageBox.Show("Введите ваш бюджет в рублях!");
             }
 
-            bg = new BudgetsAndGigs(budget, gpu, cpu, gigs);
+            bg = new BudgetsAndGigs(budget, gpu, cpu, gigs, ssd);
             int gpuprice = bg.GPUBudget;
             int cpuprice = bg.CPUBudget;
             int ramgigs = bg.Gigs;
+            int ssdgigs = bg.SSDGigs;
             if (budget < 501000)
             {
-                if (budget >= 30000)
+                if (budget >= 20000)
                 {
                     if (gpuprice == 0)
                     {
@@ -189,7 +190,16 @@ namespace SuperConfigurator
                     }
 
                     PSChoose_Default();
-                    SSDChoose_Default();
+
+                    if (ssdgigs == 0)
+                    {
+                        SSDChoose_Default();
+                    }
+                    else
+                    {
+                        SSDChoose_Users(ssdgigs);
+                    }
+
                     CaseChoose_Default();
 
                     if (!usergpu)
@@ -200,7 +210,7 @@ namespace SuperConfigurator
                     }
                     Write();
                 }
-                else if (budget < 30000) MessageBox.Show("Наименьший бюджет для сборки ПК в нашем сервисе — 30.000 рублей.");
+                else if (budget < 20000) MessageBox.Show("Наименьший бюджет для сборки ПК в нашем сервисе — 20.000 рублей.");
             }
             else if (budget >= 501000)
             {
@@ -209,14 +219,17 @@ namespace SuperConfigurator
             gpu = 0;
             cpu = 0;
             gigs = 0;
+            ssd = 0;
             budget = 0;
             allprice = 0;
             price = 0;
+
         }
+        
         private void Write()
         {
             bool namenull = false;
-            if (chosencpu.Name = null || chosengpu.Name = null || chosenmb.Name = null || chosenps.Name = null || chosenram.Name = null || chosenssd.Name = null || chosencase.Name = null)
+            if (chosencpu.Name == null || chosengpu.Name == null || chosenmb.Name == null || chosenps.Name == null || chosenram.Name == null || chosenssd.Name == null || chosencase.Name == null)
             {
                 namenull = true;
             }
@@ -393,7 +406,27 @@ namespace SuperConfigurator
             max = 0;
             if (chosencpu.Chipset == "AMD") //Амуде
             {
-                if (budget < 60000)
+                if (budget < 30000)
+                {
+                    max = 4000;
+                    foreach (MotherBoard m in mbs)
+                    {
+                        string soc = "";
+                        if (chosencpu.Socket.Split().Length == 1)
+                        {
+                            soc = "AMD" + " " + chosencpu.Socket;
+                        }
+                        if (m.Socket == soc && m.Price < 4000 && m.Price < max) { max = m.Price; namemb = m.Name; }
+                    }
+                    foreach (MotherBoard m in mbs)
+                    {
+                        if (m.Price == max && m.Name == namemb)
+                        {
+                            chosenmb = m;
+                        }
+                    }
+                }
+                else if (budget < 60000 && budget >= 30000)
                 {
                     foreach (MotherBoard m in mbs)
                     {
@@ -480,7 +513,22 @@ namespace SuperConfigurator
             }
             else if (chosencpu.Chipset != "AMD") //Интуль
             {
-                if (budget <= 49000)
+                if (budget < 30000)
+                {
+                    max = 4000;
+                    foreach (MotherBoard m in mbs)
+                    {
+                        if (m.Socket == chosencpu.Socket && m.Price < 4000 && m.Price < max) { max = m.Price; namemb = m.Name; }
+                    }
+                    foreach (MotherBoard m in mbs)
+                    {
+                        if (m.Price == max && m.Name == namemb)
+                        {
+                            chosenmb = m;
+                        }
+                    }
+                }
+                else if (budget <= 49000 && budget >= 30000)
                 {
                     foreach (MotherBoard m in mbs)
                     {
@@ -570,6 +618,7 @@ namespace SuperConfigurator
         private void CPUChoose_Users(int cpuprice1)
         {
             max = 0;
+            cores = 0;
             tempprice = cpuprice1;
             foreach (CPU c in cpus)
             {
@@ -577,7 +626,7 @@ namespace SuperConfigurator
                 int co = int.Parse(cor[0]);
                 if (co < 17 && !c.Socket.Contains("SP3") && !c.Socket.Contains("2066") && !c.Name.Contains("Xeon") && !c.Name.Contains("Threadripper"))
                 {
-                    if (c.Price <= tempprice && co > cores && c.Price >= tempprice / 3) { max = c.Price; cores = co; }
+                    if (c.Price <= tempprice && co > cores && c.Price >= max) { max = c.Price; cores = co; }
                 }
             }
             foreach (CPU c in cpus)
@@ -1241,7 +1290,23 @@ namespace SuperConfigurator
         private void SSDChoose_Default()
         {
             max = 9999;
-            if (budget < 50000)
+            if (budget < 30000)
+            {
+                foreach (SSD s in ssds)
+                {
+                    var v = s.Volume.Split();
+                    int vol = int.Parse(v[0]);
+                    if ((vol == 120 || vol == 128) && s.Price < max) max = s.Price;
+                }
+                foreach (SSD s in ssds)
+                {
+                    if (s.Price == max)
+                    {
+                        chosenssd = s;
+                    }
+                }
+            }
+            else if (budget < 50000 && budget >= 30000)
             {
                 foreach (SSD s in ssds)
                 {
@@ -1311,18 +1376,63 @@ namespace SuperConfigurator
             }
         }
 
+        private void SSDChoose_Users(int ssdgigs1)
+        {
+            int chvol = 0;
+            max = 9999;
+            foreach (SSD s in ssds)
+            {
+                var v = s.Volume.Split();
+                int vol = int.Parse(v[0]);
+                if (ssdgigs1 >= 1000)
+                {
+                    if (vol <= ssdgigs1 && vol > chvol && s.Price <= 15000)
+                    {
+                        max = s.Price;
+                        var chv = s.Volume.Split();
+                        chvol = int.Parse(chv[0]);
+                    }
+                }
+                else if (ssdgigs1 < 1000)
+                {
+                    if (vol <= ssdgigs1 && vol > chvol && s.Price <= 7000)
+                    {
+                        max = s.Price;
+                        var chv = s.Volume.Split();
+                        chvol = int.Parse(chv[0]);
+                    }
+                }
+            }
+            foreach (SSD s in ssds)
+            {
+                if (s.Price == max)
+                {
+                    chosenssd = s;
+                }
+            }
+        }
+
         private void CaseChoose_Default()
         {
             int max0 = 0;
             var l = chosengpu.Length.Split();
             string length = l[0];
             string name = "";
+            allprice = chosencpu.Price + chosengpu.Price + chosenmb.Price + chosenps.Price + chosenram.Price + chosenram.Price + chosenssd.Price;
+            int ostatok = budget - allprice;
             foreach (Case c in cs)
             {
                 var le = c.MaxGPULength;
                 if (le == null || le == "") continue;
                 string lenCase = le[0].ToString() + le[1].ToString() + le[2].ToString();
-                if (c.Price < 3100 && c.Price > max0 && int.Parse(length) <= int.Parse(lenCase) && !c.Name.Contains("Рекомендуем")) { max0 = c.Price; name = c.Name; }
+                if (budget >= 30000)
+                {
+                    if (c.Price < 3100 && c.Price > max0 && int.Parse(length) <= int.Parse(lenCase) && !c.Name.Contains("Рекомендуем")) { max0 = c.Price; name = c.Name; }
+                }
+                else
+                {
+                    if (c.Price < ostatok && !c.Name.Contains("Рекомендуем")) { max0 = c.Price; name = c.Name; }
+                }
             }
             foreach (Case c in cs)
             {
