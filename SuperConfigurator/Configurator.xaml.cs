@@ -381,9 +381,45 @@ namespace SuperConfigurator
                     }
                 }
             }
-            else if (budget <= 45000)
+            else if (budget <= 45000 && budget >= 25000)
             {
                 tempprice = budget * 0.35;
+                foreach (GPU g in gpus)
+                {
+                    if (g.Name.Length > 4 && !g.Name.Contains("PNY") && !g.Name.Contains("Quadro"))
+                    {
+                        if (g.Price > max && g.Price <= tempprice) { max = g.Price; nameg = g.Name; }
+                    }
+                }
+                foreach (GPU g in gpus)
+                {
+                    if (g.Price == max && g.Name == nameg)
+                    {
+                        chosengpu = g;
+                    }
+                }
+            }
+            else if (budget < 25000 && budget > 20000)
+            {
+                tempprice = budget * 0.23;
+                foreach (GPU g in gpus)
+                {
+                    if (g.Name.Length > 4 && !g.Name.Contains("PNY") && !g.Name.Contains("Quadro"))
+                    {
+                        if (g.Price > max && g.Price <= tempprice) { max = g.Price; nameg = g.Name; }
+                    }
+                }
+                foreach (GPU g in gpus)
+                {
+                    if (g.Price == max && g.Name == nameg)
+                    {
+                        chosengpu = g;
+                    }
+                }
+            }
+            else if (budget == 20000)
+            {
+                tempprice = budget * 0.21;
                 foreach (GPU g in gpus)
                 {
                     if (g.Name.Length > 4 && !g.Name.Contains("PNY") && !g.Name.Contains("Quadro"))
@@ -641,21 +677,44 @@ namespace SuperConfigurator
         private void CPUChoose_Default()
         {
             max = 0;
-            tempprice = budget * 0.21;
-            foreach (CPU c in cpus)
+            if (budget > 20000)
             {
-                var cor = c.Cores.Split();
-                int co = int.Parse(cor[0]);
-                if (co < 17 && !c.Socket.Contains("SP3") && !c.Socket.Contains("2066") && !c.Name.Contains("Xeon") && !c.Name.Contains("Threadripper"))
+                tempprice = budget * 0.21;
+                foreach (CPU c in cpus)
                 {
-                    if (c.Price <= tempprice && co > cores && c.Price >= tempprice / 3) { max = c.Price; cores = co; }
+                    var cor = c.Cores.Split();
+                    int co = int.Parse(cor[0]);
+                    if (co < 17 && !c.Socket.Contains("SP3") && !c.Socket.Contains("2066") && !c.Name.Contains("Xeon") && !c.Name.Contains("Threadripper"))
+                    {
+                        if (c.Price <= tempprice && co > cores && c.Price >= tempprice / 3) { max = c.Price; cores = co; }
+                    }
+                }
+                foreach (CPU c in cpus)
+                {
+                    if (c.Price == max)
+                    {
+                        chosencpu = c;
+                    }
                 }
             }
-            foreach (CPU c in cpus)
+            else if (budget == 20000)
             {
-                if (c.Price == max)
+                tempprice = budget * 0.19;
+                foreach (CPU c in cpus)
                 {
-                    chosencpu = c;
+                    var cor = c.Cores.Split();
+                    int co = int.Parse(cor[0]);
+                    if (co < 17 && !c.Socket.Contains("SP3") && !c.Socket.Contains("2066") && !c.Name.Contains("Xeon") && !c.Name.Contains("Threadripper"))
+                    {
+                        if (c.Price <= tempprice && co > cores && c.Price >= tempprice / 3) { max = c.Price; cores = co; }
+                    }
+                }
+                foreach (CPU c in cpus)
+                {
+                    if (c.Price == max)
+                    {
+                        chosencpu = c;
+                    }
                 }
             }
         }
