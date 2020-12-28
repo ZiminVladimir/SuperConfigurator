@@ -1474,6 +1474,10 @@ namespace SuperConfigurator
         private void CaseChoose_Default()
         {
             int max0 = 0;
+            if (chosengpu.Length == null)
+            {
+                chosengpu.Length = "30";
+            }
             var l = chosengpu.Length.Split();
             string length = l[0];
             string name = "";
