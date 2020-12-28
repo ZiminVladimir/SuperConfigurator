@@ -25,10 +25,10 @@ namespace SuperConfigurator
     public partial class Configurator : Window
     {
         public BudgetsAndGigs bg;
-        public int gpu;
-        public int cpu;
-        public int gigs;
-        public int ssd;
+        public int gpu = -1;
+        public int cpu = -1;
+        public int gigs = -1;
+        public int ssd = -1;
         public bool usergpu = false;
         public bool userram = false;
         public int max = 0;
@@ -95,28 +95,44 @@ namespace SuperConfigurator
         {
             CheckBox GPUBudgetCheckBox = (CheckBox)sender;
             if (GPUBudgetCheckBox.IsChecked == true) BudgetGPUTextBox.Visibility = Visibility.Visible;
-            else if (GPUBudgetCheckBox.IsChecked == false) BudgetGPUTextBox.Visibility = Visibility.Hidden;
+            else if (GPUBudgetCheckBox.IsChecked == false)
+            {
+                BudgetGPUTextBox.Visibility = Visibility.Hidden;
+                BudgetGPUTextBox.Text = null;
+            }
         }
 
         private void CPUBudgetCheckBox_Click(object sender, RoutedEventArgs e)
         {
             CheckBox CPUBudgetCheckBox = (CheckBox)sender;
             if (CPUBudgetCheckBox.IsChecked == true) BudgetCPUTextBox.Visibility = Visibility.Visible;
-            else if (CPUBudgetCheckBox.IsChecked == false) BudgetCPUTextBox.Visibility = Visibility.Hidden;
+            else if (CPUBudgetCheckBox.IsChecked == false)
+            {
+                BudgetCPUTextBox.Visibility = Visibility.Hidden;
+                BudgetCPUTextBox.Text = null;
+            }
         }
 
         private void GigsCheckBox_Click(object sender, RoutedEventArgs e)
         {
             CheckBox GigsCheckBox = (CheckBox)sender;
             if (GigsCheckBox.IsChecked == true) GigsTextBox.Visibility = Visibility.Visible;
-            else if (GigsCheckBox.IsChecked == false) GigsTextBox.Visibility = Visibility.Hidden;
+            else if (GigsCheckBox.IsChecked == false)
+            {
+                GigsTextBox.Visibility = Visibility.Hidden;
+                GigsTextBox.Text = null;
+            }
         }
 
         private void SSDCheckBox_Click(object sender, RoutedEventArgs e)
         {
             CheckBox SSDCheckBox = (CheckBox)sender;
             if (SSDCheckBox.IsChecked == true) SSDTextBox.Visibility = Visibility.Visible;
-            else if (SSDCheckBox.IsChecked == false) SSDTextBox.Visibility = Visibility.Hidden;
+            else if (SSDCheckBox.IsChecked == false)
+            {
+                SSDTextBox.Visibility = Visibility.Hidden;
+                SSDTextBox.Text = null;
+            }
         }
 
         
@@ -153,21 +169,21 @@ namespace SuperConfigurator
             {
                 if (budget >= 20000)
                 {
-                    if (gpuprice == 0)
+                    if (gpuprice == -1)
                     {
                         GPUChoose_Default();
                     }
-                    else
+                    else if (gpuprice != 0)
                     {
                         GPUChoose_Users(gpuprice);
                         usergpu = true;
                     }
 
-                    if (cpuprice == 0)
+                    if (cpuprice == -1)
                     {
                         CPUChoose_Default();
                     }
-                    else
+                    else if (cpuprice != 0)
                     {
                         CPUChoose_Users(cpuprice);
                     }
@@ -179,11 +195,11 @@ namespace SuperConfigurator
                         MBChoose_IfNotFound();
                     }
 
-                    if (ramgigs == 0)
+                    if (ramgigs == -1)
                     {
                         RAMChoose_Default();
                     }
-                    else
+                    else if (ramgigs != 0)
                     {
                         RAMChoose_Users(ramgigs);
                         userram = true;
@@ -191,11 +207,11 @@ namespace SuperConfigurator
 
                     PSChoose_Default();
 
-                    if (ssdgigs == 0)
+                    if (ssdgigs == -1)
                     {
                         SSDChoose_Default();
                     }
-                    else
+                    else if (ssdgigs != 0)
                     {
                         SSDChoose_Users(ssdgigs);
                     }
@@ -216,10 +232,10 @@ namespace SuperConfigurator
             {
                 MessageBox.Show("Макисмальный бюджет для сборки — 500.000 рублей.");
             }
-            gpu = 0;
-            cpu = 0;
-            gigs = 0;
-            ssd = 0;
+            gpu = -1;
+            cpu = -1;
+            gigs = -1;
+            ssd = -1;
             budget = 0;
             allprice = 0;
             price = 0;
@@ -1438,14 +1454,14 @@ namespace SuperConfigurator
         private void SSDChoose_Users(int ssdgigs1)
         {
             int chvol = 0;
-            max = 9999;
+            max = 0;
             foreach (SSD s in ssds)
             {
                 var v = s.Volume.Split();
                 int vol = int.Parse(v[0]);
                 if (ssdgigs1 >= 1000)
                 {
-                    if (vol <= ssdgigs1 && vol > chvol && s.Price <= 15000)
+                    if (vol == ssdgigs1 && vol > chvol && s.Price <= 15000)
                     {
                         max = s.Price;
                         var chv = s.Volume.Split();
@@ -1454,7 +1470,7 @@ namespace SuperConfigurator
                 }
                 else if (ssdgigs1 < 1000)
                 {
-                    if (vol <= ssdgigs1 && vol > chvol && s.Price <= 7000)
+                    if (vol == ssdgigs1 && vol > chvol && s.Price <= 7000)
                     {
                         max = s.Price;
                         var chv = s.Volume.Split();
@@ -1469,6 +1485,7 @@ namespace SuperConfigurator
                     chosenssd = s;
                 }
             }
+            if (chosenssd.Name == null) MessageBox.Show("SSD с таким объёмом не существует. Введите другой объём или уберите галочку и воспользуйтесь автоматической сборкой.");
         }
 
         private void CaseChoose_Default()
