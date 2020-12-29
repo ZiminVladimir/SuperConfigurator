@@ -31,6 +31,7 @@ namespace SuperConfigurator
         public int ssd = -1;
         public bool usergpu = false;
         public bool userram = false;
+        public bool error = false;
         public int max = 0;
         public double tempprice = 0;
         public string nameg = "";
@@ -165,6 +166,7 @@ namespace SuperConfigurator
             int cpuprice = bg.CPUBudget;
             int ramgigs = bg.Gigs;
             int ssdgigs = bg.SSDGigs;
+            //if (gpuprice)
             if (budget < 501000)
             {
                 if (budget >= 20000)
@@ -190,7 +192,7 @@ namespace SuperConfigurator
 
                     MBChoose_Default();
 
-                    if (chosenmb.Name == null)
+                    if (chosenmb.Name == null && !error)
                     {
                         MBChoose_IfNotFound();
                     }
@@ -205,7 +207,10 @@ namespace SuperConfigurator
                         userram = true;
                     }
 
-                    PSChoose_Default();
+                    if (chosenmb.Name != null)
+                    {
+                        PSChoose_Default();
+                    }
 
                     if (ssdgigs == -1)
                     {
@@ -687,6 +692,10 @@ namespace SuperConfigurator
                 {
                     chosencpu = c;
                 }
+            }
+            if (chosencpu.Name == null)
+            {
+                error = true;
             }
         }
 
